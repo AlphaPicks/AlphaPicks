@@ -50,7 +50,7 @@ def ejecutar(request):
      return render(request, 'ejecutar.html')
 
 def apuestas(request):
-    return render(request, 'apuestas.html')  pip install django-background-tasks
+    return render(request, 'apuestas.html')
 
 def apuestas2(request):
     data = {
