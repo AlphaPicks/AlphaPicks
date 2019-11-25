@@ -1,0 +1,17 @@
+git config --global user.name "Ibon Garay Bengoa"
+git config --global user.email igaraybengoa@pwc.com
+
+git init
+git status
+git add .
+git commit -m "Initial commit"
+
+git remote add origin https://github.com/IbonGaray/CazaEmpates.git
+
+git push origin master
+
+
+git clone https://github.com/Ibongaray/CazaEmpates.git
+
+
+git pull

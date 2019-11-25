@@ -40,7 +40,7 @@ def send_email(user, pwd, recipient, subject, body):
         print ("failed to send mail")
 
 def home(request):
-    return HttpResponse("Hello, Django!")
+    return HttpResponse("Caza Empates")
 
 def dos(request):
     return HttpResponse("Hello, Django 2!")
@@ -49,10 +49,10 @@ def ejecutar(request):
      #return HttpResponse("Hello, Django 3!")
      return render(request, 'ejecutar.html')
 
-def apuestas(request):
+def apuestas2(request):
     return render(request, 'apuestas.html')
 
-def apuestas2(request):
+def apuestas(request):
     data = {
         'name': 'Vitor',
         'location': 'Finland',
