@@ -19,6 +19,9 @@ import pandas as pd
 from tabulate import tabulate
 import numpy as np
 
+
+
+
 def send_email(user, pwd, recipient, subject, body):
     FROM = user
     TO = recipient if isinstance(recipient, list) else [recipient]
@@ -102,7 +105,7 @@ def apuestas(request):
     y_pred_rf_stats = []
     for x in ligas:
         #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + "E0" + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + "D1" + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
