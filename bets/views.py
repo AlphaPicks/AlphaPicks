@@ -21,7 +21,7 @@ import numpy as np
 from urllib.request import urlopen
 from zipfile import ZipFile
 
-
+VERSION_MODELO = "E0"
 
 
 def send_email(user, pwd, recipient, subject, body):
@@ -129,7 +129,66 @@ def precision(request):
     df_test_rf_empates.loc[df_test_rf_empates.target == "D", 'target'] = "1"
     df_test_rf_empates.drop(columns=["FTR"], inplace=True)
 
-    return render(request, 'precision.html')
+    ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+
+    ganancias_totales = 0
+    ganancias = 0
+    capital_inicial_total = 0
+    capital_inicial_total2 = 0
+    capital_inicial = 0
+    rentables_rf_empates = []
+    for x in ligas:
+        #print(x + "-------->")
+        df_rf_test = df_test_rf_empates[df_test_rf_empates["Div"] == x]
+        df_rf_test.dropna(inplace=True)
+        X_test_rf = df_rf_test[columnas_prediccion]
+        y_test_rf = df_rf_test.target
+        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl")
+        with open(model_path, 'rb') as file:
+            rf = pickle.load(file)  
+        #print('Accuracy of RF classifier on test set:  {:.2f}' .format(rf.score(X_test_rf, y_test_rf)))   
+        y_pred_rf = rf.predict(X_test_rf)
+        #print(classification_report(y_test_rf, y_pred_rf, target_names=["0", "1"], digits=4))
+        df_aux = df_rf_test[df_rf_test["Div"] == x]
+        df_aux["Prediccion"] = y_pred_rf
+        df_aux["Cuota"] = 0     
+        df_aux = df_aux.reset_index(drop=True)
+        for index, row in df_aux.iterrows():
+            if(df_aux.loc[index, "Prediccion"] == "0"):
+                df_aux.loc[index, "Cuota"] = 0            
+            if(df_aux.loc[index, "Prediccion"] == "1"):
+                df_aux.loc[index, "Cuota"] = df_aux.iloc[index]["B365D"]
+                capital_inicial_total = capital_inicial_total + 1
+                capital_inicial = capital_inicial + 1
+            if(df_aux.loc[index, "Prediccion"] == "0"):
+                df_aux.loc[index, "Cuota"] = 0
+            if(df_aux.loc[index, "Prediccion"] ==  df_aux.iloc[index]["target"]):
+                ganancias = ganancias + df_aux.iloc[index]["Cuota"] 
+        if(ganancias - capital_inicial>0):
+            rentables_rf_empates.append(x)
+        #print("Capital inicial: ", capital_inicial, "€")
+        #print("Ganancias totales: ", ganancias, "€")
+        #print("---")
+        #print("Ganancias netas: ", ganancias - capital_inicial, "€")
+        #print("Ratio ganancias: ", ganancias * 100 / capital_inicial - 100, "%")   
+        capital_inicial_total2 = capital_inicial_total2 + capital_inicial 
+        capital_inicial_total = capital_inicial_total + capital_inicial
+        capital_inicial = 0
+        ganancias_totales = ganancias_totales + ganancias
+        ganancias = 0
+        #print("--------")
+        #print("--------")
+        #print("--------")
+    #print("")
+    #print("Capital inicial total: " , capital_inicial_total2 , "€")    
+    #print("Ganancia totales: " , ganancias_totales , "€")
+    #print("---")
+    #print("Ganancia totales netas: " , ganancias_totales - capital_inicial_total2, "€")
+    #print("Ratio ganancias: ", ganancias_totales * 100 / capital_inicial_total2 - 100, "%")
+    data_informacion = [[capital_inicial_total2, ganancias_totales, ganancias_totales - capital_inicial_total2, ganancias_totales * 100 / capital_inicial_total2 - 100]] 
+    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio']) 
+    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
+    #return render(request, 'precision.html')
 
 def metodologia(request):
     return render(request, 'metodologia.html')
@@ -190,7 +249,7 @@ def prediccion(request):
     y_pred_rf_stats = []
     for x in ligas:
         #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + "E0" + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:

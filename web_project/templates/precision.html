@@ -19,6 +19,59 @@
     <p><strong></strong></p>
     <p id="showData"></p>
   </section>
+
+  <section style="margin-right: 20%; margin-left: 20%; margin-bottom: 2%;">
+    <section style="margin-right: 20%; margin-left: 20%; margin-bottom: 2%;">
+
+    <div style="overflow: hidden;">
+        <p style="float: left;">Capital inicial: &nbsp; </p>
+        <p style="float: left;" id="showData1"></p>
+        <p style="float: left;"> € </p>
+    </div>
+
+    <div style="overflow: hidden;">
+        <p style="float: left;">Ganancia brutas: &nbsp; </p>
+        <p style="float: left;" id="showData2"></p>
+        <p style="float: left;"> € </p>
+    </div>
+
+    <div style="overflow: hidden;">
+        <p style="float: left;">Ganancia netas: &nbsp; </p>
+        <p style="float: left;" id="showData3"></p>
+        <p style="float: left;"> € </p>
+    </div>
+    
+    <div style="overflow: hidden;">
+        <p style="float: left;">Porcentaje beneficio: &nbsp; </p>
+        <p style="float: left;" id="showData4"></p>
+        <p style="float: left;"> % </p>
+    </div>
+
+    </section>
+
+    <script>
+        var data_informacion_json = JSON.parse('{{ data_informacion | escapejs }}');
+
+        data_informacion_json = data_informacion_json.data
+
+        var div1 = document.getElementById('showData1');
+        div1.innerHTML = data_informacion_json[0][0];
+
+        var div2 = document.getElementById('showData2');
+        div2.innerHTML = data_informacion_json[0][1];
+
+        var div3 = document.getElementById('showData3');
+        div3.innerHTML = data_informacion_json[0][2];
+
+        var div4 = document.getElementById('showData4');
+        div4.innerHTML = data_informacion_json[0][3];
+
+    </script>
+
+    
+
+
+    </section>
   
   {% include "firma.html" %}
 
