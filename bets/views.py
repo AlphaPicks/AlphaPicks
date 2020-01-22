@@ -20,6 +20,10 @@ from tabulate import tabulate
 import numpy as np
 from urllib.request import urlopen
 from zipfile import ZipFile
+from django.utils import timezone
+
+from bets.models import Beneficios
+
 
 VERSION_MODELO = "E0"
 
@@ -47,14 +51,10 @@ def send_email(user, pwd, recipient, subject, body):
 def home(request):
     return render(request, 'home.html')
 
-def dos(request):
-    return HttpResponse("Hello, Django 2!")
+def admin(request):
+    return render(request, 'admin.html')
 
-def ejecutar(request):
-     #return HttpResponse("Hello, Django 3!")
-     return render(request, 'ejecutar.html')
-
-def precision(request):
+def beneficiosLanzar(request):
     df_test = pd.DataFrame()
     resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
@@ -108,21 +108,13 @@ def precision(request):
     now = datetime.now()
     timestamp = datetime.timestamp(now)
     t_object = datetime.fromtimestamp(timestamp)
-
     columnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
     columnas_trabajo_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
     columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
     columnas_prediccion_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
 
     # RF Empates
-    #df_historico_rf_empates = df_historico.filter(items=columnas_trabajo)
     df_test_rf_empates = df_test.filter(items=columnas_trabajo)
-
-    #df_historico_rf_empates["target"] = df_historico_rf_empates["FTR"]
-    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "H", 'target'] = "0"
-    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "A", 'target'] = "0"
-    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "D", 'target'] = "1"
-    #df_historico_rf_empates.drop(columns=["FTR"], inplace=True)
     df_test_rf_empates["target"] = df_test_rf_empates["FTR"]
     df_test_rf_empates.loc[df_test_rf_empates.target == "H", 'target'] = "0"
     df_test_rf_empates.loc[df_test_rf_empates.target == "A", 'target'] = "0"
@@ -138,7 +130,6 @@ def precision(request):
     capital_inicial = 0
     rentables_rf_empates = []
     for x in ligas:
-        #print(x + "-------->")
         df_rf_test = df_test_rf_empates[df_test_rf_empates["Div"] == x]
         df_rf_test.dropna(inplace=True)
         X_test_rf = df_rf_test[columnas_prediccion]
@@ -146,9 +137,7 @@ def precision(request):
         model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file)  
-        #print('Accuracy of RF classifier on test set:  {:.2f}' .format(rf.score(X_test_rf, y_test_rf)))   
         y_pred_rf = rf.predict(X_test_rf)
-        #print(classification_report(y_test_rf, y_pred_rf, target_names=["0", "1"], digits=4))
         df_aux = df_rf_test[df_rf_test["Div"] == x]
         df_aux["Prediccion"] = y_pred_rf
         df_aux["Cuota"] = 0     
@@ -166,29 +155,32 @@ def precision(request):
                 ganancias = ganancias + df_aux.iloc[index]["Cuota"] 
         if(ganancias - capital_inicial>0):
             rentables_rf_empates.append(x)
-        #print("Capital inicial: ", capital_inicial, "€")
-        #print("Ganancias totales: ", ganancias, "€")
-        #print("---")
-        #print("Ganancias netas: ", ganancias - capital_inicial, "€")
-        #print("Ratio ganancias: ", ganancias * 100 / capital_inicial - 100, "%")   
         capital_inicial_total2 = capital_inicial_total2 + capital_inicial 
         capital_inicial_total = capital_inicial_total + capital_inicial
         capital_inicial = 0
         ganancias_totales = ganancias_totales + ganancias
         ganancias = 0
-        #print("--------")
-        #print("--------")
-        #print("--------")
-    #print("")
-    #print("Capital inicial total: " , capital_inicial_total2 , "€")    
-    #print("Ganancia totales: " , ganancias_totales , "€")
-    #print("---")
-    #print("Ganancia totales netas: " , ganancias_totales - capital_inicial_total2, "€")
-    #print("Ratio ganancias: ", ganancias_totales * 100 / capital_inicial_total2 - 100, "%")
-    data_informacion = [[capital_inicial_total2, ganancias_totales, ganancias_totales - capital_inicial_total2, ganancias_totales * 100 / capital_inicial_total2 - 100]] 
-    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio']) 
+
+    p = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2))
+    p.save()
+    return render(request, 'home.html')
+
+def prediccionesLanzar(request):
+    return render(request, 'home.html')
+
+def dos(request):
+    return HttpResponse("Hello, Django 2!")
+
+def ejecutar(request):
+     #return HttpResponse("Hello, Django 3!")
+     return render(request, 'ejecutar.html')
+
+def precision(request):
+    last_beneficio = Beneficios.objects.latest('dia')
+
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio]] 
+    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio']) 
     return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
-    #return render(request, 'precision.html')
 
 def metodologia(request):
     return render(request, 'metodologia.html')

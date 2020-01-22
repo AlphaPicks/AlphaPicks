@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include "importaciones.html" %}
+    <script>
+      $(document).ready(function () {
+      $("#admin").toggleClass("active");
+      });
+  </script>
+  </head>
+
+<body>
+    {% include "menuSuperior.html" %}
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <h1 style="text-align: center">Admin</h1>
+    <section style="margin-right: 0%; margin-left: 0%; margin-bottom: 2%;"><p><strong>Lanzar predicciones</strong></p>
+      <form action="/prediccionesLanzar">
+        <input type="submit" value="Predicciones" />
+      </form>
+    </section>
+    <section style="margin-right: 0%; margin-left: 0%; margin-bottom: 2%;"><p><strong>Calcular beneficios</strong></p>
+      <form action="/beneficiosLanzar">
+        <input type="submit" value="Beneficios" />
+      </form>
+    </section>
+    
+    
+    
+  </section>
+ {% include "firma.html" %}
+</body>
+</html>
