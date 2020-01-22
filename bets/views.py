@@ -43,7 +43,7 @@ def send_email(user, pwd, recipient, subject, body):
         print ("failed to send mail")
 
 def home(request):
-    return HttpResponse("Caza Empates")
+    return render(request, 'home.html')
 
 def dos(request):
     return HttpResponse("Hello, Django 2!")
@@ -52,10 +52,19 @@ def ejecutar(request):
      #return HttpResponse("Hello, Django 3!")
      return render(request, 'ejecutar.html')
 
+def precision(request):
+     return render(request, 'precision.html')
+
+def metodologia(request):
+     return render(request, 'metodologia.html')
+
 def apuestas2(request):
     return render(request, 'apuestas.html')
 
 def apuestas(request):
+    return render(request, 'apuestas.html')
+
+def prediccion(request):
     data = {
         'name': 'Vitor',
         'location': 'Finland',
@@ -105,7 +114,7 @@ def apuestas(request):
     y_pred_rf_stats = []
     for x in ligas:
         #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + "D1" + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + "E0" + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
@@ -127,7 +136,7 @@ def apuestas(request):
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
 
-    return render(request, 'apuestas.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
+    return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
     #return render(request, 'apuestas.html', {'data': data})
     #df.to_json(orient='split')
         

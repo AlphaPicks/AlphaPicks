@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    {% include "importaciones.html" %}
+    <script>
+      $(document).ready(function () {
+      $("#home").toggleClass("active");
+      });
+  </script>
+  </head>
+
+<body>
+    {% include "menuSuperior.html" %}
+  <section style="margin-top: 7%;  margin-right: 2%; margin-left: 2%"></section>
+    
+    <h1 style="text-align: center">Home</h1>
+    <h1></h1>
+    <p><strong></strong></p>
+    <p id="showData"></p>
+  </section>
+  
+  {% include "firma.html" %}
+
+</body>
+</html>
