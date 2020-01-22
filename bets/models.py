@@ -10,9 +10,11 @@ class Beneficios(models.Model):
         return self.dia
 
 class Predicciones(models.Model):
-    prediction = models.DecimalField(max_digits = 15, decimal_places = 2) 
+    prediction = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
     date = models.DateField()
     home_team = models.CharField(max_length = 50) 
     away_team = models.CharField(max_length = 50) 
+    resultado = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    ejecucion = models.IntegerField(default = 0) 
     def __unicode__(self):
         return self.dia
