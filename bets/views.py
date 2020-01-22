@@ -18,6 +18,8 @@ import requests
 import pandas as pd
 from tabulate import tabulate
 import numpy as np
+from urllib.request import urlopen
+from zipfile import ZipFile
 
 
 
@@ -53,10 +55,84 @@ def ejecutar(request):
      return render(request, 'ejecutar.html')
 
 def precision(request):
-     return render(request, 'precision.html')
+    df_test = pd.DataFrame()
+    resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
+    zipfile = ZipFile(BytesIO(resp.read()))
+    zipfile.namelist()
+    df_new = pd.read_csv(zipfile.open('B1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('D1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('D2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('D3.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('E0.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('E1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('E2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('E3.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('EC.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('F1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('F2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('G1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('I1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('I2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('N1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('P1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SC0.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SC1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SC2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SC3.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SP1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('SP2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    df_new = pd.read_csv(zipfile.open('T1.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+    now = datetime.now()
+    timestamp = datetime.timestamp(now)
+    t_object = datetime.fromtimestamp(timestamp)
+
+    columnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
+    columnas_trabajo_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
+    columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
+    columnas_prediccion_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
+
+    # RF Empates
+    #df_historico_rf_empates = df_historico.filter(items=columnas_trabajo)
+    df_test_rf_empates = df_test.filter(items=columnas_trabajo)
+
+    #df_historico_rf_empates["target"] = df_historico_rf_empates["FTR"]
+    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "H", 'target'] = "0"
+    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "A", 'target'] = "0"
+    #df_historico_rf_empates.loc[df_historico_rf_empates.target == "D", 'target'] = "1"
+    #df_historico_rf_empates.drop(columns=["FTR"], inplace=True)
+    df_test_rf_empates["target"] = df_test_rf_empates["FTR"]
+    df_test_rf_empates.loc[df_test_rf_empates.target == "H", 'target'] = "0"
+    df_test_rf_empates.loc[df_test_rf_empates.target == "A", 'target'] = "0"
+    df_test_rf_empates.loc[df_test_rf_empates.target == "D", 'target'] = "1"
+    df_test_rf_empates.drop(columns=["FTR"], inplace=True)
+
+    return render(request, 'precision.html')
 
 def metodologia(request):
-     return render(request, 'metodologia.html')
+    return render(request, 'metodologia.html')
 
 def apuestas2(request):
     return render(request, 'apuestas.html')

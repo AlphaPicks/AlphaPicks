@@ -8,18 +8,39 @@
       $("#prediccion").toggleClass("active");
       });
   </script>
+
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+
   </head>
 
 <body>
   {% include "menuSuperior.html" %}
-  <section style="margin-top: 7%;  margin-right: 2%; margin-left: 2%"></section>
+  <section style="margin-top: 2%;  margin-right: 2%; margin-left: 2%">
     
     <h1 style="text-align: center">Prediccion apuestas</h1>
     <h1></h1>
     <p><strong></strong></p>
-    <p id="showData"></p>
+    
   </section>
 
+  <section style="margin-right: 20%; margin-left: 20%; margin-bottom: 2%;"><table id="showData" align="center"></table></section>
+  
 
 <script>
   var myBooks = JSON.parse('{{ data | escapejs }}');
@@ -48,16 +69,19 @@
   for (var i = 0; i < col.length; i++) {
       var th = document.createElement("th");      // TABLE HEADER.
       if(col[i]==0){
-        th.innerHTML = "Prediccion";
+        th.innerHTML = "Prediction";
       }
       if(col[i]==1){
         th.innerHTML = "Date";
       }
       if(col[i]==2){
-        th.innerHTML = "HomeTeam";
+        th.innerHTML = "Home Team";
       }
       if(col[i]==3){
-        th.innerHTML = "AwayTeam";
+        th.innerHTML = "Away Team";
+      }
+      if(col[i]==4){
+        th.innerHTML = "Result";
       }
       
       tr.appendChild(th);
