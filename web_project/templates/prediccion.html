@@ -2,6 +2,7 @@
 <html>
 
   <head>
+    <title>Predicciones</title>
     {% include "importaciones.html" %}
     <script>
       $(document).ready(function () {
@@ -36,10 +37,13 @@
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <h1 style="text-align: center">Predicciones</h1>
 
-    <table id="showData" align="center"></table>
+    
   
   </section>
-  
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <p>Predicción de los empates para la jornada en curso:</p>
+    <table id="showData" align="center"></table>
+  </section>
 
 <script>
 
@@ -72,19 +76,19 @@
       //  th.innerHTML = "ID";
       //}
       if(col[i]==1){
-        th.innerHTML = "Prediction";
+        th.innerHTML = "Predicción";
       }
       if(col[i]==2){
-        th.innerHTML = "Date";
+        th.innerHTML = "Fecha";
       }
       if(col[i]==3){
-        th.innerHTML = "Home Team";
+        th.innerHTML = "Equipo local";
       }
       if(col[i]==4){
-        th.innerHTML = "Away Team";
+        th.innerHTML = "Equipo de fuera";
       }
       if(col[i]==5){
-        th.innerHTML = "Result";
+        th.innerHTML = "Resultado";
       }
       //if(col[i]==6){
       //  th.innerHTML = "Ejecucion";

@@ -2,12 +2,32 @@
 <html>
 
   <head>
+    <title>Beneficio</title>
     {% include "importaciones.html" %}
     <script>
         $(document).ready(function () {
         $("#precision").toggleClass("active");
         });
     </script>
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+
   </head>
 
 <body>
@@ -15,12 +35,38 @@
 
 
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <h1 style="text-align: center">Beneficio</h1>
-    <p id="showData"></p>
-    <section style="margin-right: 20%; margin-left: 20%; margin-bottom: 2%;">
+    <h1 style="text-align: center">Análisis de los beneficios obtenidos por el sistema experto</h1>
+    </section>
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el sistema experto para la temporada de futbol de 2019/2020:</p>
+    </section>
+    <section style="margin-right: 40%; margin-left: 40%; margin-bottom: 2%;">
+
+        <table style="width:100%">
+            <tr>
+              <th>Fecha cálculo</th>
+              <td><p style="float: left;" id="showData0"></p></td>
+            </tr>
+            <tr>
+                <th>Capital inicial</th>
+                <td><p style="float: left;" id="showData1"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancia brutas</th>
+                <td><p style="float: left;" id="showData2"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancia netas</th>
+                <td><p style="float: left;" id="showData3"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData4"></p></td>
+              </tr>
+        </table>
 
 
-    <div style="overflow: hidden;">
+    <!--<div style="overflow: hidden;">
         <p style="float: left;">Fecha: &nbsp; </p>
         <p style="float: left;" id="showData0"></p>
     </div>
@@ -49,6 +95,8 @@
         <p style="float: left;"> % </p>
     </div>
 
+-->
+
     </section>
 
 </section>
@@ -73,16 +121,16 @@
         document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
 
         var div1 = document.getElementById('showData1');
-        div1.innerHTML = data_informacion_json[0][1];
+        div1.innerHTML = data_informacion_json[0][1] + " €";
 
         var div2 = document.getElementById('showData2');
-        div2.innerHTML = data_informacion_json[0][2];
+        div2.innerHTML = data_informacion_json[0][2] + " €";
 
         var div3 = document.getElementById('showData3');
-        div3.innerHTML = data_informacion_json[0][3];
+        div3.innerHTML = data_informacion_json[0][3]+ " €";
 
         var div4 = document.getElementById('showData4');
-        div4.innerHTML = data_informacion_json[0][4];
+        div4.innerHTML = data_informacion_json[0][4] + " %";
 
     </script>
 

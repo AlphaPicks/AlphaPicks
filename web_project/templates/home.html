@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    {% load static %}
+    <title>Caza Empates</title>
     {% include "importaciones.html" %}
     <script>
       $(document).ready(function () {
@@ -13,9 +15,19 @@
     {% include "menuSuperior.html" %}
 
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <h1 style="text-align: center">Sistema de inteligencia artificial para predecir empates</h1>
-    <p><strong>Sistema de inteligencia artificial para predecir empates de futbol</strong></p>
+    <h1 style="text-align: center">Sistema experto de inteligencia artificial para predecir empates de futbol</h1>
   </section>
+
+     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+      <p style="text-align:center;"><img src="{% static "logo/logo_transparent_2.png" %}" alt="Logo" width = 300 height = 150></p>
+    </section>
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+     <p>La Inteligencia Artificial ha revolucionado el modo en el que afrontamos los problemas. La toma de decisiones basada en la experiencia ha dado paso a la toma de decisiones basa en los datos. Este proyecto pretende ilustrar los beneficios de los negocios data-driven mediante un caso de uso en el ámbito de las apuestas deportivas.</p>
+  <p><strong>Este sistema experto, desarrollado exclusivamente a efectos formativos, ha sido entrenado con el propósito de que tome las decisiones que considere oportunas para obtener una rentabilidad máxima apostando a empates de partidos de futbol.</strong></p>
+  <p>En este sentido, se han utilizado técnicas de aprendizaje automático (machine learning) para entrenar al sistema mediante modelos matemáticos. Para el aprendizaje de estos modelos predictivos se ha utilizado el dato de las cuotas de partidos de futbol de los últimos 15 años de más de 5 casas de apuestas diferentes para más de 20 ligas europeas.</p>
+  <p>El sistema decide a que partidos de futbol apostar que finalizan en empate en base a lo aprendido con el dato histórico. Con estas decisiones su objetivo es obtener unas ganancias máximas. La rentabilidad de sus decisiones se mide a lo largo de una temporada completa, nunca en decisiones tomadas para partidos individuales.</p>
+  
+</section>
  {% include "firma.html" %}
 </body>
 </html>
