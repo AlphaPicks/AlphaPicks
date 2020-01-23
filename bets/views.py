@@ -21,8 +21,11 @@ import numpy as np
 from urllib.request import urlopen
 from zipfile import ZipFile
 from django.utils import timezone
+from django.core import serializers
+
 
 from bets.models import Beneficios
+from bets.models import Predicciones
 
 
 VERSION_MODELO = "E0"
@@ -166,32 +169,6 @@ def beneficiosLanzar(request):
     return render(request, 'home.html')
 
 def prediccionesLanzar(request):
-    return render(request, 'home.html')
-
-def dos(request):
-    return HttpResponse("Hello, Django 2!")
-
-def ejecutar(request):
-     #return HttpResponse("Hello, Django 3!")
-     return render(request, 'ejecutar.html')
-
-def precision(request):
-    last_beneficio = Beneficios.objects.latest('dia')
-
-    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio]] 
-    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio']) 
-    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
-
-def metodologia(request):
-    return render(request, 'metodologia.html')
-
-def apuestas2(request):
-    return render(request, 'apuestas.html')
-
-def apuestas(request):
-    return render(request, 'apuestas.html')
-
-def prediccion(request):
     data = {
         'name': 'Vitor',
         'location': 'Finland',
@@ -262,9 +239,58 @@ def prediccion(request):
     df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
+    
+    ejecucion_actual = Predicciones.objects.latest('ejecucion').ejecucion + 1
+    #ejecucion_actual = 0
+    resultado_actual = 0
+    away_team_actual = "" 
+    home_team_actual = ""
+    date_actual = timezone.now()
+    prediction_actual = 0
+    for index, row in df_prediccion_rf_empates.iterrows():
+        away_team_actual = row["AwayTeam"]
+        home_team_actual = row["HomeTeam"]
+        date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
+        prediction_actual = row["Prediccion"]
+        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual)
+        p.save()
+    
+    return render(request, 'home.html')
 
-    return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
-    #return render(request, 'apuestas.html', {'data': data})
-    #df.to_json(orient='split')
+def dos(request):
+    return HttpResponse("Hello, Django 2!")
+
+def ejecutar(request):
+     #return HttpResponse("Hello, Django 3!")
+     return render(request, 'ejecutar.html')
+
+def precision(request):
+    last_beneficio = Beneficios.objects.latest('dia')
+
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio]] 
+    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio']) 
+    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
+
+def metodologia(request):
+    return render(request, 'metodologia.html')
+
+def apuestas2(request):
+    return render(request, 'apuestas.html')
+
+def apuestas(request):
+    return render(request, 'apuestas.html')
+
+def prediccion(request):
+    ultima_ejecucion = Predicciones.objects.latest('ejecucion')
+    all_entries = Predicciones.objects.filter(ejecucion = ultima_ejecucion.ejecucion, prediction = 1)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion'])
+    print(df)
+
+    #return render(request, 'home.html')
+    #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
+    return render(request, 'prediccion.html', {'data': df.to_json(orient='split')})   
+    #return render(request, 'prediccion.html', {'data': data})   
+
         
 

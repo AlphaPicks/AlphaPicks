@@ -6,6 +6,7 @@ class Beneficios(models.Model):
     ganancias_brutas = models.DecimalField(max_digits = 15, decimal_places = 2) 
     ganancias_netas = models.DecimalField(max_digits = 15, decimal_places = 2) 
     porcentaje_beneficio = models.DecimalField(max_digits = 15, decimal_places = 2) 
+    objects = models.Manager()
     def __unicode__(self):
         return self.dia
 
@@ -15,6 +16,7 @@ class Predicciones(models.Model):
     home_team = models.CharField(max_length = 50) 
     away_team = models.CharField(max_length = 50) 
     resultado = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
-    ejecucion = models.IntegerField(default = 0) 
+    ejecucion = models.IntegerField(default = 0)  
+    objects = models.Manager()
     def __unicode__(self):
-        return self.dia
+        return self.prediction

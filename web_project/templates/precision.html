@@ -44,7 +44,7 @@
     </div>
     
     <div style="overflow: hidden;">
-        <p style="float: left;">Porcentaje beneficio: &nbsp; </p>
+        <p style="float: left;">Rentabilidad: &nbsp; </p>
         <p style="float: left;" id="showData4"></p>
         <p style="float: left;"> % </p>
     </div>
@@ -58,8 +58,19 @@
 
         data_informacion_json = data_informacion_json.data
 
-        var d = new Date(data_informacion_json[0][0]);
-        document.getElementById("showData0").innerHTML = d;
+        //var d = new Date(data_informacion_json[0][0]).toDateString();
+        date = new Date(data_informacion_json[0][0]);
+        year = date.getFullYear();
+        month = date.getMonth()+1;
+        dt = date.getDate();
+        if (dt < 10) {
+            dt = '0' + dt;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        //tabCell.innerHTML = ;
+        document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
 
         var div1 = document.getElementById('showData1');
         div1.innerHTML = data_informacion_json[0][1];

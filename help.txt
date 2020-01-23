@@ -15,3 +15,34 @@ git clone https://github.com/Ibongaray/CazaEmpates.git
 
 
 git pull
+
+___________________________________________________________________________________________________________________
+
+Git copiar repositorio:
+cd C:\Users\igaraybeng001\Desktop\Bets
+git config --global user.name "IbonGaray"
+git config --global user.email "igaraybengoa@gmail.com"
+git clone https://github.com/IbonGaray/CazaEmpates.git
+
+Carpeta: C:\Users\igaraybeng001\Desktop\Bets
+Tamaño del proyecto: 378 MB
+
+Dependencias: 
+pip install render
+
+Comando para ejecutar el servidor: 
+python manage.py runserver
+
+Crear base de datos: 
+python manage.py makemigrations bets
+python manage.py migrate bets
+python manage.py sqlmigrate bets  0001_initial
+python manage.py sqlmigrate bets  0002_auto_20200122_1840
+python manage.py sqlmigrate bets 0003_auto_20200122_185
+python manage.py sqlmigrate bets 0004_predicciones_ejecucion2
+python manage.py sqlmigrate bets 0005_remove_predicciones_ejecucion2
+
+Para hacer un commit del trabajo realizado:
+git add .
+git commit -m "Add predicciones tabla"
+git push origin master
