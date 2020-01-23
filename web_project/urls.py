@@ -21,3 +21,4 @@ from django.urls import include, path
 urlpatterns = [
     path("", include("bets.urls")),
 ]
+

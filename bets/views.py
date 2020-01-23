@@ -22,13 +22,42 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 from django.utils import timezone
 from django.core import serializers
+from datetime import datetime
 
+#from apscheduler.schedulers.background import BackgroundScheduler
+
+#from schedule import Scheduler
 
 from bets.models import Beneficios
 from bets.models import Predicciones
 
 
 VERSION_MODELO = "E0"
+
+
+from celery.schedules import crontab
+from celery.task import periodic_task
+from datetime import timedelta
+@periodic_task(run_every=timedelta(seconds=2))
+def every_monday_morning():
+    print("This is run every Monday morning at 7:30")
+
+@periodic_task(run_every=crontab(hour=7, minute=30, day_of_week="mon"))
+def every_monday_morning():
+    print("This is run every Monday morning at 7:30")
+
+@periodic_task(run_every=timedelta(seconds=2))
+def every_monday_morning():
+    print("This is run every Monday morning at 7:30")
+
+
+
+
+
+
+
+
+
 
 
 def send_email(user, pwd, recipient, subject, body):
@@ -285,7 +314,7 @@ def prediccion(request):
     all_entries = Predicciones.objects.filter(ejecucion = ultima_ejecucion.ejecucion, prediction = 1)
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion'])
-    print(df)
+    #print(df)
 
     #return render(request, 'home.html')
     #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
