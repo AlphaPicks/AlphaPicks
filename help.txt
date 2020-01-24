@@ -41,8 +41,20 @@ python manage.py sqlmigrate bets  0002_auto_20200122_1840
 python manage.py sqlmigrate bets 0003_auto_20200122_185
 python manage.py sqlmigrate bets 0004_predicciones_ejecucion2
 python manage.py sqlmigrate bets 0005_remove_predicciones_ejecucion2
+python manage.py sqlmigrate bets 0006_beneficios_porcentaje_beneficio_frente_al_inicial
 
 Para hacer un commit del trabajo realizado:
 git add .
 git commit -m "Add textos"
 git push origin master
+
+
+
+___________________________________________________________________________________________________________________
+Deploy in pythonanywhere
+
+git clone https://github.com/IbonGaray/CazaEmpates.git
+
+mkvirtualenv --python=/usr/bin/python3.5 cazaempates-virtualenv
+pip install django
+pip install -r requirements.txt

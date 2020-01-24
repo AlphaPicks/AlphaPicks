@@ -49,6 +49,10 @@
             </tr>
             <tr>
                 <th>Capital inicial</th>
+                <td><p>10 €</p></td>
+              </tr>
+              <tr>
+                <th>Capital total apostado</th>
                 <td><p style="float: left;" id="showData1"></p></td>
               </tr>
               <tr>
@@ -63,11 +67,15 @@
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData4"></p></td>
               </tr>
+              <tr>
+                <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData5"></p></td>
+              </tr>
         </table>
 
     </section>
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-      <p>El método seguido por el modelo ha sido el de apostar la misma cantidad (1€) en cada partido que ha predicho como empate.</p>
+      <p>El método seguido por el modelo ha sido el de apostar la misma cantidad (1€) en cada partido que ha predicho como empate. </p> <p>Todas las apuestas han sido individuales, nunca combinadas.</p> <p>El capital inicial del que disponía el sistema experto ha sido de 10 € que ha ido apostando y reinvirtiendo obteniendo las ganancias netas mostradas en la tabla. </p>
     </section>
     
 
@@ -136,6 +144,9 @@
 
         var div4 = document.getElementById('showData4');
         div4.innerHTML = data_informacion_json[0][4] + " %";
+
+        var div5 = document.getElementById('showData5');
+        div5.innerHTML = data_informacion_json[0][5] + " %";
 
     </script>
 
