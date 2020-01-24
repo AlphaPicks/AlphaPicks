@@ -44,5 +44,5 @@ python manage.py sqlmigrate bets 0005_remove_predicciones_ejecucion2
 
 Para hacer un commit del trabajo realizado:
 git add .
-git commit -m "Prueba subir produccion"
+git commit -m "Add textos"
 git push origin master
