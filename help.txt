@@ -58,3 +58,57 @@ git clone https://github.com/IbonGaray/CazaEmpates.git
 mkvirtualenv --python=/usr/bin/python3.5 cazaempates-virtualenv
 pip install django
 pip install -r requirements.txt
+
+
+
+_____________________________________________________________-
+Desplegar en Python Anywhere
+
+
+git clone https://github.com/IbonGaray/CazaEmpates.git
+
+cd CazaEmpates
+
+virtualenv --python=python3.5 myvenv
+
+source myvenv/bin/activate
+
+pip install django==1.8 whitenoise
+
+python manage.py collectstatic
+
+yes
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+
+
+/home/ibongaray/proyectoDos/myvenv/
+
+WSGI
+
+
+_____________________________________________________________
+
+nuevo despliege CazaEmpates
+
+
+git clone https://github.com/IbonGaray/CazaEmpates.git
+
+cd CazaEmpates
+
+
+mkvirtualenv --python=/usr/bin/python3.5 mysite-virtualenv
+
+pip install django
+
+
+
+
+/home/IbongarayBets/CazaEmpates/web_project/static
+
+
+
+git pull
