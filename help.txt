@@ -111,6 +111,34 @@ pip install django
 
 
 
+
 git pull
 
-#
+
+git clone https://github.com/IbonGaray/CazaEmpates.git
+
+python3.5 manage.py collectstatic
+
+yes
+
+python3.5 manage.py migrate
+
+
+Deploy in pythonanywhere
+_____________________________________________________________
+
+git clone https://github.com/IbonGaray/CazaEmpates.git
+cd CazaEmpates
+
+mkvirtualenv --python=/usr/bin/python3.7 CazaEmpates
+
+pip3 install django
+
+python3.7 manage.py migrate
+python3.7 manage.py collectstatic
+
+
+git pull
+python manage.py migrate
+python manage.py collectstatic
+
