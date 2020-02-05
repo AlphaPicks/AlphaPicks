@@ -1,5 +1,5 @@
 git config --global user.name "Ibon Garay Bengoa"
-git config --global user.email igaraybengoa@pwc.com
+git config --global user.email igaraybengoa@gmail.com
 
 git init
 git status
@@ -112,3 +112,5 @@ pip install django
 
 
 git pull
+
+#
