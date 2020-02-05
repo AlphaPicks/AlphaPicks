@@ -32,7 +32,8 @@ from bets.models import Beneficios
 from bets.models import Predicciones
 
 
-VERSION_MODELO = "D1"
+VERSION_MODELO = "E0"
+#VERSION_MODELO = "D1"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
 
 
