@@ -33,9 +33,8 @@
 <body>
     {% include "menuSuperior.html" %}
 
-
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <h1 style="text-align: center">Análisis de los beneficios obtenidos por el sistema experto</h1>
+    <h1 style="text-align: center">Análisis de los beneficios obtenidos por el sistema de IA</h1>
     </section>
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el sistema experto para la temporada de futbol de 2019/2020:</p>
@@ -72,8 +71,25 @@
                 <td><p style="float: left;" id="showData5"></p></td>
               </tr>
         </table>
+   
 
-    </section>
+   <!--     <p></p>
+          <table>
+            <tr>
+              <th>Capital inicial</th>
+              <th>Rentabilidad frente al capital inicial</th>
+            </tr>
+            <tr>
+              <td>10 €</td>
+              <td><p style="float: left;" id="showData6"></p></td>
+            </tr>
+            </table>
+      
+    -->
+   
+  </section>
+
+
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
       <p>El método seguido por el sistema experto de IA ha sido el de apostar la misma cantidad (1 €) en cada partido que ha predicho como empate. </p> 
       <p>Todas las apuestas han sido individuales, nunca combinadas.</p> 
@@ -149,6 +165,9 @@
 
         var div5 = document.getElementById('showData5');
         div5.innerHTML = data_informacion_json[0][5] + " %";
+
+        var div6 = document.getElementById('showData6');
+        div6.innerHTML = data_informacion_json[0][3] + " €";
 
     </script>
 
