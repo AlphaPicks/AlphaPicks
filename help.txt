@@ -67,7 +67,7 @@ Desplegar en Python Anywhere
 
 git clone https://github.com/IbonGaray/CazaEmpates.git
 
-cd CazaEmpates
+python -virtualenv
 
 virtualenv --python=python3.5 myvenv
 

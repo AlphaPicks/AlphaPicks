@@ -36,8 +36,8 @@ VERSION_MODELO = "D1"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
 
 
-from celery.schedules import crontab
-from celery.task import periodic_task
+#from celery.schedules import crontab
+#from celery.task import periodic_task
 from datetime import timedelta
 #@periodic_task(run_every=timedelta(seconds=2))
 #def every_monday_morning():
@@ -47,9 +47,9 @@ from datetime import timedelta
 #def every_monday_morning():
 #    print("This is run every Monday morning at 7:30")
 
-@periodic_task(run_every=timedelta(seconds=2))
-def every_monday_morning():
-    print("This is run every Monday morning at 7:30")
+#@periodic_task(run_every=timedelta(seconds=2))
+#def every_monday_morning():
+#    print("This is run every Monday morning at 7:30")
 
 
 
