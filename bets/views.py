@@ -16,7 +16,7 @@ from email.mime.text import MIMEText
 import smtplib
 import requests
 import pandas as pd
-from tabulate import tabulate
+#from tabulate import tabulate
 import numpy as np
 from urllib.request import urlopen
 from zipfile import ZipFile
