@@ -55,11 +55,9 @@ from datetime import timedelta
 
 
 
-
-
-
-
-
+mails = ["ibon.bengoa@opendeusto.es"]
+user_email = "ibongaraybengoabets@gmail.com"
+pass_email = "IbonGaray7777777777"
 
 
 
@@ -298,9 +296,6 @@ def prediccionesLanzar(request):
     ##############################################
     url_actual = 'https://www.football-data.co.uk/fixtures.csv'
     s=requests.get(url_actual).content
-    mails = ["ibon.bengoa@opendeusto.es"]
-    user_email = "ibongaraybengoabets@gmail.com"
-    pass_email = "IbonGaray7777777"
     df_actual = pd.read_csv(io.StringIO(s.decode('utf-8')))
     ### ************
     #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
@@ -366,7 +361,14 @@ def prediccionesLanzar(request):
         prediction_actual = row["Prediccion"]
         p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual)
         p.save()
-    
+
+
+    #Envia correo de los empates
+    asunto_mensaje = "Prediccion Empates (" + str(t_object.year) + "/" + str(t_object.month) + "/" + str(t_object.day) + ")"
+    texto_mensaje = df_prediccion_rf_empates[(df_prediccion_rf_empates["entrar"] == "si")].filter(items=["Date", "HomeTeam", "AwayTeam", "B365D"]).to_string(col_space = 20, justify='start', index=False)
+    #& ((df_prediccion_rf_empates["Div"] == "B1") | (df_prediccion_rf_empates["Div"] == "D1") | (df_prediccion_rf_empates["Div"] == "E0") | (df_prediccion_rf_empates["Div"] == "EC") | (df_prediccion_rf_empates["Div"] == "F2") | (df_prediccion_rf_empates["Div"] == "G1") | (df_prediccion_rf_empates["Div"] == "I1") | (df_prediccion_rf_empates["Div"] == "N1") | (df_prediccion_rf_empates["Div"] == "P1") | (df_prediccion_rf_empates["Div"] == "SC0") | (df_prediccion_rf_empates["Div"] == "SC2") | (df_prediccion_rf_empates["Div"] == "SP1") | (df_prediccion_rf_empates["Div"] == "SP2") | (df_prediccion_rf_empates["Div"] == "T1"))
+    send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
+
     return render(request, 'home.html')
 
 def dos(request):
