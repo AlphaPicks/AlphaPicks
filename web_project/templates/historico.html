@@ -56,7 +56,7 @@
   </section>
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <p>Histórico de las predicciones de los empates dadas por el sistema de IA en la temporada 2019/2020:</p>
-    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar fechas..." title="Type in a name">
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por fecha..." title="Type in a name">
     <table id="showData" align="center"></table>
   </section>
 
@@ -137,13 +137,13 @@
         th.innerHTML = "Equipo de fuera";
       }
       if(col[i]==4){
-        th.innerHTML = "Predicción";
+        th.innerHTML = "Cuota";
       }
       if(col[i]==5){
-        th.innerHTML = "Resultado";
+        th.innerHTML = "Predicción";
       }
       if(col[i]==6){
-        th.innerHTML = "Cuota";
+        th.innerHTML = "Resultado";
       }
       if(col[i]==7){
         th.innerHTML = "Acierto";
@@ -176,11 +176,11 @@
             tabCell.innerHTML = year+'-' + month + '-'+dt;
             
           }
-          if(col[j]==4){
+          if(col[j]==5){
             tabCell.innerHTML = "Empate";
           }
-          if(col[j]==5){
-            if(myBooks[i][col[j]]==0){
+          if(col[j]==6){
+            if(myBooks[i][col[j-1]]==0){
               tabCell.innerHTML = "No empate";
             }else{
               tabCell.innerHTML = "Empate";
@@ -193,8 +193,8 @@
           if(col[j]==3){
             tabCell.innerHTML = myBooks[i][col[j+1]];
           }   
-          if(col[j]==6){
-            tabCell.innerHTML = myBooks[i][col[j]];
+          if(col[j]==4){
+            tabCell.innerHTML = myBooks[i][col[j+2]];
           }   
           if(col[j]==7){
             if(myBooks[i][col[j-2]]==0){
