@@ -55,7 +55,7 @@
   
   </section>
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <p>Histórico de las predicciones de la temporada 2019/2020:</p>
+    <p>Histórico de las predicciones de los empates de la temporada 2019/2020:</p>
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar fechas..." title="Type in a name">
     <table id="showData" align="center"></table>
   </section>
@@ -131,16 +131,16 @@
         th.innerHTML = "Fecha";
       }
       if(col[i]==2){
-        th.innerHTML = "Predicción";
-      }
-      if(col[i]==3){
-        th.innerHTML = "Resultado";
-      }
-      if(col[i]==4){
         th.innerHTML = "Equipo local";
       }
-      if(col[i]==5){
+      if(col[i]==3){
         th.innerHTML = "Equipo de fuera";
+      }
+      if(col[i]==4){
+        th.innerHTML = "Predicción";
+      }
+      if(col[i]==5){
+        th.innerHTML = "Resultado";
       }
       if(col[i]==6){
         th.innerHTML = "Cuota";
@@ -176,22 +176,22 @@
             tabCell.innerHTML = year+'-' + month + '-'+dt;
             
           }
-          if(col[j]==2){
+          if(col[j]==4){
             tabCell.innerHTML = "Empate";
           }
-          if(col[j]==3){
-            if(myBooks[i][col[j+2]]==0){
+          if(col[j]==5){
+            if(myBooks[i][col[j]]==0){
               tabCell.innerHTML = "No empate";
             }else{
               tabCell.innerHTML = "Empate";
             }
           }
-          if(col[j]==4){
-            tabCell.innerHTML = myBooks[i][col[j-1]];
+          if(col[j]==2){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
             
           } 
-          if(col[j]==5){
-            tabCell.innerHTML = myBooks[i][col[j-1]];
+          if(col[j]==3){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
           }   
           if(col[j]==6){
             tabCell.innerHTML = myBooks[i][col[j]];
