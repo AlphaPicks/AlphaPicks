@@ -89,7 +89,7 @@ def home(request):
 def admin(request):
     return render(request, 'admin.html')
 
-def historicoLanzar(request):
+def obtenerDatosTemporada():
     df_test = pd.DataFrame()
     resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
@@ -140,18 +140,25 @@ def historicoLanzar(request):
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('T1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
+    return df_test
+
+def historicoLanzar(request):
+    df_test = obtenerDatosTemporada()
+    df_actual = df_test
+    ### ************
+    #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
+    ### ************
     now = datetime.now()
     timestamp = datetime.timestamp(now)
     t_object = datetime.fromtimestamp(timestamp)
-    df_actual = df_test
-    clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', "FTR"]
+    #Se guarda el dato de la prediccion
+    #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
+    clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
     columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
     df_actual_rf = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf.dropna(inplace=True)
     ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-    ligas_beneficiosas = ['B1', 'D1', 'D2', 'E0', 'EC', 'F2', 'G1', 'I1', 'N1', 'P1', 'SC0', 'SP2', 'T1']
-    ligas_beneficiosas=ligas
-    df_actual_rf_empates = df_actual[df_actual["Div"].isin(ligas_beneficiosas)].filter(items=clumnas_trabajo)
+    df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf_empates.dropna(inplace=True)
     df_prediccion_rf_empates = pd.DataFrame()
     df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
@@ -162,10 +169,12 @@ def historicoLanzar(request):
     df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
     df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
     df_prediccion_rf_empates["FTR"] = df_actual_rf_empates["FTR"]
+
     y_pred_rf_resultado = []
     y_pred_rf_stats = []
-    for x in ligas_beneficiosas:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl")
+    for x in ligas:
+        #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
+        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
@@ -186,9 +195,13 @@ def historicoLanzar(request):
     df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
+    
+
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "H", 'FTR'] = "0"
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
+
+
     ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
     #ejecucion_actual = 0
     resultado_actual = 0
@@ -199,7 +212,7 @@ def historicoLanzar(request):
     prediction_actual = 0
 
     df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
-    df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created')
+    df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
 
     for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
         resultado_actual= row["FTR"]
@@ -214,56 +227,7 @@ def historicoLanzar(request):
     return render(request, 'home.html')
 
 def beneficiosLanzar(request):
-    df_test = pd.DataFrame()
-    resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
-    zipfile = ZipFile(BytesIO(resp.read()))
-    zipfile.namelist()
-    df_new = pd.read_csv(zipfile.open('B1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('D1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('D2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('D3.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E0.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E3.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('EC.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('F1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('F2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('G1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('I1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('I2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('N1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('P1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC0.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC3.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SP1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SP2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('T1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    df_test = obtenerDatosTemporada()
     now = datetime.now()
     timestamp = datetime.timestamp(now)
     t_object = datetime.fromtimestamp(timestamp)
@@ -351,14 +315,6 @@ def prediccionesLanzar(request):
     df_actual_rf = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf.dropna(inplace=True)
     ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-    df_prediccion_rf = pd.DataFrame()
-    df_prediccion_rf["Date"] = df_actual_rf["Date"]
-    df_prediccion_rf["Div"] = df_actual_rf["Div"]
-    df_prediccion_rf["HomeTeam"] = df_actual_rf["HomeTeam"]
-    df_prediccion_rf["AwayTeam"] = df_actual_rf["AwayTeam"]
-    df_prediccion_rf["B365H"] = df_actual_rf["B365H"]
-    df_prediccion_rf["B365D"] = df_actual_rf["B365D"]
-    df_prediccion_rf["B365A"] = df_actual_rf["B365A"]
     df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf_empates.dropna(inplace=True)
     df_prediccion_rf_empates = pd.DataFrame()

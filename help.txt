@@ -143,3 +143,4 @@ git pull
 python3.7 manage.py migrate
 python3.7 manage.py collectstatic
 
+git pull origin master -r
