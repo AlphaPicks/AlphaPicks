@@ -41,7 +41,7 @@
   
   </section>
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <p>Predicciones de los empates dadas por el sistema de Inteligencia Artificial para la jornada en curso:</p>
+    <p>Predicciones de los empates dadas por el sistema de inteligencia artificial para la jornada en curso:</p>
     <table id="showData" align="center"></table>
   </section>
 
@@ -76,16 +76,16 @@
       //  th.innerHTML = "ID";
       //}
       if(col[i]==1){
-        th.innerHTML = "Predicción";
-      }
-      if(col[i]==2){
         th.innerHTML = "Fecha";
       }
-      if(col[i]==3){
+      if(col[i]==2){
         th.innerHTML = "Equipo local";
       }
-      if(col[i]==4){
+      if(col[i]==3){
         th.innerHTML = "Equipo de fuera";
+      }
+      if(col[i]==4){
+        th.innerHTML = "Predicción";
       }
       if(col[i]==5){
         th.innerHTML = "Resultado";
@@ -104,11 +104,11 @@
 
       for (var j = 1; j < col.length-2; j++) {
           var tabCell = tr.insertCell(-1);
-          if(col[j]==1){
+          if(col[j]==4){
             tabCell.innerHTML = "Empate";
           }
-          if(col[j]==2){
-            date = new Date(myBooks[i][col[j]]);
+          if(col[j]==1){
+            date = new Date(myBooks[i][col[j+1]]);
             year = date.getFullYear();
             month = date.getMonth()+1;
             dt = date.getDate();
@@ -121,11 +121,11 @@
             tabCell.innerHTML = year+'-' + month + '-'+dt;
               //tabCell.innerHTML = new Date(myBooks[i][col[j]]).toISOString();
           }
-          if(col[j]==3){
-            tabCell.innerHTML = myBooks[i][col[j]];
+          if(col[j]==2){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
           }
-          if(col[j]==4){
-            tabCell.innerHTML = myBooks[i][col[j]];
+          if(col[j]==3){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
           } 
           if(col[j]==5){
             if(myBooks[i][col[j]]==0){
