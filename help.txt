@@ -42,6 +42,7 @@ python manage.py sqlmigrate bets 0003_auto_20200122_185
 python manage.py sqlmigrate bets 0004_predicciones_ejecucion2
 python manage.py sqlmigrate bets 0005_remove_predicciones_ejecucion2
 python manage.py sqlmigrate bets 0006_beneficios_porcentaje_beneficio_frente_al_inicial
+python manage.py sqlmigrate bets 0007_historico
 
 Para hacer un commit del trabajo realizado:
 git add .
@@ -139,6 +140,6 @@ python3.7 manage.py collectstatic
 
 
 git pull
-python manage.py migrate
-python manage.py collectstatic
+python3.7 manage.py migrate
+python3.7 manage.py collectstatic
 

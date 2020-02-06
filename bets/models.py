@@ -21,3 +21,15 @@ class Predicciones(models.Model):
     objects = models.Manager()
     def __unicode__(self):
         return self.prediction
+
+class Historico(models.Model):
+    prediction = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    date = models.DateField()
+    home_team = models.CharField(max_length = 50) 
+    away_team = models.CharField(max_length = 50) 
+    resultado = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    cuotaEmpate = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    ejecucion = models.IntegerField(default = 0)  
+    objects = models.Manager()
+    def __unicode__(self):
+        return self.prediction
