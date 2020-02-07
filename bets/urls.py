@@ -9,9 +9,10 @@ urlpatterns = [
     path("prediccion", views.prediccion, name="prediccion"),
     path("metodologia", views.metodologia, name="metodologia"),
     path("admin", views.admin, name="admin"),
-    path("beneficiosLanzar", views.beneficiosLanzar, name="beneficiosLanzar"),
+    #path("beneficiosLanzar", views.beneficiosLanzar, name="beneficiosLanzar"),
     path("prediccionesLanzar", views.prediccionesLanzar, name="prediccionesLanzar"),
-    path("historicoLanzar", views.historicoLanzar, name="historicoLanzar"),
+    #path("historicoLanzar", views.historicoLanzar, name="historicoLanzar"),
+    path("historicoBeneficiosLanzar", views.historicoBeneficiosLanzar, name="historicoBeneficiosLanzar"),
     path("historico", views.historico, name="historico"),
     path("precision", views.precision, name="precision"),
 ]

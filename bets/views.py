@@ -140,7 +140,7 @@ def obtenerDatosTemporada():
     df_test = pd.concat([df_test, df_new], sort=True)
     return df_test
 
-def historicoLanzar(request):
+def historicoBeneficiosLanzar(request):
     df_test = obtenerDatosTemporada()
     df_actual = df_test
     ### ************
@@ -199,6 +199,10 @@ def historicoLanzar(request):
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
 
+    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
+    ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
+    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)) 
+    b.save()
 
     ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
     #ejecucion_actual = 0
@@ -222,68 +226,6 @@ def historicoLanzar(request):
         p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual)
         p.save()
 
-    return render(request, 'home.html')
-
-def beneficiosLanzar(request):
-    df_test = obtenerDatosTemporada()
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    t_object = datetime.fromtimestamp(timestamp)
-    columnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
-    columnas_trabajo_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
-    columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-    columnas_prediccion_rn = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-
-    # RF Empates
-    df_test_rf_empates = df_test.filter(items=columnas_trabajo)
-    df_test_rf_empates["target"] = df_test_rf_empates["FTR"]
-    df_test_rf_empates.loc[df_test_rf_empates.target == "H", 'target'] = "0"
-    df_test_rf_empates.loc[df_test_rf_empates.target == "A", 'target'] = "0"
-    df_test_rf_empates.loc[df_test_rf_empates.target == "D", 'target'] = "1"
-    df_test_rf_empates.drop(columns=["FTR"], inplace=True)
-
-    ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-
-    ganancias_totales = 0
-    ganancias = 0
-    capital_inicial_total = 0
-    capital_inicial_total2 = 0
-    capital_inicial = 0
-    rentables_rf_empates = []
-    for x in ligas:
-        df_rf_test = df_test_rf_empates[df_test_rf_empates["Div"] == x]
-        df_rf_test.dropna(inplace=True)
-        X_test_rf = df_rf_test[columnas_prediccion]
-        y_test_rf = df_rf_test.target
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl")
-        with open(model_path, 'rb') as file:
-            rf = pickle.load(file)  
-        y_pred_rf = rf.predict(X_test_rf)
-        df_aux = df_rf_test[df_rf_test["Div"] == x]
-        df_aux["Prediccion"] = y_pred_rf
-        df_aux["Cuota"] = 0     
-        df_aux = df_aux.reset_index(drop=True)
-        for index, row in df_aux.iterrows():
-            if(df_aux.loc[index, "Prediccion"] == "0"):
-                df_aux.loc[index, "Cuota"] = 0            
-            if(df_aux.loc[index, "Prediccion"] == "1"):
-                df_aux.loc[index, "Cuota"] = df_aux.iloc[index]["B365D"]
-                capital_inicial_total = capital_inicial_total + 1
-                capital_inicial = capital_inicial + 1
-            if(df_aux.loc[index, "Prediccion"] == "0"):
-                df_aux.loc[index, "Cuota"] = 0
-            if(df_aux.loc[index, "Prediccion"] ==  df_aux.iloc[index]["target"]):
-                ganancias = ganancias + df_aux.iloc[index]["Cuota"] 
-        if(ganancias - capital_inicial>0):
-            rentables_rf_empates.append(x)
-        capital_inicial_total2 = capital_inicial_total2 + capital_inicial 
-        capital_inicial_total = capital_inicial_total + capital_inicial
-        capital_inicial = 0
-        ganancias_totales = ganancias_totales + ganancias
-        ganancias = 0
-
-    p = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)) 
-    p.save()
     return render(request, 'home.html')
 
 def prediccionesLanzar(request):
