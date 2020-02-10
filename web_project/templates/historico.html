@@ -25,14 +25,17 @@ table {
     text-align: left;
     padding: 8px;
     background-color: rgba(255, 255, 255, 0.534);
-	  color: rgb(63, 63, 63);
+	color: rgb(63, 63, 63);
   }
   
-	/* Define the hover highlight color for the table row */
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  	/* Define the hover highlight color for the table row */
     tr:hover {
           background-color: #ffff99;
     }
-
 
 
 
@@ -169,7 +172,7 @@ table {
 
   var tr = table.insertRow(-1);                   // TABLE ROW.
 
-  for (var i = 1; i < col.length; i++) {
+  for (var i = 1; i < col.length-1; i++) {
       var th = document.createElement("th");      // TABLE HEADER.
       //if(col[i]==0){
       //  th.innerHTML = "ID";
@@ -207,7 +210,7 @@ table {
 
       tr = table.insertRow(-1);
 
-      for (var j = 1; j < col.length; j++) {
+      for (var j = 1; j < col.length-1; j++) {
           var tabCell = tr.insertCell(-1);
           if(col[j]==1){
             date = new Date(myBooks[i][col[j+1]]);

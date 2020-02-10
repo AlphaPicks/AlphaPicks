@@ -36,6 +36,7 @@ from bets.models import Historico
 #VERSION_MODELO = "E0"
 VERSION_MODELO = "D1"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
+TEMPORADA_ACTUAL = 1920
 
 
 #from celery.schedules import crontab
@@ -201,10 +202,16 @@ def historicoBeneficiosLanzar(request):
 
     capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
     ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
-    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)) 
+    
+    #Beneficios.objects.all().delete()
+
+    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
     b.save()
 
     ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
+    
+    Historico.objects.all().delete()
+
     #ejecucion_actual = 0
     resultado_actual = 0
     away_team_actual = "" 
@@ -223,7 +230,7 @@ def historicoBeneficiosLanzar(request):
         date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
         prediction_actual = row["Prediccion"]
         cuotaEmpate = row["B365D"]
-        p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual)
+        p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
         p.save()
 
     return render(request, 'home.html')
@@ -289,7 +296,13 @@ def prediccionesLanzar(request):
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
     
+    df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
+    df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=True)
+
     ejecucion_actual = Predicciones.objects.latest('ejecucion').ejecucion + 1
+
+    Predicciones.objects.all().delete()
+
     #ejecucion_actual = 0
     resultado_actual = 0
     away_team_actual = "" 
@@ -301,7 +314,7 @@ def prediccionesLanzar(request):
         home_team_actual = row["HomeTeam"]
         date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
         prediction_actual = row["Prediccion"]
-        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual)
+        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
         p.save()
 
 
@@ -309,7 +322,7 @@ def prediccionesLanzar(request):
     asunto_mensaje = "Prediccion Empates (" + str(t_object.year) + "/" + str(t_object.month) + "/" + str(t_object.day) + ")"
     texto_mensaje = df_prediccion_rf_empates[(df_prediccion_rf_empates["entrar"] == "si")].filter(items=["Date", "HomeTeam", "AwayTeam", "B365D"]).to_string(col_space = 20, justify='start', index=False)
     #& ((df_prediccion_rf_empates["Div"] == "B1") | (df_prediccion_rf_empates["Div"] == "D1") | (df_prediccion_rf_empates["Div"] == "E0") | (df_prediccion_rf_empates["Div"] == "EC") | (df_prediccion_rf_empates["Div"] == "F2") | (df_prediccion_rf_empates["Div"] == "G1") | (df_prediccion_rf_empates["Div"] == "I1") | (df_prediccion_rf_empates["Div"] == "N1") | (df_prediccion_rf_empates["Div"] == "P1") | (df_prediccion_rf_empates["Div"] == "SC0") | (df_prediccion_rf_empates["Div"] == "SC2") | (df_prediccion_rf_empates["Div"] == "SP1") | (df_prediccion_rf_empates["Div"] == "SP2") | (df_prediccion_rf_empates["Div"] == "T1"))
-    send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
+    #send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
 
     return render(request, 'home.html')
 
@@ -323,8 +336,8 @@ def ejecutar(request):
 def precision(request):
     last_beneficio = Beneficios.objects.latest('dia')
 
-    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial]] 
-    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial']) 
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
     return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
 
 def metodologia(request):
@@ -341,7 +354,7 @@ def historico(request):
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
-    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates"])
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada"])
     #print(df)
 
     #return render(request, 'home.html')
@@ -352,7 +365,7 @@ def prediccion(request):
     ultima_ejecucion = Predicciones.objects.latest('ejecucion')
     all_entries = Predicciones.objects.filter(ejecucion = ultima_ejecucion.ejecucion, prediction = 1)
     first = all_entries.values_list()    
-    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion'])
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "temporada"])
     #print(df)
 
     #return render(request, 'home.html')

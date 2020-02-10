@@ -79,7 +79,7 @@
 
   var tr = table.insertRow(-1);                   // TABLE ROW.
 
-  for (var i = 1; i < col.length-2; i++) {
+  for (var i = 1; i < col.length-3; i++) {
       var th = document.createElement("th");      // TABLE HEADER.
       //if(col[i]==0){
       //  th.innerHTML = "ID";
@@ -111,7 +111,7 @@
 
       tr = table.insertRow(-1);
 
-      for (var j = 1; j < col.length-2; j++) {
+      for (var j = 1; j < col.length-3; j++) {
           var tabCell = tr.insertCell(-1);
           if(col[j]==4){
             tabCell.innerHTML = "Empate";
