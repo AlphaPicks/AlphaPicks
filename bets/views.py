@@ -22,7 +22,9 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 from django.utils import timezone
 from django.core import serializers
-from datetime import datetime
+#from datetime import datetime
+from datetime import timedelta
+import datetime
 
 #from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -335,10 +337,22 @@ def ejecutar(request):
 
 def precision(request):
     last_beneficio = Beneficios.objects.latest('dia')
-
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
-    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split')})   
+
+    historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "cuotaEmpates", 'ejecucion', "temporada"])
+
+    df_last_jornada = df[df.date > datetime.datetime.now().date() - pd.to_timedelta("4day")]
+
+    capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
+    ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
+    beneficios = round(ganancias_totales - capital_inicial_total2, 2)
+    rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+
+    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def metodologia(request):
     return render(request, 'metodologia.html')
