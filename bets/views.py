@@ -235,6 +235,8 @@ def historicoBeneficiosLanzar(request):
         p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
         p.save()
 
+   
+
     return render(request, 'home.html')
 
 def prediccionesLanzar(request):
