@@ -22,9 +22,9 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 from django.utils import timezone
 from django.core import serializers
-#from datetime import datetime
+from datetime import datetime
 from datetime import timedelta
-import datetime
+#import datetime
 
 #from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -212,7 +212,7 @@ def historicoBeneficiosLanzar(request):
 
     ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
     
-    Historico.objects.all().delete()
+    #Historico.objects.all().delete()
 
     #ejecucion_actual = 0
     resultado_actual = 0
@@ -303,7 +303,7 @@ def prediccionesLanzar(request):
 
     ejecucion_actual = Predicciones.objects.latest('ejecucion').ejecucion + 1
 
-    Predicciones.objects.all().delete()
+    #Predicciones.objects.all().delete()
 
     #ejecucion_actual = 0
     resultado_actual = 0
@@ -345,7 +345,7 @@ def precision(request):
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "cuotaEmpates", 'ejecucion', "temporada"])
 
-    df_last_jornada = df[df.date > datetime.datetime.now().date() - pd.to_timedelta("4day")]
+    df_last_jornada = df[df.date > datetime.now().date() - pd.to_timedelta("4day")]
 
     capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
     ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
