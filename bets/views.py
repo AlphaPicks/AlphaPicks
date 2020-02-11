@@ -345,7 +345,16 @@ def precision(request):
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "cuotaEmpates", 'ejecucion', "temporada"])
 
-    df_last_jornada = df[df.date > datetime.now().date() - pd.to_timedelta("4day")]
+    print(datetime.today().weekday())
+    print()
+
+    tiempoJornadaInicio = jornadaInicio(datetime.today().weekday()) + "day"
+    tiempoJornadaFin = jornadaFin(datetime.today().weekday()) + "day"
+
+    print(tiempoJornadaInicio)
+    print(tiempoJornadaFin)
+
+    df_last_jornada = df[(df.date > (datetime.now().date() - pd.to_timedelta(tiempoJornadaInicio))) & (df.date < (datetime.now().date() - pd.to_timedelta(tiempoJornadaFin)))]
 
     capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
     ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
@@ -353,6 +362,30 @@ def precision(request):
     rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
 
     return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+
+def jornadaInicio(i):
+    switcher={
+        0:'4',
+        1:'5',
+        2:'6',
+        3:'7',
+        4:'3',
+        5:'4',
+        6:'5'
+    }
+    return switcher.get(i,"Invalid day of week")
+
+def jornadaFin(i):
+    switcher={
+        0:'0',
+        1:'1',
+        2:'2',
+        3:'3',
+        4:'0',
+        5:'1',
+        6:'2'
+    }
+    return switcher.get(i,"Invalid day of week")
 
 def metodologia(request):
     return render(request, 'metodologia.html')
