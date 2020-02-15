@@ -353,6 +353,7 @@ def precision(request):
     tiempoJornadaInicio = jornadaInicio(datetime.today().weekday()) + "day"
     tiempoJornadaFin = jornadaFin(datetime.today().weekday()) + "day"
 
+    print(datetime.today().weekday())
     print(tiempoJornadaInicio)
     print(tiempoJornadaFin)
 
@@ -367,25 +368,25 @@ def precision(request):
 
 def jornadaInicio(i):
     switcher={
-        0:'4',
-        1:'5',
-        2:'6',
-        3:'7',
-        4:'4',
-        5:'4',
-        6:'5'
+        0:'4', #lunes
+        1:'5', #martes
+        2:'6', #miercoles
+        3:'7', #jueves
+        4:'4', #viernes
+        5:'5', #sabado
+        6:'6' #domingo
     }
     return switcher.get(i,"Invalid day of week")
 
 def jornadaFin(i):
     switcher={
-        0:'0',
-        1:'1',
-        2:'2',
-        3:'3',
-        4:'0',
-        5:'1',
-        6:'2'
+        0:'0', #lunes
+        1:'1', #martes
+        2:'2', #miercoles
+        3:'3', #jueves
+        4:'0', #viernes
+        5:'1', #sabado
+        6:'2' #domingo
     }
     return switcher.get(i,"Invalid day of week")
 
