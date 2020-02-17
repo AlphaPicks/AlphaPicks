@@ -47,6 +47,7 @@ python manage.py sqlmigrate bets 0008_auto_20200210_1142
 python manage.py sqlmigrate bets 0009_beneficiosmes
 python manage.py sqlmigrate bets 0010_predicciones_probabilidad
 python manage.py sqlmigrate bets 0011_predicciones_cuota
+python manage.py migrate bets 0012_historico_probabilidad
 
 Para hacer un commit del trabajo realizado:
 git add .

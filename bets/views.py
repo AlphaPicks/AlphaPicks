@@ -237,6 +237,7 @@ def historicoBeneficiosLanzar(request):
     cuotaEmpate = 0
     date_actual = timezone.now()
     prediction_actual = 0
+    probabilidad = 0
 
     df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
     df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
@@ -248,7 +249,8 @@ def historicoBeneficiosLanzar(request):
         date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
         prediction_actual = row["Prediccion"]
         cuotaEmpate = row["B365D"]
-        p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
+        probabilidad = row["rf_empate"]
+        p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = probabilidad)
         p.save()
 
     return render(request, 'home.html')
@@ -352,21 +354,15 @@ def precision(request):
     last_beneficio = Beneficios.objects.latest('dia')
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
 
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
-    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "cuotaEmpates", 'ejecucion', "temporada"])
-
-    print(datetime.today().weekday())
-    print()
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "probabilidad", "cuotaEmpates", 'ejecucion', "temporada"])
 
     tiempoJornadaInicio = jornadaInicio(datetime.today().weekday()) + "day"
     tiempoJornadaFin = jornadaFin(datetime.today().weekday()) + "day"
-
-    print(datetime.today().weekday())
-    print(tiempoJornadaInicio)
-    print(tiempoJornadaFin)
 
     df_last_jornada = df[(df.date > (datetime.now().date() - pd.to_timedelta(tiempoJornadaInicio))) & (df.date < (datetime.now().date() - pd.to_timedelta(tiempoJornadaFin)))]
 
@@ -406,7 +402,7 @@ def historico(request):
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
-    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada"])
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
     #print(df)
 
     #return render(request, 'home.html')

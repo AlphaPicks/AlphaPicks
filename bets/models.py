@@ -45,6 +45,7 @@ class Historico(models.Model):
     home_team = models.CharField(max_length = 50) 
     away_team = models.CharField(max_length = 50) 
     resultado = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    probabilidad = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
     cuotaEmpate = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
     ejecucion = models.IntegerField(default = 0)
     temporada = models.IntegerField(default = 0)  
