@@ -33,6 +33,8 @@ class Predicciones(models.Model):
     resultado = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
     ejecucion = models.IntegerField(default = 0)
     temporada = models.IntegerField(default = 0)
+    probabilidad = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
+    cuota = models.DecimalField(max_digits = 15, decimal_places = 2, default = 0) 
     objects = models.Manager()
     def __unicode__(self):
         return self.prediction

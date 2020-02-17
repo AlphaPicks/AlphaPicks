@@ -93,11 +93,14 @@
       if(col[i]==3){
         th.innerHTML = "Equipo de fuera";
       }
-      if(col[i]==4){
+      if(col[i]==6){
         th.innerHTML = "Predicción";
       }
+      if(col[i]==4){
+        th.innerHTML = "Probabilidad %";
+      }
       if(col[i]==5){
-        th.innerHTML = "Resultado";
+        th.innerHTML = "Cuota €";
       }
       //if(col[i]==6){
       //  th.innerHTML = "Ejecucion";
@@ -113,7 +116,7 @@
 
       for (var j = 1; j < col.length-3; j++) {
           var tabCell = tr.insertCell(-1);
-          if(col[j]==4){
+          if(col[j]==6){
             tabCell.innerHTML = "Empate";
           }
           if(col[j]==1){
@@ -136,13 +139,17 @@
           if(col[j]==3){
             tabCell.innerHTML = myBooks[i][col[j+1]];
           } 
-          if(col[j]==5){
-            if(myBooks[i][col[j]]==0){
+          if(col[j]==4){
+            /*if(myBooks[i][col[j]]==0){
               tabCell.innerHTML = "";
             }else{
               tabCell.innerHTML = myBooks[i][col[j]];
-            }
+            }*/
+            tabCell.innerHTML = myBooks[i][col[j+4]]
           }   
+          if(col[j]==5){
+            tabCell.innerHTML = myBooks[i][col[j+4]]
+          }
       }
   }
 

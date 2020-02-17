@@ -90,6 +90,22 @@ def home(request):
 def admin(request):
     return render(request, 'admin.html')
 
+def dos(request):
+    return HttpResponse("Hello, Django 2!")
+
+def ejecutar(request):
+     #return HttpResponse("Hello, Django 3!")
+     return render(request, 'ejecutar.html')
+
+def metodologia(request):
+    return render(request, 'metodologia.html')
+
+def apuestas2(request):
+    return render(request, 'apuestas.html')
+
+def apuestas(request):
+    return render(request, 'apuestas.html')
+
 def obtenerDatosTemporada():
     df_test = pd.DataFrame()
     resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
@@ -235,8 +251,6 @@ def historicoBeneficiosLanzar(request):
         p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
         p.save()
 
-   
-
     return render(request, 'home.html')
 
 def prediccionesLanzar(request):
@@ -313,12 +327,16 @@ def prediccionesLanzar(request):
     home_team_actual = ""
     date_actual = timezone.now()
     prediction_actual = 0
+    probabilidad = 0
+    cuota = 0
     for index, row in df_prediccion_rf_empates.iterrows():
         away_team_actual = row["AwayTeam"]
         home_team_actual = row["HomeTeam"]
         date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
         prediction_actual = row["Prediccion"]
-        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL)
+        probabilidad =  row["rf_empate"]
+        cuota =  row["B365D"]
+        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = probabilidad, cuota = cuota)
         p.save()
 
 
@@ -329,13 +347,6 @@ def prediccionesLanzar(request):
     #send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
 
     return render(request, 'home.html')
-
-def dos(request):
-    return HttpResponse("Hello, Django 2!")
-
-def ejecutar(request):
-     #return HttpResponse("Hello, Django 3!")
-     return render(request, 'ejecutar.html')
 
 def precision(request):
     last_beneficio = Beneficios.objects.latest('dia')
@@ -390,15 +401,6 @@ def jornadaFin(i):
     }
     return switcher.get(i,"Invalid day of week")
 
-def metodologia(request):
-    return render(request, 'metodologia.html')
-
-def apuestas2(request):
-    return render(request, 'apuestas.html')
-
-def apuestas(request):
-    return render(request, 'apuestas.html')
-
 def historico(request):
     
     historico = Historico.objects.latest('ejecucion')
@@ -415,9 +417,11 @@ def prediccion(request):
     ultima_ejecucion = Predicciones.objects.latest('ejecucion')
     all_entries = Predicciones.objects.filter(ejecucion = ultima_ejecucion.ejecucion, prediction = 1)
     first = all_entries.values_list()    
-    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "temporada"])
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "temporada", "probabilidad", "cuota"])
     #print(df)
 
+
+    print(df)
     #return render(request, 'home.html')
     #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
     return render(request, 'prediccion.html', {'data': df.to_json(orient='split')})   
