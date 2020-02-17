@@ -4,11 +4,15 @@
   <head>
     <title>Predicciones</title>
     {% include "importaciones.html" %}
-    <script>
+
+  
+  <script>
       $(document).ready(function () {
       $("#prediccion").toggleClass("active");
       });
+    
   </script>
+
 
 <style>
    table {
@@ -35,9 +39,15 @@
     tr:hover {
           background-color: #ffff99;
     }
+
+
   </style>
 
   </head>
+
+
+
+
 
 <body>
   {% include "menuSuperior.html" %}
@@ -51,8 +61,9 @@
   </section>
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <p>Predicciones de los empates dadas por el agente inteligente para la jornada en curso:</p>
-    <table id="showData" align="center"></table>
+    <table id="showData" ></table>
   </section>
+
 
 <script>
 

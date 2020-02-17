@@ -8,6 +8,29 @@
         $(document).ready(function () {
         $("#precision").toggleClass("active");
         });
+
+
+
+$(document).ready(function(){
+    $('#table_id td.y_n').each(function(){
+        if ({{beneficios}} > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff0000');
+        }
+    });
+});
+
+
+$(document).ready(function(){
+    $('#table_id2 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff0000');
+        }
+    });
+});
     </script>
 
 <style>
@@ -49,7 +72,7 @@
 
   <section style="margin-right: 40%; margin-left: 40%; margin-bottom: 2%;">
 
-    <table style="width:100%">
+    <table id = "table_id" style="width:100%">
         <tr>
           <th>Inversión</th>
           <td><p style="float: left;"></p>{{capital_inicial_total2}} €</td>
@@ -60,22 +83,22 @@
           </tr>
           <tr>
             <th>Beneficios</th>
-            <td><p style="float: left;">{{beneficios}} €</p></td>
+            <td class="y_n"><p style="float: left;">{{beneficios}} €</p></td>
           </tr>
           <tr>
             <th>Rentabilidad</th>
-            <td><p style="float: left;">{{rentabilidad}} %</p></td>
+            <td ><p style="float: left;">{{rentabilidad}} %</p></td>
           </tr>
     </table>
   </section>
 
 
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2019/2020:</p>
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para <u>la temporada de futbol de 2019/2020</u>:</p>
     </section>
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
-        <table style="width:100%">
+        <table id = "table_id2"  style="width:100%">
             <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData0"></p></td>
@@ -94,7 +117,7 @@
               </tr>
               <tr>
                 <th>Beneficios</th>
-                <td><p style="float: left;" id="showData3"></p></td>
+                <td  class="y_n"><p style="float: left;" id="showData3"></p></td>
               </tr>
               <tr>
                 <th>Rentabilidad</th>
