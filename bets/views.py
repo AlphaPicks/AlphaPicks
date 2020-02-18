@@ -31,6 +31,7 @@ from datetime import timedelta
 #from schedule import Scheduler
 
 from bets.models import Beneficios
+from bets.models import BeneficiosMes
 from bets.models import Predicciones
 from bets.models import Historico
 
@@ -253,15 +254,32 @@ def historicoBeneficiosLanzar(request):
         p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = probabilidad)
         p.save()
 
+   
+    
+    df_prediccion_rf_empates["mes"] = df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year + x.month)
+    #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year)) + str(df_prediccion_rf_empates['date_created'].map(lambda x: x.month))
+    
+    print(df_prediccion_rf_empates)
+    #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].dt.year) + " - " + str(df_prediccion_rf_empates['date_created'].dt.month)
+    df_mensual = pd.DataFrame()
+    df_mensual["Ganancias"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")].groupby(['mes'])['B365D'].sum()
+    df_mensual["Inversion"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1")].groupby(['mes'])['B365D'].count()
+    df_mensual["Beneficio"] = df_mensual["Ganancias"] - df_mensual["Inversion"]
+    #df_mensual["mes_nombre"] = mes(df_mensual.index.item())
+    print(df_mensual)    
+    df_mensual["mes_nombre2"] = df_mensual.index
+    df_mensual["mes"] = df_mensual["mes_nombre2"].astype(int)
+    print(df_mensual)
+
+    BeneficiosMes.objects.all().delete()
+
+    for index, row in df_mensual.iterrows():
+        bM = BeneficiosMes(capital_inicial = row["Inversion"], ganancias_brutas = row["Ganancias"], ganancias_netas = row["Beneficio"], mes = row["mes"], temporada = TEMPORADA_ACTUAL)
+        bM.save()
+
     return render(request, 'home.html')
 
 def prediccionesLanzar(request):
-    data = {
-        'name': 'Vitor',
-        'location': 'Finland',
-        'is_active': True,
-        'count': 28
-        }
     ##############################################
     url_actual = 'https://www.football-data.co.uk/fixtures.csv'
     s=requests.get(url_actual).content
@@ -371,7 +389,16 @@ def precision(request):
     beneficios = round(ganancias_totales - capital_inicial_total2, 2)
     rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
 
-    return render(request, 'precision.html', {'data_informacion': df_data_informacion.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    beneficio_mes = BeneficiosMes.objects.latest('temporada')
+    all_entries_mes = BeneficiosMes.objects.filter(temporada = beneficio_mes.temporada)
+    
+    first_mes = all_entries_mes.values_list()    
+    
+    df_mes = pd.DataFrame(data=first_mes, columns=['id', 'capital_inicial', 'ganancias_brutas', 'ganancias_netas', "temporada", 'mes'])
+
+    
+
+    return render(request, 'precision.html', {"data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={
@@ -384,6 +411,23 @@ def jornadaInicio(i):
         6:'6' #domingo
     }
     return switcher.get(i,"Invalid day of week")
+
+def mes(i):
+    switcher={
+        1:'Enero', 
+        2:'Febrero',
+        3:'Marzo',
+        4:'Abril',
+        5:'Mayo',
+        6:'Junio',
+        7:'Julio',
+        8:'Agosto',
+        9:'Septiembre',
+        10:'Octubre',
+        11:'Noviembre',
+        12:'Diciembre'
+    }
+    return switcher.get(i,"Invalid month")
 
 def jornadaFin(i):
     switcher={
@@ -417,7 +461,7 @@ def prediccion(request):
     #print(df)
 
 
-    print(df)
+    #print(df)
     #return render(request, 'home.html')
     #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
     return render(request, 'prediccion.html', {'data': df.to_json(orient='split')})   
