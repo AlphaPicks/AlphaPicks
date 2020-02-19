@@ -383,18 +383,15 @@ def historicoBeneficiosLanzar(request):
     df_prediccion_rf_empates["mes"] = df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year + x.month)
     #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year)) + str(df_prediccion_rf_empates['date_created'].map(lambda x: x.month))
     
-    print(df_prediccion_rf_empates)
+    #print(df_prediccion_rf_empates)
     #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].dt.year) + " - " + str(df_prediccion_rf_empates['date_created'].dt.month)
     df_mensual = pd.DataFrame()
     df_mensual["Ganancias"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")].groupby(['mes'])['B365D'].sum()
     df_mensual["Inversion"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1")].groupby(['mes'])['B365D'].count()
     df_mensual["Beneficio"] = df_mensual["Ganancias"] - df_mensual["Inversion"]
-    #df_mensual["mes_nombre"] = mes(df_mensual.index.item())
-    print(df_mensual)    
+    #df_mensual["mes_nombre"] = mes(df_mensual.index.item()) 
     df_mensual["mes_nombre2"] = df_mensual.index
     df_mensual["mes"] = df_mensual["mes_nombre2"].astype(int)
-    print(df_mensual)
-
     BeneficiosMes.objects.all().delete()
 
     for index, row in df_mensual.iterrows():
@@ -547,7 +544,7 @@ def precision(request):
     frames = [df_data_informacion, df_data_informacion_1819, df_data_informacion_1718, df_data_informacion_1617, df_data_informacion_1516, df_data_informacion_1415, df_data_informacion_1314, df_data_informacion_1213]
     df_data_evolucion = pd.concat(frames)
 
-    print(df_data_evolucion)
+    #print(df_data_evolucion)
 
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
