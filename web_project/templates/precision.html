@@ -4,6 +4,9 @@
   <head>
     <title>Beneficio</title>
     {% include "importaciones.html" %}
+
+
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script>
         $(document).ready(function () {
         $("#precision").toggleClass("active");
@@ -213,6 +216,45 @@ $(document).ready(function(){
               </tr>
         </table>   
   </section>
+<!--
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <p>Evolución de los beneficios:</p>
+</section>
+
+<section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+  <div id='myDiv'></div>
+
+</section>
+-->
+<script>
+/*
+  var myBooks = JSON.parse('{{ df_data_evolucion | escapejs }}');
+    
+  myBooks = myBooks.data
+  
+  var ejercicios = [];
+  for (var i = 0; i < myBooks.length-1; i++) {
+    ejercicios.push(myBooks[i][6].toString());
+  }
+  
+  var beneficios = [];
+  for (var i = 0; i < myBooks.length-1; i++) {
+    beneficios.push(myBooks[i][3]);
+  }
+  
+  
+  var trace1 = {
+    x: ejercicios,
+    y: beneficios,
+    type: 'scatter',
+    
+  };
+  
+  
+  var data = [trace1];
+  
+  Plotly.newPlot('myDiv', data);*/
+  </script>
 
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
@@ -520,6 +562,10 @@ $(document).ready(function(){
     <table id="showData_mes" ></table>
   </section>
 -->
+
+
+
+
   <script>
 
 
