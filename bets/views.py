@@ -161,7 +161,7 @@ def obtenerDatosTemporada():
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
-    temporadas = ["1819", "1718", "1617", "1516"]
+    temporadas = ["1819", "1718", "1617", "1516", "1415", "1314", "1213"]#, "1112", "1011"]
     for t in temporadas:
         df_test = pd.DataFrame()
         data_path = staticfiles_storage.path("data/" + t + ".zip")
@@ -519,6 +519,31 @@ def precision(request):
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion_1516 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
     
+    #Temporada 1415
+    last_beneficio = Beneficios.objects.filter(temporada = "1415").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1415 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1314
+    last_beneficio = Beneficios.objects.filter(temporada = "1314").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1314 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1213
+    last_beneficio = Beneficios.objects.filter(temporada = "1213").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1213 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+
+    #Temporada 1112
+    #last_beneficio = Beneficios.objects.filter(temporada = "1112").order_by('-id')[0]
+    #data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    #df_data_informacion_1112 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1011
+    #last_beneficio = Beneficios.objects.filter(temporada = "1011").order_by('-id')[0]
+    #data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    #df_data_informacion_1011 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
@@ -543,7 +568,7 @@ def precision(request):
 
     
 
-    return render(request, 'precision.html', {"data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    return render(request, 'precision.html', {"data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={
