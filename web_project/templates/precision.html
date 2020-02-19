@@ -32,6 +32,45 @@ $(document).ready(function(){
     });
 });
 
+$(document).ready(function(){
+    $('#table_id1819 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
+
+$(document).ready(function(){
+    $('#table_id1718 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
+
+$(document).ready(function(){
+    $('#table_id1617 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
+
+$(document).ready(function(){
+    $('#table_id1516 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
     </script>
 <script type="text/javascript">
 
@@ -114,10 +153,10 @@ $(document).ready(function(){
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id2"  style="width:100%">
-            <tr>
+           <!-- <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData0"></p></td>
-            </tr>
+            </tr>-->
             <tr>
                 <th>Capital inicial</th>
                 <td><p>10 €</p></td>
@@ -142,31 +181,184 @@ $(document).ready(function(){
                 <th>Rentabilidad frente al capital inicial</th>
                 <td><p style="float: left;" id="showData5"></p></td>
               </tr>
-        </table>
-        
-
-   <!--     <p></p>
-          <table>
-            <tr>
-              <th>Capital inicial</th>
-              <th>Rentabilidad frente al capital inicial</th>
-            </tr>
-            <tr>
-              <td>10 €</td>
-              <td><p style="float: left;" id="showData6"></p></td>
-            </tr>
-            </table>
-      
-    -->
-   
+        </table>   
   </section>
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <hr>
+    <h2 style="text-align: center">Temporada 2018/2019</h2>
+  </section>
+
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para <u>la temporada de futbol de 2018/2019</u>:</p>
+    </section>
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
+
+        <table id = "table_id1819"  style="width:100%">
+           <!-- <tr>
+              <th>Fecha cálculo</th>
+              <td><p style="float: left;" id="showData01819"></p></td>
+            </tr>-->
+            <tr>
+                <th>Capital inicial</th>
+                <td><p>10 €</p></td>
+              </tr>
+              <tr>
+                <th>Capital reinvertido</th>
+                <td><p style="float: left;" id="showData11819"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancias</th>
+                <td><p style="float: left;" id="showData21819"></p></td>
+              </tr>
+              <tr>
+                <th>Beneficios</th>
+                <td  class="y_n"><p style="float: left;" id="showData31819"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData41819"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51819"></p></td>
+              </tr>
+        </table>  
+  </section>
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <hr>
+    <h2 style="text-align: center">Temporada 2017/2018</h2>
+  </section>
+
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para <u>la temporada de futbol de 2017/2018</u>:</p>
+    </section>
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
+
+        <table id = "table_id1718"  style="width:100%">
+           <!-- <tr>
+              <th>Fecha cálculo</th>
+              <td><p style="float: left;" id="showData01718"></p></td>
+            </tr>-->
+            <tr>
+                <th>Capital inicial</th>
+                <td><p>10 €</p></td>
+              </tr>
+              <tr>
+                <th>Capital reinvertido</th>
+                <td><p style="float: left;" id="showData11718"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancias</th>
+                <td><p style="float: left;" id="showData21718"></p></td>
+              </tr>
+              <tr>
+                <th>Beneficios</th>
+                <td  class="y_n"><p style="float: left;" id="showData31718"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData41718"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51718"></p></td>
+              </tr>
+        </table>  
+  </section>
+
+  
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <hr>
+    <h2 style="text-align: center">Temporada 2016/2017</h2>
+  </section>
+
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para <u>la temporada de futbol de 2016/2017</u>:</p>
+    </section>
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
+
+        <table id = "table_id1617"  style="width:100%">
+           <!-- <tr>
+              <th>Fecha cálculo</th>
+              <td><p style="float: left;" id="showData01617"></p></td>
+            </tr>-->
+            <tr>
+                <th>Capital inicial</th>
+                <td><p>10 €</p></td>
+              </tr>
+              <tr>
+                <th>Capital reinvertido</th>
+                <td><p style="float: left;" id="showData11617"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancias</th>
+                <td><p style="float: left;" id="showData21617"></p></td>
+              </tr>
+              <tr>
+                <th>Beneficios</th>
+                <td  class="y_n"><p style="float: left;" id="showData31617"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData41617"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51617"></p></td>
+              </tr>
+        </table>  
+  </section>
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <hr>
+    <h2 style="text-align: center">Temporada 2015/2016</h2>
+  </section>
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para <u>la temporada de futbol de 2015/2016</u>:</p>
+    </section>
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
+
+        <table id = "table_id1516"  style="width:100%">
+            <!--<tr>
+              <th>Fecha cálculo</th>
+              <td><p style="float: left;" id="showData01516"></p></td>
+            </tr>-->
+            <tr>
+                <th>Capital inicial</th>
+                <td><p>10 €</p></td>
+              </tr>
+              <tr>
+                <th>Capital reinvertido</th>
+                <td><p style="float: left;" id="showData11516"></p></td>
+              </tr>
+              <tr>
+                <th>Ganancias</th>
+                <td><p style="float: left;" id="showData21516"></p></td>
+              </tr>
+              <tr>
+                <th>Beneficios</th>
+                <td  class="y_n"><p style="float: left;" id="showData31516"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData41516"></p></td>
+              </tr>
+              <tr>
+                <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51516"></p></td>
+              </tr>
+        </table>  
+  </section>
+  <!--
   <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-    <p>Desgrose mensual para la temporada de futbol de 2019/2020:</p>
+    <p>Desglose mensual para la temporada de futbol de 2019/2020:</p>
   </section>
   <section style="margin-right: 40%; margin-left: 40%; margin-bottom: 2%;">
     <table id="showData_mes" ></table>
   </section>
-
+-->
   <script>
 
 
@@ -313,7 +505,7 @@ $(document).ready(function(){
             month = '0' + month;
         }
         //tabCell.innerHTML = ;
-        document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
+        //document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
 
         var div1 = document.getElementById('showData1');
         div1.innerHTML = data_informacion_json[0][1] + " €";
@@ -334,6 +526,162 @@ $(document).ready(function(){
         div6.innerHTML = data_informacion_json[0][3] + " €";
 
     </script>
+
+<script>
+  var data_informacion_json = JSON.parse('{{ data_informacion_1819 | escapejs }}');
+
+  data_informacion_json = data_informacion_json.data
+
+  //var d = new Date(data_informacion_json[0][0]).toDateString();
+  date = new Date(data_informacion_json[0][0]);
+  year = date.getFullYear();
+  month = date.getMonth()+1;
+  dt = date.getDate();
+  if (dt < 10) {
+      dt = '0' + dt;
+  }
+  if (month < 10) {
+      month = '0' + month;
+  }
+  //tabCell.innerHTML = ;
+  //document.getElementById("showData01819").innerHTML = year+'-' + month + '-'+dt;
+
+  var div1 = document.getElementById('showData11819');
+  div1.innerHTML = data_informacion_json[0][1] + " €";
+
+  var div2 = document.getElementById('showData21819');
+  div2.innerHTML = data_informacion_json[0][2] + " €";
+
+  var div3 = document.getElementById('showData31819');
+  div3.innerHTML = data_informacion_json[0][3]+ " €";
+
+  var div4 = document.getElementById('showData41819');
+  div4.innerHTML = data_informacion_json[0][4] + " %";
+
+  var div5 = document.getElementById('showData51819');
+  div5.innerHTML = data_informacion_json[0][5] + " %";
+
+  var div6 = document.getElementById('showData61819');
+  div6.innerHTML = data_informacion_json[0][3] + " €";
+
+</script>
+
+<script>
+  var data_informacion_json = JSON.parse('{{ data_informacion_1718 | escapejs }}');
+
+  data_informacion_json = data_informacion_json.data
+
+  //var d = new Date(data_informacion_json[0][0]).toDateString();
+  date = new Date(data_informacion_json[0][0]);
+  year = date.getFullYear();
+  month = date.getMonth()+1;
+  dt = date.getDate();
+  if (dt < 10) {
+      dt = '0' + dt;
+  }
+  if (month < 10) {
+      month = '0' + month;
+  }
+  //tabCell.innerHTML = ;
+  //document.getElementById("showData01718").innerHTML = year+'-' + month + '-'+dt;
+
+  var div1 = document.getElementById('showData11718');
+  div1.innerHTML = data_informacion_json[0][1] + " €";
+
+  var div2 = document.getElementById('showData21718');
+  div2.innerHTML = data_informacion_json[0][2] + " €";
+
+  var div3 = document.getElementById('showData31718');
+  div3.innerHTML = data_informacion_json[0][3]+ " €";
+
+  var div4 = document.getElementById('showData41718');
+  div4.innerHTML = data_informacion_json[0][4] + " %";
+
+  var div5 = document.getElementById('showData51718');
+  div5.innerHTML = data_informacion_json[0][5] + " %";
+
+  var div6 = document.getElementById('showData61718');
+  div6.innerHTML = data_informacion_json[0][3] + " €";
+
+</script>
+
+<script>
+  var data_informacion_json = JSON.parse('{{ data_informacion_1617 | escapejs }}');
+
+  data_informacion_json = data_informacion_json.data
+
+  //var d = new Date(data_informacion_json[0][0]).toDateString();
+  date = new Date(data_informacion_json[0][0]);
+  year = date.getFullYear();
+  month = date.getMonth()+1;
+  dt = date.getDate();
+  if (dt < 10) {
+      dt = '0' + dt;
+  }
+  if (month < 10) {
+      month = '0' + month;
+  }
+  //tabCell.innerHTML = ;
+  //document.getElementById("showData01617").innerHTML = year+'-' + month + '-'+dt;
+
+  var div1 = document.getElementById('showData11617');
+  div1.innerHTML = data_informacion_json[0][1] + " €";
+
+  var div2 = document.getElementById('showData21617');
+  div2.innerHTML = data_informacion_json[0][2] + " €";
+
+  var div3 = document.getElementById('showData31617');
+  div3.innerHTML = data_informacion_json[0][3]+ " €";
+
+  var div4 = document.getElementById('showData41617');
+  div4.innerHTML = data_informacion_json[0][4] + " %";
+
+  var div5 = document.getElementById('showData51617');
+  div5.innerHTML = data_informacion_json[0][5] + " %";
+
+  var div6 = document.getElementById('showData61617');
+  div6.innerHTML = data_informacion_json[0][3] + " €";
+
+</script>
+
+<script>
+  var data_informacion_json = JSON.parse('{{ data_informacion_1516 | escapejs }}');
+
+  data_informacion_json = data_informacion_json.data
+
+  //var d = new Date(data_informacion_json[0][0]).toDateString();
+  date = new Date(data_informacion_json[0][0]);
+  year = date.getFullYear();
+  month = date.getMonth()+1;
+  dt = date.getDate();
+  if (dt < 10) {
+      dt = '0' + dt;
+  }
+  if (month < 10) {
+      month = '0' + month;
+  }
+  //tabCell.innerHTML = ;
+  //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
+
+  var div1 = document.getElementById('showData11516');
+  div1.innerHTML = data_informacion_json[0][1] + " €";
+
+  var div2 = document.getElementById('showData21516');
+  div2.innerHTML = data_informacion_json[0][2] + " €";
+
+  var div3 = document.getElementById('showData31516');
+  div3.innerHTML = data_informacion_json[0][3]+ " €";
+
+  var div4 = document.getElementById('showData41516');
+  div4.innerHTML = data_informacion_json[0][4] + " %";
+
+  var div5 = document.getElementById('showData51516');
+  div5.innerHTML = data_informacion_json[0][5] + " %";
+
+  var div6 = document.getElementById('showData61516');
+  div6.innerHTML = data_informacion_json[0][3] + " €";
+
+</script>
 
     
 

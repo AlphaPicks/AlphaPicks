@@ -160,7 +160,131 @@ def obtenerDatosTemporada():
     df_test = pd.concat([df_test, df_new], sort=True)
     return df_test
 
+def historicoBeneficiosLanzarOtrasTemporadas():
+    temporadas = ["1819", "1718", "1617", "1516"]
+    for t in temporadas:
+        df_test = pd.DataFrame()
+        data_path = staticfiles_storage.path("data/" + t + ".zip")
+        #with open(data_path, 'rb') as file:
+        #    data = pickle.load(file)
+        #resp = urlopen(data_path)
+        #zipfile = ZipFile(BytesIO(data_path.read()))
+        zipfile = ZipFile(data_path, "r")
+        #zipfile.ZipFile('images.zip', 'r')
+        #zipfile = ZipFile(BytesIO(data.read()))
+        zipfile.namelist()
+        df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('D1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('D2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('D3.csv'))
+        #df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('E0.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('E1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('E2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('E3.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('EC.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('F1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('F2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('G1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('I1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('I2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('N1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('P1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SC0.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SC1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SC2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SC3.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SP1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('SP2.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')
+        df_test = pd.concat([df_test, df_new], sort=True)
+        
+        df_actual = df_test
+        ###
+        now = datetime.now()
+        timestamp = datetime.timestamp(now)
+        t_object = datetime.fromtimestamp(timestamp)
+        #Se guarda el dato de la prediccion
+        #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
+        clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
+        columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
+        df_actual_rf = df_actual.filter(items=clumnas_trabajo)
+        df_actual_rf.dropna(inplace=True)
+        ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+        df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
+        df_actual_rf_empates.dropna(inplace=True)
+        df_prediccion_rf_empates = pd.DataFrame()
+        df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
+        df_prediccion_rf_empates["Div"] = df_actual_rf_empates["Div"]
+        df_prediccion_rf_empates["HomeTeam"] = df_actual_rf_empates["HomeTeam"]
+        df_prediccion_rf_empates["AwayTeam"] = df_actual_rf_empates["AwayTeam"]
+        df_prediccion_rf_empates["B365H"] = df_actual_rf_empates["B365H"]
+        df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
+        df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
+        df_prediccion_rf_empates["FTR"] = df_actual_rf_empates["FTR"]
+
+        y_pred_rf_resultado = []
+        y_pred_rf_stats = []
+        for x in ligas:
+            #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
+            model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+            with open(model_path, 'rb') as file:
+                rf = pickle.load(file) 
+            if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
+                y_pred_rf2 = rf.predict(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
+                for i in y_pred_rf2 : 
+                    y_pred_rf_resultado.append(i) 
+            if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
+                y_pred_rf3 = rf.predict_proba(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
+                for i in y_pred_rf3 : 
+                    y_pred_rf_stats.append(i) 
+        df_prediccion_rf_empates["Prediccion"] = [row for row in y_pred_rf_resultado]
+        df_prediccion_rf_empates["rf_empate"] = [row[1] for row in y_pred_rf_stats]
+        df_prediccion_rf_empates["rf_no_empate"] = [row[0] for row in y_pred_rf_stats]
+        df_prediccion_rf_empates["beneficio_total"] = (1/df_prediccion_rf_empates["B365H"]) + (1/df_prediccion_rf_empates["B365D"]) + (1/df_prediccion_rf_empates["B365A"])
+        df_prediccion_rf_empates["porcentaje_pagos"] = (1/df_prediccion_rf_empates["beneficio_total"])
+        df_prediccion_rf_empates["probabilidad_h"] = (1/df_prediccion_rf_empates["B365H"]*df_prediccion_rf_empates["porcentaje_pagos"])
+        df_prediccion_rf_empates["probabilidad_d"] = (1/df_prediccion_rf_empates["B365D"]*df_prediccion_rf_empates["porcentaje_pagos"])
+        df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
+        df_prediccion_rf_empates["entrar"] = "no"
+        df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
+        
+
+        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "H", 'FTR'] = "0"
+        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
+        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
+
+        capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
+        ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
+        
+        #Beneficios.objects.all().delete()
+
+        b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = t) 
+        b.save()
+
 def historicoBeneficiosLanzar(request):
+    historicoBeneficiosLanzarOtrasTemporadas()
     df_test = obtenerDatosTemporada()
     df_actual = df_test
     ### ************
@@ -369,11 +493,32 @@ def prediccionesLanzar(request):
     return render(request, 'home.html')
 
 def precision(request):
-    last_beneficio = Beneficios.objects.latest('dia')
+    #Temporada actual
+    #last_beneficio = Beneficios.objects.latest('temporada')
+    last_beneficio = Beneficios.objects.filter(temporada = "1920").order_by('-id')[0]
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
     
-
+    #Temporada 1819
+    last_beneficio = Beneficios.objects.filter(temporada = "1819").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1819 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1718
+    last_beneficio = Beneficios.objects.filter(temporada = "1718").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1718 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1617
+    last_beneficio = Beneficios.objects.filter(temporada = "1617").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1617 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+    #Temporada 1516
+    last_beneficio = Beneficios.objects.filter(temporada = "1516").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1516 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
@@ -398,7 +543,7 @@ def precision(request):
 
     
 
-    return render(request, 'precision.html', {"data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    return render(request, 'precision.html', {"data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={
