@@ -104,6 +104,16 @@ $(document).ready(function(){
         }
     });
 });
+
+$(document).ready(function(){
+    $('#second').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }else{
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
     </script>
 <script type="text/javascript">
 
@@ -138,6 +148,43 @@ $(document).ready(function(){
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  #wrapper {
+    
+    /*border: 1px solid black;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#firsttitulo {
+    
+    float: left; /* add this */
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-size: 30px;
+}
+#secondtitulo {
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-size: 30px;
+}
+
+#first {
+    
+    float: left; /* add this */
+    /*border: 1px solid black;*/
+    text-align: center;
+    font-size: 25px;
+}
+#second {
+    /*border: 1px solid black;*/
+    
+    text-align: center;
+    font-size: 25px;
+}
+
+b {
+    border-bottom: 1px solid black;
+    padding: 0 0 0px;
+}
     </style>
 
   </head>
@@ -148,6 +195,29 @@ $(document).ready(function(){
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <h1 style="text-align: center">Análisis de los beneficios obtenidos por el sistema de IA</h1>
     </section>
+<!--
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+      <p>Resultados obtenidos por el algente inteligente para la última jornada:</p>
+    </section>
+
+  <section style="margin-right: 38%; margin-left: 38%; margin-bottom: 2%;">
+    
+    <div id="wrapper">
+      <div id="firsttitulo"><b>Inversión</b></div>
+     
+      <div id="secondtitulo"><b>Beneficios</b></div>
+    </div>
+    <p></p>
+    <div id="wrapper">
+      <div id="first">{{capital_inicial_total2}} €</div>
+      <div id="second">{{beneficios}} €</div>
+    </div>
+    
+
+  </section>-->
+
+
+
 
     
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
@@ -216,6 +286,13 @@ $(document).ready(function(){
               </tr>
         </table>   
   </section>
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <hr>
+    <p>El método seguido por el agente inteligente ha sido el de apostar la misma cantidad (1 €) en cada partido que ha predicho como empate. </p> 
+    <p>Todas las apuestas han sido individuales, nunca combinadas.</p> 
+    <p>El capital inicial del que disponía el agente inteligente ha sido de 10 € que ha ido apostando y reinvirtiendo, obteniendo las ganancias netas mostradas en la tabla. </p>
+  </section>
 <!--
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <p>Evolución de los beneficios:</p>
@@ -226,34 +303,7 @@ $(document).ready(function(){
 
 </section>
 -->
-<script>
-/*
-  var myBooks = JSON.parse('{{ df_data_evolucion | escapejs }}');
-    
-  myBooks = myBooks.data
-  
-  var ejercicios = [];
-  for (var i = 0; i < myBooks.length-1; i++) {
-    ejercicios.push(myBooks[i][6].toString());
-  }
-  
-  var beneficios = [];
-  for (var i = 0; i < myBooks.length-1; i++) {
-    beneficios.push(myBooks[i][3]);
-  }
-  
-  
-  var trace1 = {
-    x: ejercicios,
-    y: beneficios,
-    type: 'scatter',
-    
-  };
-  
-  
-  var data = [trace1];
-  
-  Plotly.newPlot('myDiv', data);*/
+
   </script>
 
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
@@ -652,12 +702,7 @@ $(document).ready(function(){
   }
   </script>
 
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-      <hr>
-      <p>El método seguido por el agente inteligente ha sido el de apostar la misma cantidad (1 €) en cada partido que ha predicho como empate. </p> 
-      <p>Todas las apuestas han sido individuales, nunca combinadas.</p> 
-      <p>El capital inicial del que disponía el agente inteligente ha sido de 10 € que ha ido apostando y reinvirtiendo, obteniendo las ganancias netas mostradas en la tabla. </p>
-    </section>
+ 
     
 
 
