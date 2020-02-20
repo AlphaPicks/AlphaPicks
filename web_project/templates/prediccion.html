@@ -62,6 +62,7 @@
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <p>Predicciones de los empates dadas por el agente inteligente para la jornada en curso:</p>
     <table id="showData" ></table>
+    <p id="showData3" style="color: red"></p>
   </section>
 
 
@@ -168,6 +169,20 @@
   var divContainer = document.getElementById("showData");
   divContainer.innerHTML = "";
   divContainer.appendChild(table);
+
+
+ var paragraph = document.getElementById("showData3");
+
+
+
+
+  if(myBooks.data == null){
+    var text = document.createTextNode("No hay empates esta jornada.");
+    paragraph.appendChild(text);
+  }else{
+    var text = document.createTextNode("");
+    paragraph.appendChild(text);
+  }
 
 function CreateTableFromJSON() {
   
