@@ -559,8 +559,10 @@ def precision(request):
     capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
     ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
     beneficios = round(ganancias_totales - capital_inicial_total2, 2)
-    rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
-
+    if(capital_inicial_total2>0):
+        rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+    else:
+        rentabilidad = 0
     beneficio_mes = BeneficiosMes.objects.latest('temporada')
     all_entries_mes = BeneficiosMes.objects.filter(temporada = beneficio_mes.temporada)
     
