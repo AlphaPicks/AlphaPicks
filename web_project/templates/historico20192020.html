@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Histórico</title>
+    {% include "importaciones.html" %}
+    <script>
+      $(document).ready(function () {
+      $("#20192020").toggleClass("active");
+      });
+  </script>
+
+<style>
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #ebe9e9;
+    text-align: left;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.534);
+	color: rgb(63, 63, 63);
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  	/* Define the hover highlight color for the table row */
+    tr:hover {
+          background-color: #ffff99;
+    }
+
+
+
+  #myInput {
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 15%;
+    font-size: 12px;
+    padding: 5px 5px 5px 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  #myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #aaa;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+
+  </style>
+
+  </head>
+
+<body>
+
+
+  {% include "menuSuperior.html" %}
+
+
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <h1 style="text-align: center">Histórico de predicciones del sistema de IA</h1>
+  
+  </section>
+  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+    <p>Histórico de las predicciones de los empates dadas por el agente inteligente durante la temporada 2019/2020:</p>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filtrar por fecha..." title="Introduce una fecha">
+    <table id="showData"></table>
+  </section>
+  <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+  <script>
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+    
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+    
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+    
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+    </script>
+
+  <script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#showData td').each(function(){
+            if ($(this).text() == 'No') {
+                $(this).css('background-color','#ffe5e5');
+            }
+            if ($(this).text() == 'Si') {
+            $(this).css('background-color','#e3ffe3');
+        }
+        });
+    });
+
+</script>
+
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("showData");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+    </script>
+<script>
+
+
+  var myBooks = JSON.parse('{{ data | escapejs }}');
+
+  myBooks = myBooks.data
+
+  // EXTRACT VALUE FOR HTML HEADER. 
+  // ('Book ID', 'Book Name', 'Category' and 'Price')
+  var col = [];
+  for (var i = 0; i < myBooks.length; i++) {
+      for (var key in myBooks[i]) {
+          if (col.indexOf(key) === -1) {
+              col.push(key);
+          }
+      }
+  }
+
+  // CREATE DYNAMIC TABLE.
+  var table = document.createElement("table");
+
+  // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+  var tr = table.insertRow(-1);                   // TABLE ROW.
+
+  for (var i = 1; i < col.length-1; i++) {
+      var th = document.createElement("th");      // TABLE HEADER.
+      //if(col[i]==0){
+      //  th.innerHTML = "ID";
+      //}
+      if(col[i]==1){
+        th.innerHTML = "Fecha";
+      }
+      if(col[i]==2){
+        th.innerHTML = "Equipo local";
+      }
+      if(col[i]==3){
+        th.innerHTML = "Equipo de fuera";
+      }
+      if(col[i]==4){
+        th.innerHTML = "Probabilidad";
+      }
+      if(col[i]==5){
+        th.innerHTML = "Cuota";
+      }
+      if(col[i]==6){
+        th.innerHTML = "Predicción";
+      }
+      if(col[i]==7){
+        th.innerHTML = "Resultado";
+      }
+      if(col[i]==8){
+        th.innerHTML = "Acierto";
+      }
+      //if(col[i]==6){
+      //  th.innerHTML = "Ejecucion";
+      //}
+      
+      tr.appendChild(th);
+  }
+
+  // ADD JSON DATA TO THE TABLE AS ROWS.
+  for (var i = 0; i < myBooks.length; i++) {
+
+      tr = table.insertRow(-1);
+
+      for (var j = 1; j < col.length-1; j++) {
+          var tabCell = tr.insertCell(-1);
+          if(col[j]==1){
+            date = new Date(myBooks[i][col[j+1]]);
+            year = date.getFullYear();
+            month = date.getMonth()+1;
+            dt = date.getDate();
+            if (dt < 10) {
+              dt = '0' + dt;
+            }
+            if (month < 10) {
+              month = '0' + month;
+            }
+            tabCell.innerHTML = year+'-' + month + '-'+dt;
+            
+          }
+          if(col[j]==6){
+            tabCell.innerHTML = "Empate";
+          }
+          if(col[j]==7){
+            if(myBooks[i][col[j-2]]==0){
+              tabCell.innerHTML = "No empate";
+            }else{
+              tabCell.innerHTML = "Empate";
+            }
+          }
+          if(col[j]==2){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
+            
+          } 
+          if(col[j]==3){
+            tabCell.innerHTML = myBooks[i][col[j+1]];
+          }   
+          if(col[j]==5){
+            tabCell.innerHTML = myBooks[i][col[j+2]];
+          }  
+          if(col[j]==4){
+            tabCell.innerHTML = myBooks[i][col[j+2]];
+          }   
+          if(col[j]==8){
+            if(myBooks[i][col[j-3]]==0){
+              tabCell.innerHTML = "No";
+            }else{
+              tabCell.innerHTML = "Si";
+            }
+          }   
+      }
+  }
+
+  // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+  var divContainer = document.getElementById("showData");
+  divContainer.innerHTML = "";
+  divContainer.appendChild(table);
+
+function CreateTableFromJSON() {
+  
+}
+</script>
+
+{% include "firma.html" %}
+
+</body>
+</html>
+

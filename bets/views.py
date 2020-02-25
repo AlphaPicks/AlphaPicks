@@ -161,6 +161,8 @@ def obtenerDatosTemporada():
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
+    Historico.objects.all().delete()
+    
     temporadas = ["1819", "1718", "1617", "1516", "1415", "1314", "1213"]#, "1112", "1011"]
     for t in temporadas:
         df_test = pd.DataFrame()
@@ -219,15 +221,18 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
+        df_test["temporada"] = t
         
         df_actual = df_test
+
+        #print(df_actual)
         ###
         now = datetime.now()
         timestamp = datetime.timestamp(now)
         t_object = datetime.fromtimestamp(timestamp)
         #Se guarda el dato de la prediccion
         #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
-        clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
+        clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', "temporada", 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
         columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
         df_actual_rf = df_actual.filter(items=clumnas_trabajo)
         df_actual_rf.dropna(inplace=True)
@@ -243,6 +248,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
         df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
         df_prediccion_rf_empates["FTR"] = df_actual_rf_empates["FTR"]
+        df_prediccion_rf_empates["temporada"] = df_actual_rf_empates["temporada"]
 
         y_pred_rf_resultado = []
         y_pred_rf_stats = []
@@ -282,6 +288,41 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
         b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = t) 
         b.save()
+
+        #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
+        ejecucion_actual = 1
+        
+        resultado_actual = 0
+        away_team_actual = "" 
+        home_team_actual = ""
+        cuotaEmpate = 0
+        date_actual = timezone.now()
+        prediction_actual = 0
+        probabilidad = 0
+        temporada_ac = ""
+
+        df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
+        df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
+
+        #print(df_prediccion_rf_empates["temporada"])
+
+        for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
+            resultado_actual= row["FTR"]
+            away_team_actual = row["AwayTeam"]
+            home_team_actual = row["HomeTeam"]
+            if(len(row["Date"]) <= 9):
+            #if(row["Date"].endswith("/13")):
+                date_actual = datetime.strptime(row["Date"], '%d/%m/%y')
+            else:
+                date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
+            prediction_actual = row["Prediccion"]
+            cuotaEmpate = row["B365D"]
+            probabilidad = row["rf_empate"]
+            temporada_ac = int(row["temporada"]) 
+            p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = temporada_ac, probabilidad = probabilidad)
+            p.save()
+
+    
 
 def historicoBeneficiosLanzar(request):
     historicoBeneficiosLanzarOtrasTemporadas()
@@ -351,8 +392,10 @@ def historicoBeneficiosLanzar(request):
     b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
     b.save()
 
-    ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
-    
+    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
+    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion
+    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
+    ejecucion_actual = 1
     #Historico.objects.all().delete()
 
     #ejecucion_actual = 0
@@ -615,17 +658,61 @@ def mes(i):
     }
     return switcher.get(i,"Invalid month")
 
-def historico(request):
-    
-    historico = Historico.objects.latest('ejecucion')
-    all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
+def historico20192020(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1920)
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
-    #print(df)
+    return render(request, 'historico20192020.html', {'data': df.to_json(orient='split')})   
 
-    #return render(request, 'home.html')
-    #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
-    return render(request, 'historico.html', {'data': df.to_json(orient='split')})   
+def historico20182019(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1819)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20182019.html', {'data': df.to_json(orient='split')})
+
+def historico20172018(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1718)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20172018.html', {'data': df.to_json(orient='split')})
+    
+def historico20162017(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1617)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20162017.html', {'data': df.to_json(orient='split')})   
+
+def historico20152016(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1516)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20152016.html', {'data': df.to_json(orient='split')})
+
+def historico20142015(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1415)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20142015.html', {'data': df.to_json(orient='split')})   
+
+def historico20132014(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1314)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20132014.html', {'data': df.to_json(orient='split')})      
+
+def historico20122013(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1213)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20122013.html', {'data': df.to_json(orient='split')})             
 
 def prediccion(request):
     ultima_ejecucion = Predicciones.objects.latest('ejecucion')
