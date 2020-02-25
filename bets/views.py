@@ -586,6 +586,18 @@ def jornadaInicio(i):
     }
     return switcher.get(i,"Invalid day of week")
 
+def jornadaFin(i):
+    switcher={
+        0:'0', #lunes
+        1:'0', #martes
+        2:'2', #miercoles
+        3:'3', #jueves
+        4:'0', #viernes
+        5:'1', #sabado
+        6:'2' #domingo
+    }
+    return switcher.get(i,"Invalid day of week")
+
 def mes(i):
     switcher={
         1:'Enero', 
@@ -602,18 +614,6 @@ def mes(i):
         12:'Diciembre'
     }
     return switcher.get(i,"Invalid month")
-
-def jornadaFin(i):
-    switcher={
-        0:'0', #lunes
-        1:'1', #martes
-        2:'2', #miercoles
-        3:'3', #jueves
-        4:'0', #viernes
-        5:'1', #sabado
-        6:'2' #domingo
-    }
-    return switcher.get(i,"Invalid day of week")
 
 def historico(request):
     
