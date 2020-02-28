@@ -37,9 +37,12 @@ from bets.models import Historico
 
 
 #VERSION_MODELO = "E0"
-VERSION_MODELO = "D1"
-CAPITAL_INICIAL_TOTAL_APUESTAS = 10
+#VERSION_MODELO = "D1"
+VERSION_MODELO = "D1_E0_16"
+CAPITAL_INICIAL_TOTAL_APUESTAS = 5
 TEMPORADA_ACTUAL = 1920
+
+LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
 
 
 #from celery.schedules import crontab
@@ -112,8 +115,8 @@ def obtenerDatosTemporada():
     resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-    df_new = pd.read_csv(zipfile.open('B1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('B1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('D1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('D2.csv'))
@@ -122,36 +125,36 @@ def obtenerDatosTemporada():
     #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('E0.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E3.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('E1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('E2.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('E3.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('EC.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('F1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('F1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('F2.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('G1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('I1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('I2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('N1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('P1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC0.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('I2.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('N1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('P1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('SC0.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SC1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC3.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('SC2.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('SC3.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SP1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SP2.csv'))
@@ -175,46 +178,46 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         #zipfile.ZipFile('images.zip', 'r')
         #zipfile = ZipFile(BytesIO(data.read()))
         zipfile.namelist()
-        df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('D1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        sdf_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('D2.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
         #df_new = pd.read_csv(zipfile.open('D3.csv'))
         #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('E0.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('E1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('E2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('E3.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('E1.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('E2.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('E3.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('EC.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('F1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('F1.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('F2.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('G1.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('I1.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('I2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('N1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('P1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SC0.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('I2.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('N1.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
+       # df_new = pd.read_csv(zipfile.open('P1.csv'), encoding= 'unicode_escape')
+       # df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('SC0.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('SC1.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SC2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SC3.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('SC2.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
+        #df_new = pd.read_csv(zipfile.open('SC3.csv'), encoding= 'unicode_escape')
+        #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('SP1.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('SP2.csv'), encoding= 'unicode_escape')
@@ -236,7 +239,8 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
         df_actual_rf = df_actual.filter(items=clumnas_trabajo)
         df_actual_rf.dropna(inplace=True)
-        ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+        #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+        ligas = LIGAS
         df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
         df_actual_rf_empates.dropna(inplace=True)
         df_prediccion_rf_empates = pd.DataFrame()
@@ -285,7 +289,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
         
         #Beneficios.objects.all().delete()
-        print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
+        #print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
         b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = t) 
         b.save()
 
@@ -340,7 +344,8 @@ def historicoBeneficiosLanzar(request):
     columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
     df_actual_rf = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf.dropna(inplace=True)
-    ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+    #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+    ligas = LIGAS
     df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf_empates.dropna(inplace=True)
     df_prediccion_rf_empates = pd.DataFrame()
@@ -357,7 +362,7 @@ def historicoBeneficiosLanzar(request):
     y_pred_rf_stats = []
     for x in ligas:
         #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+        model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
@@ -460,8 +465,10 @@ def prediccionesLanzar(request):
     columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
     df_actual_rf = df_actual.filter(items=clumnas_trabajo)
     df_actual_rf.dropna(inplace=True)
-    ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-    df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
+    #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
+    ligas = LIGAS
+    #rpt[rpt['STK_ID'].isin(stk_list)]
+    df_actual_rf_empates = df_actual[df_actual["Div"].isin(ligas)].filter(items=clumnas_trabajo)
     df_actual_rf_empates.dropna(inplace=True)
     df_prediccion_rf_empates = pd.DataFrame()
     df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
@@ -476,7 +483,7 @@ def prediccionesLanzar(request):
     y_pred_rf_stats = []
     for x in ligas:
         #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = url = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
+        model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
         with open(model_path, 'rb') as file:
             rf = pickle.load(file) 
         if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
@@ -615,7 +622,7 @@ def precision(request):
 
     
 
-    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={

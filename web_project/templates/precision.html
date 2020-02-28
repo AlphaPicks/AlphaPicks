@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>Beneficio</title>
+    <title>Beneficios</title>
     {% include "importaciones.html" %}
 
     
@@ -27,10 +27,10 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $('#table_id2 td.y_n').each(function(){
-        if (data_informacion_json[0][3] > 0) {
+        if (data_informacion_json_actual[0][3] > 0) {
             $(this).css('color','#00b200');
         }
-        if (data_informacion_json[0][3] < 0) {
+        if (data_informacion_json_actual[0][3] < 0) {
           $(this).css('color','#ff3d3d');
         }
     });
@@ -276,7 +276,7 @@ chart.render();
   chart.render();
 </script>
 
-
+<!--
 
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
       <p>Resultados obtenidos por el algente inteligente para la última jornada:</p>
@@ -294,7 +294,7 @@ chart.render();
             <td><p>{{ganancias_totales}} €</p></td>
           </tr>
           <tr>
-            <th>Beneficios</th>
+            <th>Beneficios netos</th>
             <td class="y_n"><p style="float: left;">{{beneficios}} €</p></td>
           </tr>
           <tr>
@@ -303,11 +303,12 @@ chart.render();
           </tr>
     </table>
   </section>
+
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
     <h2 style="text-align: center">Temporada actual</h2>
   </section>
-
+-->
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol actual:</p>
     </section>
@@ -318,28 +319,37 @@ chart.render();
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData0"></p></td>
             </tr>-->
-            <tr>
+             <!--<tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
-              </tr>
+                <td><p>5 €</p></td>
+              </tr>-->
               <tr>
+                <th>Capital aportado</th>
+                <td><p>5 €</p></td>
+              </tr>
+             <!-- <tr>
                 <th>Capital reinvertido</th>
                 <td><p style="float: left;" id="showData1"></p></td>
-              </tr>
-              <tr>
+              </tr>-->
+              <!--<tr>
                 <th>Ganancias</th>
                 <td><p style="float: left;" id="showData2"></p></td>
-              </tr>
+              </tr>-->
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData3"></p></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData4"></p></td>
-              </tr>
-              <tr>
+              </tr>-->
+              <!--<tr>
                 <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData5"></p></td>
+              </tr>-->
+
+              <tr>
+                <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData5"></p></td>
               </tr>
         </table>   
@@ -349,7 +359,7 @@ chart.render();
     <hr>
     <p>El método seguido por el agente inteligente ha sido el de apostar la misma cantidad (1 €) en cada partido que ha predicho como empate. </p> 
     <p>Todas las apuestas han sido individuales, nunca combinadas.</p> 
-    <p>El capital inicial del que disponía el agente inteligente ha sido de 10 € que ha ido apostando y reinvirtiendo, obteniendo las ganancias netas mostradas en la tabla. </p>
+    <p>El capital inicial del que disponía el agente inteligente ha sido de 5 € que ha ido apostando y reinvirtiendo, obteniendo las ganancias netas mostradas en la tabla. </p>
   </section>
 <!--
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
@@ -402,8 +412,6 @@ chart.render();
     <hr>
     <div class='tableauPlaceholder' id='viz1582462039914' style='position: relative'><noscript><a href=''><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Be&#47;BeneficiosAnualesBets&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='BeneficiosAnualesBets&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Be&#47;BeneficiosAnualesBets&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1582462039914');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.minWidth='820px';vizElement.style.maxWidth='1220px';vizElement.style.width='100%';vizElement.style.minHeight='587px';vizElement.style.maxHeight='887px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.minWidth='820px';vizElement.style.maxWidth='1220px';vizElement.style.width='100%';vizElement.style.minHeight='587px';vizElement.style.maxHeight='887px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
     </section>
-
-
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
     <h2 style="text-align: center">Temporada 2018/2019</h2>
@@ -421,26 +429,31 @@ chart.render();
             </tr>-->
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <th>Capital reinvertido</th>
                 <td><p style="float: left;" id="showData11819"></p></td>
               </tr>
               <tr>
                 <th>Ganancias</th>
                 <td><p style="float: left;" id="showData21819"></p></td>
-              </tr>
+              </tr>-->
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31819"></p></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData41819"></p></td>
               </tr>
               <tr>
                 <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51819"></p></td>
+              </tr>-->
+
+              <tr>
+                <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData51819"></p></td>
               </tr>
         </table>  
@@ -463,26 +476,31 @@ chart.render();
             </tr>-->
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <th>Capital reinvertido</th>
                 <td><p style="float: left;" id="showData11718"></p></td>
               </tr>
               <tr>
                 <th>Ganancias</th>
                 <td><p style="float: left;" id="showData21718"></p></td>
-              </tr>
+              </tr>-->
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31718"></p></td>
               </tr>
-              <tr>
+             <!-- <tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData41718"></p></td>
               </tr>
               <tr>
                 <th>Rentabilidad frente al capital inicial</th>
+                <td><p style="float: left;" id="showData51718"></p></td>
+              </tr>
+            -->
+              <tr>
+                <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData51718"></p></td>
               </tr>
         </table>  
@@ -506,31 +524,35 @@ chart.render();
             </tr>-->
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
-              <tr>
+             <!-- <tr>
                 <th>Capital reinvertido</th>
                 <td><p style="float: left;" id="showData11617"></p></td>
               </tr>
               <tr>
                 <th>Ganancias</th>
                 <td><p style="float: left;" id="showData21617"></p></td>
-              </tr>
+              </tr>-->
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31617"></p></td>
               </tr>
-              <tr>
+              <!--<tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData41617"></p></td>
               </tr>
               <tr>
                 <th>Rentabilidad frente al capital inicial</th>
                 <td><p style="float: left;" id="showData51617"></p></td>
+              </tr>-->
+              <tr>
+                <th>Rentabilidad</th>
+                <td><p style="float: left;" id="showData51617"></p></td>
               </tr>
         </table>  
   </section>
-
+<!--
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
     <h2 style="text-align: center">Temporada 2015/2016</h2>
@@ -541,13 +563,13 @@ chart.render();
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id1516"  style="width:100%">
-            <!--<tr>
+            <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>-->
+            </tr>
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
               <tr>
                 <th>Capital reinvertido</th>
@@ -558,7 +580,7 @@ chart.render();
                 <td><p style="float: left;" id="showData21516"></p></td>
               </tr>
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31516"></p></td>
               </tr>
               <tr>
@@ -571,7 +593,9 @@ chart.render();
               </tr>
         </table>  
   </section>
+-->
 
+  <!--
 
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
@@ -583,13 +607,13 @@ chart.render();
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id1415"  style="width:100%">
-            <!--<tr>
+           <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>-->
+            </tr>
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
               <tr>
                 <th>Capital reinvertido</th>
@@ -600,7 +624,7 @@ chart.render();
                 <td><p style="float: left;" id="showData21415"></p></td>
               </tr>
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31415"></p></td>
               </tr>
               <tr>
@@ -625,13 +649,13 @@ chart.render();
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id1314"  style="width:100%">
-            <!--<tr>
+         <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>-->
+            </tr>
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
               <tr>
                 <th>Capital reinvertido</th>
@@ -642,7 +666,7 @@ chart.render();
                 <td><p style="float: left;" id="showData21314"></p></td>
               </tr>
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31314"></p></td>
               </tr>
               <tr>
@@ -667,13 +691,13 @@ chart.render();
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id1213"  style="width:100%">
-            <!--<tr>
+            <tr>
               <th>Fecha cálculo</th>
               <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>-->
+            </tr>
             <tr>
                 <th>Capital inicial</th>
-                <td><p>10 €</p></td>
+                <td><p>5 €</p></td>
               </tr>
               <tr>
                 <th>Capital reinvertido</th>
@@ -684,7 +708,7 @@ chart.render();
                 <td><p style="float: left;" id="showData21213"></p></td>
               </tr>
               <tr>
-                <th>Beneficios</th>
+                <th>Beneficios netos</th>
                 <td  class="y_n"><p style="float: left;" id="showData31213"></p></td>
               </tr>
               <tr>
@@ -699,7 +723,7 @@ chart.render();
   </section>
 
 
-
+-->
 
 
   <!--
@@ -839,12 +863,12 @@ chart.render();
 
 
     <script>
-        var data_informacion_json = JSON.parse('{{ data_informacion | escapejs }}');
+        var data_informacion_json_actual = JSON.parse('{{ data_informacion_actual | escapejs }}');
 
-        data_informacion_json = data_informacion_json.data
+        data_informacion_json_actual = data_informacion_json_actual.data
 
         //var d = new Date(data_informacion_json[0][0]).toDateString();
-        date = new Date(data_informacion_json[0][0]);
+        date = new Date(data_informacion_json_actual[0][0]);
         year = date.getFullYear();
         month = date.getMonth()+1;
         dt = date.getDate();
@@ -857,23 +881,23 @@ chart.render();
         //tabCell.innerHTML = ;
         //document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
 
-        var div1 = document.getElementById('showData1');
-        div1.innerHTML = data_informacion_json[0][1] + " €";
+        //var div1 = document.getElementById('showData1');
+        //div1.innerHTML = data_informacion_json[0][1] + " €";
 
-        var div2 = document.getElementById('showData2');
-        div2.innerHTML = data_informacion_json[0][2] + " €";
+       // var div2 = document.getElementById('showData2');
+        //div2.innerHTML = data_informacion_json[0][2] + " €";
 
         var div3 = document.getElementById('showData3');
-        div3.innerHTML = data_informacion_json[0][3]+ " €";
+        div3.innerHTML = data_informacion_json_actual[0][3]+ " €";
 
-        var div4 = document.getElementById('showData4');
-        div4.innerHTML = data_informacion_json[0][4] + " %";
+       // var div4 = document.getElementById('showData4');
+        //div4.innerHTML = data_informacion_json[0][4] + " %";
 
         var div5 = document.getElementById('showData5');
-        div5.innerHTML = data_informacion_json[0][5] + " %";
+        div5.innerHTML = data_informacion_json_actual[0][5] + " %";
 
-        var div6 = document.getElementById('showData6');
-        div6.innerHTML = data_informacion_json[0][3] + " €";
+        //var div6 = document.getElementById('showData6');
+        //div6.innerHTML = data_informacion_json[0][3] + " €";
 
     </script>
 
@@ -896,23 +920,23 @@ chart.render();
   //tabCell.innerHTML = ;
   //document.getElementById("showData01819").innerHTML = year+'-' + month + '-'+dt;
 
-  var div1 = document.getElementById('showData11819');
-  div1.innerHTML = data_informacion_json[0][1] + " €";
+  //var div1 = document.getElementById('showData11819');
+  //div1.innerHTML = data_informacion_json[0][1] + " €";
 
-  var div2 = document.getElementById('showData21819');
-  div2.innerHTML = data_informacion_json[0][2] + " €";
+  //var div2 = document.getElementById('showData21819');
+  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31819');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  var div4 = document.getElementById('showData41819');
-  div4.innerHTML = data_informacion_json[0][4] + " %";
+  //var div4 = document.getElementById('showData41819');
+  //div4.innerHTML = data_informacion_json[0][4] + " %";
 
   var div5 = document.getElementById('showData51819');
   div5.innerHTML = data_informacion_json[0][5] + " %";
 
-  var div6 = document.getElementById('showData61819');
-  div6.innerHTML = data_informacion_json[0][3] + " €";
+  //var div6 = document.getElementById('showData61819');
+  //div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -935,23 +959,23 @@ chart.render();
   //tabCell.innerHTML = ;
   //document.getElementById("showData01718").innerHTML = year+'-' + month + '-'+dt;
 
-  var div1 = document.getElementById('showData11718');
-  div1.innerHTML = data_informacion_json[0][1] + " €";
+  //var div1 = document.getElementById('showData11718');
+  //div1.innerHTML = data_informacion_json[0][1] + " €";
 
-  var div2 = document.getElementById('showData21718');
-  div2.innerHTML = data_informacion_json[0][2] + " €";
+  //var div2 = document.getElementById('showData21718');
+  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31718');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  var div4 = document.getElementById('showData41718');
-  div4.innerHTML = data_informacion_json[0][4] + " %";
+  //var div4 = document.getElementById('showData41718');
+  //div4.innerHTML = data_informacion_json[0][4] + " %";
 
   var div5 = document.getElementById('showData51718');
   div5.innerHTML = data_informacion_json[0][5] + " %";
 
-  var div6 = document.getElementById('showData61718');
-  div6.innerHTML = data_informacion_json[0][3] + " €";
+  //var div6 = document.getElementById('showData61718');
+ // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -974,23 +998,23 @@ chart.render();
   //tabCell.innerHTML = ;
   //document.getElementById("showData01617").innerHTML = year+'-' + month + '-'+dt;
 
-  var div1 = document.getElementById('showData11617');
-  div1.innerHTML = data_informacion_json[0][1] + " €";
+ // var div1 = document.getElementById('showData11617');
+ // div1.innerHTML = data_informacion_json[0][1] + " €";
 
-  var div2 = document.getElementById('showData21617');
-  div2.innerHTML = data_informacion_json[0][2] + " €";
+ // var div2 = document.getElementById('showData21617');
+  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31617');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  var div4 = document.getElementById('showData41617');
-  div4.innerHTML = data_informacion_json[0][4] + " %";
+  //var div4 = document.getElementById('showData41617');
+  //div4.innerHTML = data_informacion_json[0][4] + " %";
 
   var div5 = document.getElementById('showData51617');
   div5.innerHTML = data_informacion_json[0][5] + " %";
 
-  var div6 = document.getElementById('showData61617');
-  div6.innerHTML = data_informacion_json[0][3] + " €";
+  //var div6 = document.getElementById('showData61617');
+ // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -1013,23 +1037,23 @@ chart.render();
   //tabCell.innerHTML = ;
   //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
 
-  var div1 = document.getElementById('showData11516');
-  div1.innerHTML = data_informacion_json[0][1] + " €";
+ // var div1 = document.getElementById('showData11516');
+  //div1.innerHTML = data_informacion_json[0][1] + " €";
 
-  var div2 = document.getElementById('showData21516');
-  div2.innerHTML = data_informacion_json[0][2] + " €";
+ // var div2 = document.getElementById('showData21516');
+ // div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31516');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  var div4 = document.getElementById('showData41516');
-  div4.innerHTML = data_informacion_json[0][4] + " %";
+ // var div4 = document.getElementById('showData41516');
+ // div4.innerHTML = data_informacion_json[0][4] + " %";
 
   var div5 = document.getElementById('showData51516');
   div5.innerHTML = data_informacion_json[0][5] + " %";
 
-  var div6 = document.getElementById('showData61516');
-  div6.innerHTML = data_informacion_json[0][3] + " €";
+ // var div6 = document.getElementById('showData61516');
+ // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
