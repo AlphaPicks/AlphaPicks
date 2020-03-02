@@ -23,6 +23,7 @@ from zipfile import ZipFile
 from django.utils import timezone
 from django.core import serializers
 from datetime import datetime
+from datetime import date
 from datetime import timedelta
 #import datetime
 
@@ -47,7 +48,7 @@ LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
 
 #from celery.schedules import crontab
 #from celery.task import periodic_task
-from datetime import timedelta
+
 #@periodic_task(run_every=timedelta(seconds=2))
 #def every_monday_morning():
 #    print("This is run every Monday morning at 7:30")
@@ -62,7 +63,7 @@ from datetime import timedelta
 
 
 
-mails = ["ibon.bengoa@opendeusto.es"]
+mails = ["ibon.bengoa@opendeusto.es", "davitx17@gmail.com"]
 user_email = "ibongaraybengoabets@gmail.com"
 pass_email = "IbonGaray7777777777"
 
@@ -384,6 +385,7 @@ def historicoBeneficiosLanzar(request):
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
     
+    
 
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "H", 'FTR'] = "0"
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
@@ -414,6 +416,11 @@ def historicoBeneficiosLanzar(request):
 
     df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
     df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
+
+
+    #print("3")
+    #print(df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"]=="1") ])
+    #print("4")
 
     for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
         resultado_actual= row["FTR"]
@@ -505,6 +512,9 @@ def prediccionesLanzar(request):
     df_prediccion_rf_empates["entrar"] = "no"
     df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
     
+    #print("1")
+    #print(df_prediccion_rf_empates)
+    #print("2")
     df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
     df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=True)
 
@@ -535,7 +545,7 @@ def prediccionesLanzar(request):
     asunto_mensaje = "Prediccion Empates (" + str(t_object.year) + "/" + str(t_object.month) + "/" + str(t_object.day) + ")"
     texto_mensaje = df_prediccion_rf_empates[(df_prediccion_rf_empates["entrar"] == "si")].filter(items=["Date", "HomeTeam", "AwayTeam", "B365D"]).to_string(col_space = 20, justify='start', index=False)
     #& ((df_prediccion_rf_empates["Div"] == "B1") | (df_prediccion_rf_empates["Div"] == "D1") | (df_prediccion_rf_empates["Div"] == "E0") | (df_prediccion_rf_empates["Div"] == "EC") | (df_prediccion_rf_empates["Div"] == "F2") | (df_prediccion_rf_empates["Div"] == "G1") | (df_prediccion_rf_empates["Div"] == "I1") | (df_prediccion_rf_empates["Div"] == "N1") | (df_prediccion_rf_empates["Div"] == "P1") | (df_prediccion_rf_empates["Div"] == "SC0") | (df_prediccion_rf_empates["Div"] == "SC2") | (df_prediccion_rf_empates["Div"] == "SP1") | (df_prediccion_rf_empates["Div"] == "SP2") | (df_prediccion_rf_empates["Div"] == "T1"))
-    #send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
+    send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
 
     return render(request, 'home.html')
 
