@@ -64,12 +64,15 @@ LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
 
 
 mails = ["ibon.bengoa@opendeusto.es", "davitx17@gmail.com"]
+mails = ["ibongaraybengoabets@gmail.com"]
+mails_cc = ["ibon.bengoa@opendeusto.es"]
+
 user_email = "ibongaraybengoabets@gmail.com"
 pass_email = "IbonGaray7777777777"
 
 
 
-def send_email(user, pwd, recipient, subject, body):
+def send_email(user, pwd, recipient, bcc, subject, body):
     FROM = user
     TO = recipient if isinstance(recipient, list) else [recipient]
     SUBJECT = subject
@@ -545,7 +548,7 @@ def prediccionesLanzar(request):
     asunto_mensaje = "Prediccion Empates (" + str(t_object.year) + "/" + str(t_object.month) + "/" + str(t_object.day) + ")"
     texto_mensaje = df_prediccion_rf_empates[(df_prediccion_rf_empates["entrar"] == "si")].filter(items=["Date", "HomeTeam", "AwayTeam", "B365D"]).to_string(col_space = 20, justify='start', index=False)
     #& ((df_prediccion_rf_empates["Div"] == "B1") | (df_prediccion_rf_empates["Div"] == "D1") | (df_prediccion_rf_empates["Div"] == "E0") | (df_prediccion_rf_empates["Div"] == "EC") | (df_prediccion_rf_empates["Div"] == "F2") | (df_prediccion_rf_empates["Div"] == "G1") | (df_prediccion_rf_empates["Div"] == "I1") | (df_prediccion_rf_empates["Div"] == "N1") | (df_prediccion_rf_empates["Div"] == "P1") | (df_prediccion_rf_empates["Div"] == "SC0") | (df_prediccion_rf_empates["Div"] == "SC2") | (df_prediccion_rf_empates["Div"] == "SP1") | (df_prediccion_rf_empates["Div"] == "SP2") | (df_prediccion_rf_empates["Div"] == "T1"))
-    send_email(user_email, pass_email, mails, asunto_mensaje, texto_mensaje)
+    send_email(user_email, pass_email, mails, mails_cc, asunto_mensaje, texto_mensaje)
 
     return render(request, 'home.html')
 
