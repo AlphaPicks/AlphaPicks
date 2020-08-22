@@ -37,6 +37,17 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+    $('#table_id1920 td.y_n').each(function(){
+        if (data_informacion_json[0][3] > 0) {
+            $(this).css('color','#00b200');
+        }
+        if (data_informacion_json[0][3] < 0) {
+          $(this).css('color','#ff3d3d');
+        }
+    });
+});
+
+$(document).ready(function(){
     $('#table_id1819 td.y_n').each(function(){
         if (data_informacion_json[0][3] > 0) {
             $(this).css('color','#00b200');
@@ -412,7 +423,59 @@ chart.render();
     <hr>
     <div class='tableauPlaceholder' id='viz1582892298558' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Be&#47;BeneficiosAnualesBets&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='BeneficiosAnualesBets&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Be&#47;BeneficiosAnualesBets&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1582892298558');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='527px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='527px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
     </section>
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+  
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+      <hr>
+      <h2 style="text-align: center">Temporada 2019/2020</h2>
+    </section>
+  
+      <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
+          <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2019/2020:</p>
+      </section>
+      <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
+  
+          <table id = "table_id1920"  style="width:100%">
+             <!-- <tr>
+                <th>Fecha cálculo</th>
+                <td><p style="float: left;" id="showData01920"></p></td>
+              </tr>-->
+              <tr>
+                  <th>Capital inicial</th>
+                  <td><p>5 €</p></td>
+                </tr>
+                <!--<tr>
+                  <th>Capital reinvertido</th>
+                  <td><p style="float: left;" id="showData11920"></p></td>
+                </tr>
+                <tr>
+                  <th>Ganancias</th>
+                  <td><p style="float: left;" id="showData21920"></p></td>
+                </tr>-->
+                <tr>
+                  <th>Beneficios netos</th>
+                  <td  class="y_n"><p style="float: left;" id="showData31920"></p></td>
+                </tr>
+                <!--<tr>
+                  <th>Rentabilidad</th>
+                  <td><p style="float: left;" id="showData41920"></p></td>
+                </tr>
+                <tr>
+                  <th>Rentabilidad frente al capital inicial</th>
+                  <td><p style="float: left;" id="showData51920"></p></td>
+                </tr>-->
+  
+                <tr>
+                  <th>Rentabilidad</th>
+                  <td><p style="float: left;" id="showData51920"></p></td>
+                </tr>
+          </table>  
+    </section>
+
+
+
+
+
+    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
     <h2 style="text-align: center">Temporada 2018/2019</h2>
   </section>
@@ -900,6 +963,45 @@ chart.render();
         //div6.innerHTML = data_informacion_json[0][3] + " €";
 
     </script>
+
+<script>
+  var data_informacion_json = JSON.parse('{{ data_informacion_1920 | escapejs }}');
+
+  data_informacion_json = data_informacion_json.data
+
+  //var d = new Date(data_informacion_json[0][0]).toDateString();
+  date = new Date(data_informacion_json[0][0]);
+  year = date.getFullYear();
+  month = date.getMonth()+1;
+  dt = date.getDate();
+  if (dt < 10) {
+      dt = '0' + dt;
+  }
+  if (month < 10) {
+      month = '0' + month;
+  }
+  //tabCell.innerHTML = ;
+  //document.getElementById("showData01819").innerHTML = year+'-' + month + '-'+dt;
+
+  //var div1 = document.getElementById('showData11920');
+  //div1.innerHTML = data_informacion_json[0][1] + " €";
+
+  //var div2 = document.getElementById('showData21920');
+  //div2.innerHTML = data_informacion_json[0][2] + " €";
+
+  var div3 = document.getElementById('showData31920');
+  div3.innerHTML = data_informacion_json[0][3]+ " €";
+
+  //var div4 = document.getElementById('showData41920');
+  //div4.innerHTML = data_informacion_json[0][4] + " %";
+
+  var div5 = document.getElementById('showData51920');
+  div5.innerHTML = data_informacion_json[0][5] + " %";
+
+  //var div6 = document.getElementById('showData61920');
+  //div6.innerHTML = data_informacion_json[0][3] + " €";
+
+</script>
 
 <script>
   var data_informacion_json = JSON.parse('{{ data_informacion_1819 | escapejs }}');

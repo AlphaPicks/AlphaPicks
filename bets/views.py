@@ -41,7 +41,7 @@ from bets.models import Historico
 #VERSION_MODELO = "D1"
 VERSION_MODELO = "D1_E0_16"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 5
-TEMPORADA_ACTUAL = 1920
+TEMPORADA_ACTUAL = 2021
 
 LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
 
@@ -119,58 +119,60 @@ def obtenerDatosTemporada():
     resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-    #df_new = pd.read_csv(zipfile.open('B1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+  
+    ##df_new = pd.read_csv(zipfile.open('B1.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('D1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('D2.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('D3.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('D3.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('E0.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('E1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('E2.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('E3.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('E1.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('E2.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('E3.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('EC.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('F1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('F1.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('F2.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('G1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('I1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('I2.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('N1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('P1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('SC0.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('I2.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('N1.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('P1.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('SC0.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SC1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('SC2.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('SC3.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('SC2.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
+    ##df_new = pd.read_csv(zipfile.open('SC3.csv'))
+    ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SP1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('SP2.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('T1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
+  
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
     Historico.objects.all().delete()
     
-    temporadas = ["1819", "1718", "1617", "1516", "1415", "1314", "1213"]#, "1112", "1011"]
+    temporadas = ["1920", "1819", "1718", "1617", "1516", "1415", "1314", "1213"]#, "1112", "1011"]
     for t in temporadas:
         df_test = pd.DataFrame()
         data_path = staticfiles_storage.path("data/" + t + ".zip")
@@ -555,10 +557,17 @@ def prediccionesLanzar(request):
 def precision(request):
     #Temporada actual
     #last_beneficio = Beneficios.objects.latest('temporada')
-    last_beneficio = Beneficios.objects.filter(temporada = "1920").order_by('-id')[0]
+    last_beneficio = Beneficios.objects.filter(temporada = "2021").order_by('-id')[0]
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
     
+    #Temporada 1920
+    #last_beneficio = Beneficios.objects.latest('temporada')
+    last_beneficio = Beneficios.objects.filter(temporada = "1920").order_by('-id')[0]
+    data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
+    df_data_informacion_1920 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
+    
+
     #Temporada 1819
     last_beneficio = Beneficios.objects.filter(temporada = "1819").order_by('-id')[0]
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
@@ -604,7 +613,7 @@ def precision(request):
     #data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     #df_data_informacion_1011 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
     
-    frames = [df_data_informacion, df_data_informacion_1819, df_data_informacion_1718, df_data_informacion_1617, df_data_informacion_1516, df_data_informacion_1415, df_data_informacion_1314, df_data_informacion_1213]
+    frames = [df_data_informacion, df_data_informacion_1920, df_data_informacion_1819, df_data_informacion_1718, df_data_informacion_1617, df_data_informacion_1516, df_data_informacion_1415, df_data_informacion_1314, df_data_informacion_1213]
     df_data_evolucion = pd.concat(frames)
 
     #print(df_data_evolucion)
@@ -635,7 +644,7 @@ def precision(request):
 
     
 
-    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1920': df_data_informacion_1920.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={
