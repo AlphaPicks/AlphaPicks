@@ -116,10 +116,14 @@ def apuestas(request):
 
 def obtenerDatosTemporada():
     df_test = pd.DataFrame()
-    resp = urlopen('https://www.football-data.co.uk/mmz4281/1920/data.zip')
+    resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-  
+
+    df_new = pd.read_csv(zipfile.open('F2.csv'))
+    df_test = pd.concat([df_test, df_new], sort=True)
+
+    '''
     ##df_new = pd.read_csv(zipfile.open('B1.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('D1.csv'))
@@ -166,7 +170,7 @@ def obtenerDatosTemporada():
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('T1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-  
+  '''
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
@@ -296,7 +300,15 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         
         #Beneficios.objects.all().delete()
         #print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
-        b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = t) 
+        print("ganancias_totales", ganancias_totales)
+
+        capital_inicial_aux = round(capital_inicial_total2, 2)
+        ganancias_brutas_aux = round(ganancias_totales, 2)
+        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2, 2)
+        porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
+
+        b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
         b.save()
 
         #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
@@ -335,7 +347,9 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    historicoBeneficiosLanzarOtrasTemporadas()
+    #historicoBeneficiosLanzarOtrasTemporadas()
+    Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
+
     df_test = obtenerDatosTemporada()
     df_actual = df_test
     ### ************
@@ -454,8 +468,16 @@ def historicoBeneficiosLanzar(request):
     df_mensual["mes"] = df_mensual["mes_nombre2"].astype(int)
     BeneficiosMes.objects.all().delete()
 
+    df_mensual.fillna(0)
+    
     for index, row in df_mensual.iterrows():
-        bM = BeneficiosMes(capital_inicial = row["Inversion"], ganancias_brutas = row["Ganancias"], ganancias_netas = row["Beneficio"], mes = row["mes"], temporada = TEMPORADA_ACTUAL)
+        var_ganancias = row["Ganancias"]
+        if(np.isnan(row["Ganancias"])):
+            var_ganancias = 10
+        var_beneficio = row["Beneficio"]
+        if(np.isnan(row["Beneficio"])):
+            var_beneficio = 10
+        bM = BeneficiosMes(capital_inicial = row["Inversion"], ganancias_brutas = var_ganancias, ganancias_netas = var_beneficio, mes = row["mes"], temporada = TEMPORADA_ACTUAL)
         bM.save()
 
     return render(request, 'home.html')
@@ -617,7 +639,6 @@ def precision(request):
     df_data_evolucion = pd.concat(frames)
 
     #print(df_data_evolucion)
-
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
@@ -629,15 +650,20 @@ def precision(request):
     df_last_jornada = df[(df.date > (datetime.now().date() - pd.to_timedelta(tiempoJornadaInicio))) & (df.date < (datetime.now().date() - pd.to_timedelta(tiempoJornadaFin)))]
 
     capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
+  
     ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
     beneficios = round(ganancias_totales - capital_inicial_total2, 2)
-    if(capital_inicial_total2>0):
-        rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+
+    if(ganancias_totales!=0):
+        if(capital_inicial_total2>0):
+            rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+        else:
+            rentabilidad = 0
     else:
         rentabilidad = 0
     beneficio_mes = BeneficiosMes.objects.latest('temporada')
-    all_entries_mes = BeneficiosMes.objects.filter(temporada = beneficio_mes.temporada)
-    
+
+    all_entries_mes = BeneficiosMes.objects.filter(temporada = beneficio_mes.temporada)  
     first_mes = all_entries_mes.values_list()    
     
     df_mes = pd.DataFrame(data=first_mes, columns=['id', 'capital_inicial', 'ganancias_brutas', 'ganancias_netas', "temporada", 'mes'])
