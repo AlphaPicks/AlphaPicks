@@ -13,6 +13,7 @@ urlpatterns = [
     path("prediccionesLanzar", views.prediccionesLanzar, name="prediccionesLanzar"),
     #path("historicoLanzar", views.historicoLanzar, name="historicoLanzar"),
     path("historicoBeneficiosLanzar", views.historicoBeneficiosLanzar, name="historicoBeneficiosLanzar"),
+    path("historico20202021", views.historico20202021, name="historico20202021"),
     path("historico20192020", views.historico20192020, name="historico20192020"),
     path("historico20182019", views.historico20182019, name="historico20182019"),
     path("historico20172018", views.historico20172018, name="historico20172018"),

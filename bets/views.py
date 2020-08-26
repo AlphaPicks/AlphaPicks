@@ -713,6 +713,14 @@ def mes(i):
     }
     return switcher.get(i,"Invalid month")
 
+def historico20202021(request):
+    #historico = Historico.objects.latest('ejecucion')
+    all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 2021)
+    first = all_entries.values_list()    
+    df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "cuotaEmpates", "temporada", "probabilidad"])
+    return render(request, 'historico20202021.html', {'data': df.to_json(orient='split')})   
+
+
 def historico20192020(request):
     #historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = 1, prediction = 1, temporada = 1920)
