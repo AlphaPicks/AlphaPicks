@@ -188,10 +188,11 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         #zipfile.ZipFile('images.zip', 'r')
         #zipfile = ZipFile(BytesIO(data.read()))
         zipfile.namelist()
-
+        '''
         for l in LIGAS:
             df_new = pd.read_csv(zipfile.open(l+'.csv'), encoding= 'unicode_escape')
             sdf_test = pd.concat([df_test, df_new], sort=True)
+       
 
         '''
 
@@ -242,7 +243,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')    
         df_test = pd.concat([df_test, df_new], sort=True)
         
-        '''
+        
         
         df_test["temporada"] = t
         
@@ -250,9 +251,11 @@ def historicoBeneficiosLanzarOtrasTemporadas():
 
         #print(df_actual)
         ###
+        
         now = datetime.now()
         timestamp = datetime.timestamp(now)
         t_object = datetime.fromtimestamp(timestamp)
+        
         #Se guarda el dato de la prediccion
         #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
         clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', "temporada", 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
@@ -316,7 +319,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         ganancias_brutas_aux = round(ganancias_totales, 2)
         ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2, 2)
         porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
-        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
+        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2-CAPITAL_INICIAL_TOTAL_APUESTAS)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
         b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
         b.save()
 
@@ -421,12 +424,14 @@ def historicoBeneficiosLanzar(request):
 
     df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
 
-    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)-1
+    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
     ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
     
     #Beneficios.objects.all().delete()
 
-    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
+
+
+    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2-CAPITAL_INICIAL_TOTAL_APUESTAS)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
     b.save()
 
     #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
