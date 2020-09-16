@@ -562,7 +562,7 @@ def prediccionesLanzar(request):
     df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=True)
 
     ejecucion_actual = Predicciones.objects.latest('ejecucion').ejecucion + 1
-
+    print(ejecucion_actual)
     #Predicciones.objects.all().delete()
 
     #ejecucion_actual = 0
@@ -573,6 +573,8 @@ def prediccionesLanzar(request):
     prediction_actual = 0
     probabilidad = 0
     cuota = 0
+    p = Predicciones(prediction = 0, date = date_actual, home_team = "", away_team = "", resultado = 0, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = 0, cuota = 0)
+    p.save()
     for index, row in df_prediccion_rf_empates.iterrows():
         away_team_actual = row["AwayTeam"]
         home_team_actual = row["HomeTeam"]
