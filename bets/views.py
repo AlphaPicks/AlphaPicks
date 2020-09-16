@@ -119,17 +119,17 @@ def obtenerDatosTemporada():
     resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-
-    df_new = pd.read_csv(zipfile.open('F2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-
+    LIGAS_2 = ['E0', 'F2', 'G1', "SP1", "SP2", "T1"]
+    for l in LIGAS_2:
+        df_new = pd.read_csv(zipfile.open(l+".csv"))
+        df_test = pd.concat([df_test, df_new], sort=True)
     '''
     ##df_new = pd.read_csv(zipfile.open('B1.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('D1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('D2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('D1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('D2.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('D3.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('E0.csv'))
@@ -140,16 +140,16 @@ def obtenerDatosTemporada():
     ##df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('E3.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('EC.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('EC.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('F1.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('F2.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('G1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('I1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('I1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('I2.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('N1.csv'))
@@ -158,8 +158,8 @@ def obtenerDatosTemporada():
     ##df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('SC0.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SC1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
+    #df_new = pd.read_csv(zipfile.open('SC1.csv'))
+    #df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('SC2.csv'))
     ##df_test = pd.concat([df_test, df_new], sort=True)
     ##df_new = pd.read_csv(zipfile.open('SC3.csv'))
@@ -170,7 +170,7 @@ def obtenerDatosTemporada():
     df_test = pd.concat([df_test, df_new], sort=True)
     df_new = pd.read_csv(zipfile.open('T1.csv'))
     df_test = pd.concat([df_test, df_new], sort=True)
-  '''
+    '''
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
@@ -188,6 +188,13 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         #zipfile.ZipFile('images.zip', 'r')
         #zipfile = ZipFile(BytesIO(data.read()))
         zipfile.namelist()
+
+        for l in LIGAS:
+            df_new = pd.read_csv(zipfile.open(l+'.csv'), encoding= 'unicode_escape')
+            sdf_test = pd.concat([df_test, df_new], sort=True)
+
+        '''
+
         #df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
         #df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('D1.csv'), encoding= 'unicode_escape')
@@ -232,8 +239,11 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_test = pd.concat([df_test, df_new], sort=True)
         df_new = pd.read_csv(zipfile.open('SP2.csv'), encoding= 'unicode_escape')
         df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')
+        df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')    
         df_test = pd.concat([df_test, df_new], sort=True)
+        
+        '''
+        
         df_test["temporada"] = t
         
         df_actual = df_test
@@ -300,14 +310,13 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         
         #Beneficios.objects.all().delete()
         #print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
-        print("ganancias_totales", ganancias_totales)
+        #print("ganancias_totales", ganancias_totales)
 
         capital_inicial_aux = round(capital_inicial_total2, 2)
         ganancias_brutas_aux = round(ganancias_totales, 2)
         ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2, 2)
         porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
         porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
-
         b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
         b.save()
 
@@ -327,7 +336,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
 
         #print(df_prediccion_rf_empates["temporada"])
-
+        df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
         for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
             resultado_actual= row["FTR"]
             away_team_actual = row["AwayTeam"]
@@ -410,7 +419,9 @@ def historicoBeneficiosLanzar(request):
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
     df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
 
-    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
+    df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
+
+    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)-1
     ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
     
     #Beneficios.objects.all().delete()
@@ -440,7 +451,7 @@ def historicoBeneficiosLanzar(request):
     #print("3")
     #print(df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"]=="1") ])
     #print("4")
-
+    df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
     for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
         resultado_actual= row["FTR"]
         away_team_actual = row["AwayTeam"]
