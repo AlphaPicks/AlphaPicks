@@ -359,7 +359,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    historicoBeneficiosLanzarOtrasTemporadas()
+    #historicoBeneficiosLanzarOtrasTemporadas()
     Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
 
     df_test = obtenerDatosTemporada()
