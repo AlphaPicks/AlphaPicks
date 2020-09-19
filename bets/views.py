@@ -317,7 +317,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
 
         capital_inicial_aux = round(capital_inicial_total2, 2)
         ganancias_brutas_aux = round(ganancias_totales, 2)
-        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2+CAPITAL_INICIAL_TOTAL_APUESTAS, 2)
+        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2, 2)
         porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
         porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
         b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
@@ -431,7 +431,7 @@ def historicoBeneficiosLanzar(request):
 
 
 
-    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2+CAPITAL_INICIAL_TOTAL_APUESTAS, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
+    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
     b.save()
 
     #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
