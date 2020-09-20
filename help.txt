@@ -151,3 +151,17 @@ python3.7 manage.py collectstatic
 
 git reset HEAD --hard
 git pull origin master -r
+
+
+
+Subir-->
+
+git add .
+git commit -m "Initial commit"
+git push
+
+
+Bajar -->
+
+git reset HEAD --hard
+git pull origin master -r
