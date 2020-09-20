@@ -41,6 +41,9 @@ from bets.models import Historico
 #VERSION_MODELO = "D1"
 VERSION_MODELO = "D1_E0_16"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
+
+CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 8, "1718": 7, "1819": 7, "1920": 25}
+
 TEMPORADA_ACTUAL = 2021
 
 LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
@@ -123,54 +126,7 @@ def obtenerDatosTemporada():
     for l in LIGAS_2:
         df_new = pd.read_csv(zipfile.open(l+".csv"))
         df_test = pd.concat([df_test, df_new], sort=True)
-    '''
-    ##df_new = pd.read_csv(zipfile.open('B1.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('D1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('D2.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('D3.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('E0.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('E1.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('E2.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('E3.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('EC.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('F1.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('F2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('G1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('I1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('I2.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('N1.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('P1.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('SC0.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    #df_new = pd.read_csv(zipfile.open('SC1.csv'))
-    #df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('SC2.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    ##df_new = pd.read_csv(zipfile.open('SC3.csv'))
-    ##df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SP1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('SP2.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    df_new = pd.read_csv(zipfile.open('T1.csv'))
-    df_test = pd.concat([df_test, df_new], sort=True)
-    '''
+    
     return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
@@ -317,9 +273,11 @@ def historicoBeneficiosLanzarOtrasTemporadas():
 
         capital_inicial_aux = round(capital_inicial_total2, 2)
         ganancias_brutas_aux = round(ganancias_totales, 2)
-        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2, 2)
+        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2 + CAPITAL_APORTADO.get(t), 2)
         porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
-        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
+        #porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
+        #print("capital-->" , CAPITAL_APORTADO.get(t))
+        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_APORTADO.get(t)),2)
         b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
         b.save()
 
@@ -359,7 +317,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    #historicoBeneficiosLanzarOtrasTemporadas()
+    historicoBeneficiosLanzarOtrasTemporadas()
     Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
 
     df_test = obtenerDatosTemporada()
@@ -431,7 +389,7 @@ def historicoBeneficiosLanzar(request):
 
 
 
-    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
+    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2 + CAPITAL_INICIAL_TOTAL_APUESTAS, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
     b.save()
 
     #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
