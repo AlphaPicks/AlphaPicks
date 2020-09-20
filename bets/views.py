@@ -42,7 +42,7 @@ from bets.models import Historico
 VERSION_MODELO = "D1_E0_16"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
 
-CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 8, "1718": 7, "1819": 7, "1920": 25}
+CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 8, "1718": 7, "1819": 7, "1920": 25, "2021": 10}
 
 TEMPORADA_ACTUAL = 2021
 
@@ -552,7 +552,48 @@ def prediccionesLanzar(request):
 
     return render(request, 'home.html')
 
+def calcular_capital_inicial():
+    historico_pd = pd.DataFrame(list(Historico.objects.all().values()))
+    #print(historico_pd.head())
+
+    df_bd = historico_pd
+    
+    df_bd['date'] = pd.to_datetime(df_bd['date']).apply(lambda x: x.date())
+
+    df_bd = df_bd[df_bd['date']>date(2016,7,28)]
+
+    for y in [2016, 2017, 2018, 2019]:
+        df_bd_aux = df_bd[(df_bd['date']>date(y,7,25)) & (df_bd['date']<date(y+1,8, 2))]
+        df_bd_aux = df_bd_aux.sort_values(by="date", ascending=True)
+        
+        capital_inicial=0
+        maxima_deuda = 0
+        date_2=0
+        dinero_necesario=0
+
+        for x in range(5,30):
+            capital_inicial=x
+            maxima_deuda = 0
+            date_2=0
+            capital_final = capital_inicial
+            for indice_fila, fila in df_bd_aux.iterrows():
+                capital_final = capital_final-1
+                if(capital_final<maxima_deuda):
+                    maxima_deuda = capital_final
+                    date_2=fila["date"]
+                if(fila["resultado"]==1):
+                    capital_final = capital_final + fila["cuotaEmpate"]
+            if ((maxima_deuda<0) & (maxima_deuda>-1)):
+                dinero_necesario=x+1
+        #print("Temporada: ", str(y))
+        #print("Dinero necesario:" , dinero_necesario)
+        #print("Dinero final:" , capital_final-capital_inicial+dinero_necesario)
+        #print("_______________")
+        CAPITAL_APORTADO[str(y)[2:4]+str(y+1)[2:4]] = dinero_necesario
+        CAPITAL_APORTADO["2021"] = CAPITAL_INICIAL_TOTAL_APUESTAS
+
 def precision(request):
+    #calcular_capital_inicial()
     #Temporada actual
     #last_beneficio = Beneficios.objects.latest('temporada')
     last_beneficio = Beneficios.objects.filter(temporada = "2021").order_by('-id')[0]
@@ -644,9 +685,10 @@ def precision(request):
     
     df_mes = pd.DataFrame(data=first_mes, columns=['id', 'capital_inicial', 'ganancias_brutas', 'ganancias_netas', "temporada", 'mes'])
 
-    
 
-    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1920': df_data_informacion_1920.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
+    pd_capital_aportado = pd.DataFrame(CAPITAL_APORTADO.items(), columns=["temporada", "capital"])
+
+    return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1920': df_data_informacion_1920.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "pd_capital_aportado": pd_capital_aportado.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
     switcher={

@@ -214,26 +214,6 @@ b {
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <h1 style="text-align: center">Análisis de los beneficios obtenidos por el sistema de IA</h1>
     </section>
-<!--
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-      <p>Resultados obtenidos por el algente inteligente para la última jornada:</p>
-    </section>
-
-  <section style="margin-right: 38%; margin-left: 38%; margin-bottom: 2%;">
-    
-    <div id="wrapper">
-      <div id="firsttitulo"><b>Inversión</b></div>
-     
-      <div id="secondtitulo"><b>Beneficios</b></div>
-    </div>
-    <p></p>
-    <div id="wrapper">
-      <div id="first">{{capital_inicial_total2}} €</div>
-      <div id="second">{{beneficios}} €</div>
-    </div>
-    
-
-  </section>-->
 
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script type="text/javascript">
@@ -286,78 +266,20 @@ chart.render();
   chart.render();
 </script>
 
-<!--
-
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-      <p>Resultados obtenidos por el algente inteligente para la última jornada:</p>
-  </section>
-
-  <section style="margin-right: 38%; margin-left: 38%; margin-bottom: 2%;">
-
-    <table id = "table_id" style="width:100%">
-        <tr>
-          <th>Inversión</th>
-          <td><p style="float: left;"></p>{{capital_inicial_total2}} €</td>
-        </tr>
-        <tr>
-            <th>Ganancias</th>
-            <td><p>{{ganancias_totales}} €</p></td>
-          </tr>
-          <tr>
-            <th>Capital final</th>
-            <td class="y_n"><p style="float: left;">{{beneficios}} €</p></td>
-          </tr>
-          <tr>
-            <th>Rentabilidad</th>
-            <td ><p style="float: left;">{{rentabilidad}} %</p></td>
-          </tr>
-    </table>
-  </section>
-
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada actual</h2>
-  </section>
--->
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol actual:</p>
     </section>
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id2"  style="width:100%">
-           <!-- <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData0"></p></td>
-            </tr>-->
-             <!--<tr>
-                <th>Capital aportado</th>
-                <td><p>10 €</p></td>
-              </tr>-->
               <tr>
                 <th>Capital aportado</th>
-                <td><p>10 €</p></td>
+                <td><p style="float: left;" id="capital_aportado_2021"></p></td>
               </tr>
-             <!-- <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData1"></p></td>
-              </tr>-->
-              <!--<tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData2"></p></td>
-              </tr>-->
               <tr>
                 <th>Capital final</th>
                 <td  class="y_n"><p style="float: left;" id="showData3"></p></td>
               </tr>
-              <!--<tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData4"></p></td>
-              </tr>-->
-              <!--<tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData5"></p></td>
-              </tr>-->
-
               <tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData5"></p></td>
@@ -371,52 +293,8 @@ chart.render();
     <p>Todas las apuestas han sido individuales, nunca combinadas.</p> 
     <p>El capital inicial del que disponía el agente inteligente ha sido de 10 € que ha ido apostando y reinvirtiendo, obteniendo las ganancias netas mostradas en la tabla. </p>
   </section>
-<!--
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <p>Evolución de los beneficios:</p>
-</section>
-
-<section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-  <div id='myDiv'></div>
-
-</section>
--->
 
   </script>
-  <!--
-
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;" >
-    <hr>
-    <div class="btn-group" role="group" >
-      <button type="button" class="btn btn-default" id="presupuestosGastos"
-              onclick="window.location.href='/gijon/economia/presupuestos/gastos/'">2018/2019
-      </button>
-     
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2017/2018
-      </button>
-      
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2016/2017
-      </button>
-      
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2015/2016
-      </button>
-      
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2014/2015
-      </button>
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2013/2014
-      </button>
-      <button type="button" class="btn btn-default" id="presupuestosIngresos"
-              onclick="window.location.href='/gijon/economia/presupuestos/ingresos/'">2012/2013
-      </button>
-  </div>
-  </section>
-
-  -->
 
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
@@ -431,38 +309,17 @@ chart.render();
       <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
           <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2019/2020:</p>
       </section>
+
       <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-  
           <table id = "table_id1920"  style="width:100%">
-             <!-- <tr>
-                <th>Fecha cálculo</th>
-                <td><p style="float: left;" id="showData01920"></p></td>
-              </tr>-->
               <tr>
                   <th>Capital aportado</th>
-                  <td><p>25 €</p></td>
+                  <td><p style="float: left;" id="capital_aportado_1920"></p></td>
                 </tr>
-                <!--<tr>
-                  <th>Capital reinvertido</th>
-                  <td><p style="float: left;" id="showData11920"></p></td>
-                </tr>
-                <tr>
-                  <th>Ganancias</th>
-                  <td><p style="float: left;" id="showData21920"></p></td>
-                </tr>-->
                 <tr>
                   <th>Capital final</th>
                   <td  class="y_n"><p style="float: left;" id="showData31920"></p></td>
                 </tr>
-                <!--<tr>
-                  <th>Rentabilidad</th>
-                  <td><p style="float: left;" id="showData41920"></p></td>
-                </tr>
-                <tr>
-                  <th>Rentabilidad frente al capital inicial</th>
-                  <td><p style="float: left;" id="showData51920"></p></td>
-                </tr>-->
-  
                 <tr>
                   <th>Rentabilidad</th>
                   <td><p style="float: left;" id="showData51920"></p></td>
@@ -470,50 +327,25 @@ chart.render();
           </table>  
     </section>
 
-
-
-
-
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada 2018/2019</h2>
-  </section>
+      <hr>
+      <h2 style="text-align: center">Temporada 2018/2019</h2>
+    </section>
 
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2018/2019:</p>
     </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
         <table id = "table_id1819"  style="width:100%">
-           <!-- <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01819"></p></td>
-            </tr>-->
             <tr>
                 <th>Capital aportado</th>
-                <td><p>7 €</p></td>
+                <td><p style="float: left;" id="capital_aportado_1819"></p></td>
               </tr>
-              <!--<tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11819"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21819"></p></td>
-              </tr>-->
               <tr>
                 <th>Capital final</th>
                 <td  class="y_n"><p style="float: left;" id="showData31819"></p></td>
               </tr>
-              <!--<tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41819"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51819"></p></td>
-              </tr>-->
-
               <tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData51819"></p></td>
@@ -529,38 +361,17 @@ chart.render();
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2017/2018:</p>
     </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
+    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
         <table id = "table_id1718"  style="width:100%">
-           <!-- <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01718"></p></td>
-            </tr>-->
             <tr>
                 <th>Capital aportado</th>
-                <td><p>7 €</p></td>
+                <td><p style="float: left;" id="capital_aportado_1718"></p></td>
               </tr>
-              <!--<tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11718"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21718"></p></td>
-              </tr>-->
               <tr>
                 <th>Capital final</th>
                 <td  class="y_n"><p style="float: left;" id="showData31718"></p></td>
               </tr>
-             <!-- <tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41718"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51718"></p></td>
-              </tr>
-            -->
               <tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData51718"></p></td>
@@ -568,7 +379,6 @@ chart.render();
         </table>  
   </section>
 
-  
   <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
     <hr>
     <h2 style="text-align: center">Temporada 2016/2017</h2>
@@ -577,228 +387,24 @@ chart.render();
     <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
         <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2016/2017:</p>
     </section>
+
     <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
 
         <table id = "table_id1617"  style="width:100%">
-           <!-- <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01617"></p></td>
-            </tr>-->
             <tr>
                 <th>Capital aportado</th>
-                <td><p>8 €</p></td>
+                <td><p style="float: left;" id="capital_aportado_1617"></p></td>
               </tr>
-             <!-- <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11617"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21617"></p></td>
-              </tr>-->
               <tr>
                 <th>Capital final</th>
                 <td  class="y_n"><p style="float: left;" id="showData31617"></p></td>
               </tr>
-              <!--<tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41617"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51617"></p></td>
-              </tr>-->
               <tr>
                 <th>Rentabilidad</th>
                 <td><p style="float: left;" id="showData51617"></p></td>
               </tr>
         </table>  
   </section>
-<!--
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada 2015/2016</h2>
-  </section>
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2015/2016:</p>
-    </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-
-        <table id = "table_id1516"  style="width:100%">
-            <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>
-            <tr>
-                <th>Capital aportado</th>
-                <td><p>10 €</p></td>
-              </tr>
-              <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11516"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21516"></p></td>
-              </tr>
-              <tr>
-                <th>Capital final</th>
-                <td  class="y_n"><p style="float: left;" id="showData31516"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41516"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51516"></p></td>
-              </tr>
-        </table>  
-  </section>
--->
-
-  <!--
-
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada 2014/2015</h2>
-  </section>
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2014/2015:</p>
-    </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-
-        <table id = "table_id1415"  style="width:100%">
-           <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>
-            <tr>
-                <th>Capital aportado</th>
-                <td><p>10 €</p></td>
-              </tr>
-              <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11415"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21415"></p></td>
-              </tr>
-              <tr>
-                <th>Capital final</th>
-                <td  class="y_n"><p style="float: left;" id="showData31415"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41415"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51415"></p></td>
-              </tr>
-        </table>  
-  </section>
-
-
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada 2013/2014</h2>
-  </section>
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2013/2014:</p>
-    </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-
-        <table id = "table_id1314"  style="width:100%">
-         <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>
-            <tr>
-                <th>Capital aportado</th>
-                <td><p>10 €</p></td>
-              </tr>
-              <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11314"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21314"></p></td>
-              </tr>
-              <tr>
-                <th>Capital final</th>
-                <td  class="y_n"><p style="float: left;" id="showData31314"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41314"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51314"></p></td>
-              </tr>
-        </table>  
-  </section>
-
-
-  <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-    <hr>
-    <h2 style="text-align: center">Temporada 2012/2013</h2>
-  </section>
-    <section style="margin-right: 25%; margin-left: 25%; margin-bottom: 2%;">
-        <p>En la siguiente tabla se muestran los resultados obtenidos por el algente inteligente para la temporada de futbol de 2012/2013:</p>
-    </section>
-    <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-
-        <table id = "table_id1213"  style="width:100%">
-            <tr>
-              <th>Fecha cálculo</th>
-              <td><p style="float: left;" id="showData01516"></p></td>
-            </tr>
-            <tr>
-                <th>Capital aportado</th>
-                <td><p>10 €</p></td>
-              </tr>
-              <tr>
-                <th>Capital reinvertido</th>
-                <td><p style="float: left;" id="showData11213"></p></td>
-              </tr>
-              <tr>
-                <th>Ganancias</th>
-                <td><p style="float: left;" id="showData21213"></p></td>
-              </tr>
-              <tr>
-                <th>Capital final</th>
-                <td  class="y_n"><p style="float: left;" id="showData31213"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad</th>
-                <td><p style="float: left;" id="showData41213"></p></td>
-              </tr>
-              <tr>
-                <th>Rentabilidad frente al capital inicial</th>
-                <td><p style="float: left;" id="showData51213"></p></td>
-              </tr>
-        </table>  
-  </section>
-
-
--->
-
-
-  <!--
-  <section style="margin-right: 35%; margin-left: 35%; margin-bottom: 2%;">
-    <p>Desglose mensual para la temporada de futbol de 2019/2020:</p>
-  </section>
-  <section style="margin-right: 40%; margin-left: 40%; margin-bottom: 2%;">
-    <table id="showData_mes" ></table>
-  </section>
--->
-
-
-
 
   <script>
 
@@ -885,44 +491,6 @@ chart.render();
     
   }
   </script>
-
- 
-    
-
-
-    <!--<div style="overflow: hidden;">
-        <p style="float: left;">Fecha: &nbsp; </p>
-        <p style="float: left;" id="showData0"></p>
-    </div>
-
-    <div style="overflow: hidden;">
-        <p style="float: left;">Capital inicial: &nbsp; </p>
-        <p style="float: left;" id="showData1"></p>
-        <p style="float: left;"> € </p>
-    </div>
-
-    <div style="overflow: hidden;">
-        <p style="float: left;">Ganancia brutas: &nbsp; </p>
-        <p style="float: left;" id="showData2"></p>
-        <p style="float: left;"> € </p>
-    </div>
-
-    <div style="overflow: hidden;">
-        <p style="float: left;">Ganancia netas: &nbsp; </p>
-        <p style="float: left;" id="showData3"></p>
-        <p style="float: left;"> € </p>
-    </div>
-    
-    <div style="overflow: hidden;">
-        <p style="float: left;">Rentabilidad: &nbsp; </p>
-        <p style="float: left;" id="showData4"></p>
-        <p style="float: left;"> % </p>
-    </div>
-
--->
-
-
-
 
     <script>
         var data_informacion_json_actual = JSON.parse('{{ data_informacion_actual | escapejs }}');
@@ -1275,6 +843,30 @@ chart.render();
   div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>  
+
+
+<script>
+  var data_informacion_json_ca = JSON.parse('{{ pd_capital_aportado | escapejs }}');
+
+  data_informacion_json_ca = data_informacion_json_ca.data
+
+  var div1 = document.getElementById('capital_aportado_1617');
+  div1.innerHTML = data_informacion_json_ca[4][1]+ " €";
+
+  var div2 = document.getElementById('capital_aportado_1718');
+  div2.innerHTML = data_informacion_json_ca[5][1]+ " €";
+
+  var div3 = document.getElementById('capital_aportado_1819');
+  div3.innerHTML = data_informacion_json_ca[6][1]+ " €";
+
+  var div4 = document.getElementById('capital_aportado_1920');
+  div4.innerHTML = data_informacion_json_ca[7][1]+ " €";
+
+  var div5 = document.getElementById('capital_aportado_2021');
+  div5.innerHTML = data_informacion_json_ca[8][1]+ " €";
+ 
+
+</script>
   
   {% include "firma.html" %}
 
