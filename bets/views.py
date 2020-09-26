@@ -205,6 +205,11 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         
         df_actual = df_test
 
+
+
+        #df_actual = df_actual[df_actual["B365D"]<4.1]
+        df_actual = df_actual[df_actual["B365D"]<3.3]
+
         #print(df_actual)
         ###
         
@@ -275,6 +280,9 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         ganancias_brutas_aux = round(ganancias_totales, 2)
         ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2 + CAPITAL_APORTADO.get(t), 2)
         porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
+        print(ganancias_brutas_aux)
+        print(capital_inicial_total2)
+        print(t, " - ", (ganancias_brutas_aux/capital_inicial_total2-1)*100)
         #porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
         #print("capital-->" , CAPITAL_APORTADO.get(t))
         porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_APORTADO.get(t)),2)
@@ -317,11 +325,14 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    #historicoBeneficiosLanzarOtrasTemporadas()
+    historicoBeneficiosLanzarOtrasTemporadas()
     Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
 
     df_test = obtenerDatosTemporada()
     df_actual = df_test
+
+    df_actual = df_actual[df_actual["B365D"]<3.3]
+
     ### ************
     #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
     ### ************
@@ -461,6 +472,7 @@ def prediccionesLanzar(request):
     url_actual = 'https://www.football-data.co.uk/fixtures.csv'
     s=requests.get(url_actual).content
     df_actual = pd.read_csv(io.StringIO(s.decode('utf-8')))
+    df_actual = df_actual[df_actual["B365D"]<3.3]
     ### ************
     #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
     ### ************
