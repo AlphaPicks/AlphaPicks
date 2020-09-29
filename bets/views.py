@@ -42,7 +42,7 @@ from bets.models import Historico
 VERSION_MODELO = "D1_E0_16"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
 
-CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 8, "1718": 7, "1819": 7, "1920": 25, "2021": 10}
+CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 5, "1718": 2, "1819": 10, "1920": 14, "2021": 10}
 
 TEMPORADA_ACTUAL = 2021
 
@@ -144,13 +144,14 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         #zipfile.ZipFile('images.zip', 'r')
         #zipfile = ZipFile(BytesIO(data.read()))
         zipfile.namelist()
-        '''
+       
         for l in LIGAS:
             df_new = pd.read_csv(zipfile.open(l+'.csv'), encoding= 'unicode_escape')
-            sdf_test = pd.concat([df_test, df_new], sort=True)
+            df_test = pd.concat([df_test, df_new], sort=True)
        
 
         '''
+        
 
         #df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
         #df_test = pd.concat([df_test, df_new], sort=True)
@@ -199,7 +200,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
         df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')    
         df_test = pd.concat([df_test, df_new], sort=True)
         
-        
+         '''
         
         df_test["temporada"] = t
         
@@ -325,7 +326,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    #historicoBeneficiosLanzarOtrasTemporadas()
+    historicoBeneficiosLanzarOtrasTemporadas()
     Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
 
     df_test = obtenerDatosTemporada()
@@ -601,11 +602,17 @@ def calcular_capital_inicial():
         #print("Dinero necesario:" , dinero_necesario)
         #print("Dinero final:" , capital_final-capital_inicial+dinero_necesario)
         #print("_______________")
-        CAPITAL_APORTADO[str(y)[2:4]+str(y+1)[2:4]] = dinero_necesario
+
+        CAPITAL_APORTADO[str(y)[2:4]+str(y+1)[2:4]] = dinero_necesario+1
+        CAPITAL_APORTADO["1819"] = 10
+        CAPITAL_APORTADO["1718"] = 2
+        CAPITAL_APORTADO["1617"] = 5
+        
         CAPITAL_APORTADO["2021"] = CAPITAL_INICIAL_TOTAL_APUESTAS
+        print(CAPITAL_APORTADO)
 
 def precision(request):
-    #calcular_capital_inicial()
+    calcular_capital_inicial()
     #Temporada actual
     #last_beneficio = Beneficios.objects.latest('temporada')
     last_beneficio = Beneficios.objects.filter(temporada = "2021").order_by('-id')[0]
