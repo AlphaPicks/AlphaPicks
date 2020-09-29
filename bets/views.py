@@ -122,7 +122,8 @@ def obtenerDatosTemporada():
     resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-    LIGAS_2 = ['E0', 'F2', 'G1', "SP1", "SP2", "T1"]
+    LIGAS_2 = ['D1','D2', 'E0', 'F2', 'G1', 'I1', "SP1", "SP2", "T1"]
+    #LIGAS_2 = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
     for l in LIGAS_2:
         df_new = pd.read_csv(zipfile.open(l+".csv"))
         df_test = pd.concat([df_test, df_new], sort=True)
