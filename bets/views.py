@@ -326,7 +326,7 @@ def historicoBeneficiosLanzarOtrasTemporadas():
     
 
 def historicoBeneficiosLanzar(request):
-    historicoBeneficiosLanzarOtrasTemporadas()
+    #historicoBeneficiosLanzarOtrasTemporadas()
     Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
 
     df_test = obtenerDatosTemporada()
@@ -612,7 +612,7 @@ def calcular_capital_inicial():
         print(CAPITAL_APORTADO)
 
 def precision(request):
-    calcular_capital_inicial()
+    #calcular_capital_inicial()
     #Temporada actual
     #last_beneficio = Beneficios.objects.latest('temporada')
     last_beneficio = Beneficios.objects.filter(temporada = "2021").order_by('-id')[0]
