@@ -122,7 +122,7 @@ def obtenerDatosTemporada():
     resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
     zipfile = ZipFile(BytesIO(resp.read()))
     zipfile.namelist()
-    LIGAS_2 = ['D1','D2', 'E0', 'F2', 'G1', 'I1', "SP1", "SP2", "T1"]
+    LIGAS_2 =  ['D1','D2', 'E0',       'F2', 'G1', 'I1',        "SP1", "SP2", "T1"]
     #LIGAS_2 = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
     for l in LIGAS_2:
         df_new = pd.read_csv(zipfile.open(l+".csv"))
@@ -472,8 +472,21 @@ def historicoBeneficiosLanzar(request):
 def prediccionesLanzar(request):
     ##############################################
     url_actual = 'https://www.football-data.co.uk/fixtures.csv'
+    print("a")
     s=requests.get(url_actual).content
-    df_actual = pd.read_csv(io.StringIO(s.decode('utf-8')))
+    print(s)
+    print("b")
+    print("c")
+  
+
+
+    r = requests.get(url_actual)  
+    df_actual = pd.read_csv(io.StringIO(r.text))
+
+
+    
+    #df_actual = pd.read_csv(io.StringIO(s.decode('utf-8')), encoding='cp1252')#, encoding ='unicode_escape')
+    print("d")
     df_actual = df_actual[df_actual["B365D"]<3.3]
     ### ************
     #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
