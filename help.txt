@@ -1,5 +1,14 @@
+
+sudo apt-get remove git
+sudo apt install git-all
+
+
+
 git config --global user.name "AlphaPicks"
 git config --global user.email tablas.pronosticador@gmail.com
+
+
+git config credential.username 'AlphaPicks'
 
 git init
 git status
