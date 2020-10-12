@@ -8,7 +8,18 @@ git commit -m "Initial commit"
 
 git remote add origin https://github.com/AlphaPicks/AlphaPicks.git
 
+
+
 git remote set-url origin https://github.com/AlphaPicks/AlphaPicks.git
+
+git push -u origin master
+
+
+
+git remote set-url origin git@github.com:username/repo.git
+
+
+git remote set-url  origin git@github.com:AlphaPicks/AlphaPicks.git
 
 git push origin master
 
