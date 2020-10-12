@@ -20,10 +20,6 @@
   var myBooks = JSON.parse('{{ data | escapejs }}');
 
   myBooks = myBooks.data
-  
-
-  // EXTRACT VALUE FOR HTML HEADER. 
-  // ('Book ID', 'Book Name', 'Category' and 'Price')
   var col = [];
   for (var i = 0; i < myBooks.length; i++) {
       for (var key in myBooks[i]) {
@@ -33,15 +29,12 @@
       }
   }
 
-  // CREATE DYNAMIC TABLE.
   var table = document.createElement("table");
 
-  // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-
-  var tr = table.insertRow(-1);                   // TABLE ROW.
+  var tr = table.insertRow(-1);                  
 
   for (var i = 0; i < col.length; i++) {
-      var th = document.createElement("th");      // TABLE HEADER.
+      var th = document.createElement("th");      
       if(col[i]==0){
         th.innerHTML = "Prediccion";
       }
@@ -58,7 +51,6 @@
       tr.appendChild(th);
   }
 
-  // ADD JSON DATA TO THE TABLE AS ROWS.
   for (var i = 0; i < myBooks.length; i++) {
 
       tr = table.insertRow(-1);
@@ -73,7 +65,6 @@
       }
   }
 
-  // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
   var divContainer = document.getElementById("showData");
   divContainer.innerHTML = "";
   divContainer.appendChild(table);

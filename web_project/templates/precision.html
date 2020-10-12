@@ -170,31 +170,25 @@ $(document).ready(function(){
 
   #wrapper {
     
-    /*border: 1px solid black;
-    overflow: hidden; /* will contain if #first is longer than #second */
 }
 #firsttitulo {
     
-    float: left; /* add this */
-    /*border: 1px solid black;*/
+    float: left; 
     text-align: center;
     font-size: 30px;
 }
 #secondtitulo {
-    /*border: 1px solid black;*/
     text-align: center;
     font-size: 30px;
 }
 
 #first {
     
-    float: left; /* add this */
-    /*border: 1px solid black;*/
+    float: left; 
     text-align: center;
     font-size: 25px;
 }
 #second {
-    /*border: 1px solid black;*/
     
     text-align: center;
     font-size: 25px;
@@ -237,9 +231,6 @@ var chart = new ApexCharts(document.querySelector("#chart"), options);
 chart.render();
       
 </script>
-
-
-
 
   <div id="chart"></div>
 
@@ -408,13 +399,10 @@ chart.render();
 
   <script>
 
-
     var myBooks = JSON.parse('{{ data_mes | escapejs }}');
   
     myBooks = myBooks.data
   
-    // EXTRACT VALUE FOR HTML HEADER. 
-    // ('Book ID', 'Book Name', 'Category' and 'Price')
     var col = [];
     for (var i = 0; i < myBooks.length; i++) {
         for (var key in myBooks[i]) {
@@ -423,19 +411,13 @@ chart.render();
             }
         }
     }
-  
-    // CREATE DYNAMIC TABLE.
+
     var table = document.createElement("table");
   
-    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
-  
-    var tr = table.insertRow(-1);                   // TABLE ROW.
+    var tr = table.insertRow(-1);            
   
     for (var i = 1; i < col.length-1; i++) {
-        var th = document.createElement("th");      // TABLE HEADER.
-        //if(col[i]==0){
-        //  th.innerHTML = "ID";
-        //}
+        var th = document.createElement("th");    
         if(col[i]==1){
           th.innerHTML = "Mes";
         }
@@ -448,14 +430,10 @@ chart.render();
         if(col[i]==4){
           th.innerHTML = "Beneficios";
         }
-        //if(col[i]==6){
-        //  th.innerHTML = "Ejecucion";
-        //}
-        
+
         tr.appendChild(th);
     }
-  
-    // ADD JSON DATA TO THE TABLE AS ROWS.
+
     for (var i = 0; i < myBooks.length-1; i++) {
   
         tr = table.insertRow(-1);
@@ -481,8 +459,7 @@ chart.render();
             } 
         }
     }
-  
-    // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+
     var divContainer = document.getElementById("showData_mes");
     divContainer.innerHTML = "";
     divContainer.appendChild(table);
@@ -497,7 +474,6 @@ chart.render();
 
         data_informacion_json_actual = data_informacion_json_actual.data
 
-        //var d = new Date(data_informacion_json[0][0]).toDateString();
         date = new Date(data_informacion_json_actual[0][0]);
         year = date.getFullYear();
         month = date.getMonth()+1;
@@ -508,26 +484,12 @@ chart.render();
         if (month < 10) {
             month = '0' + month;
         }
-        //tabCell.innerHTML = ;
-        //document.getElementById("showData0").innerHTML = year+'-' + month + '-'+dt;
-
-        //var div1 = document.getElementById('showData1');
-        //div1.innerHTML = data_informacion_json[0][1] + " €";
-
-       // var div2 = document.getElementById('showData2');
-        //div2.innerHTML = data_informacion_json[0][2] + " €";
 
         var div3 = document.getElementById('showData3');
         div3.innerHTML = data_informacion_json_actual[0][3]+ " €";
 
-       // var div4 = document.getElementById('showData4');
-        //div4.innerHTML = data_informacion_json[0][4] + " %";
-
         var div5 = document.getElementById('showData5');
         div5.innerHTML = data_informacion_json_actual[0][5] + " %";
-
-        //var div6 = document.getElementById('showData6');
-        //div6.innerHTML = data_informacion_json[0][3] + " €";
 
     </script>
 
@@ -536,7 +498,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -547,26 +508,12 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01819").innerHTML = year+'-' + month + '-'+dt;
-
-  //var div1 = document.getElementById('showData11920');
-  //div1.innerHTML = data_informacion_json[0][1] + " €";
-
-  //var div2 = document.getElementById('showData21920');
-  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31920');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  //var div4 = document.getElementById('showData41920');
-  //div4.innerHTML = data_informacion_json[0][4] + " %";
-
   var div5 = document.getElementById('showData51920');
   div5.innerHTML = data_informacion_json[0][5] + " %";
-
-  //var div6 = document.getElementById('showData61920');
-  //div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -575,7 +522,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -586,26 +532,12 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01819").innerHTML = year+'-' + month + '-'+dt;
-
-  //var div1 = document.getElementById('showData11819');
-  //div1.innerHTML = data_informacion_json[0][1] + " €";
-
-  //var div2 = document.getElementById('showData21819');
-  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31819');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  //var div4 = document.getElementById('showData41819');
-  //div4.innerHTML = data_informacion_json[0][4] + " %";
-
   var div5 = document.getElementById('showData51819');
   div5.innerHTML = data_informacion_json[0][5] + " %";
-
-  //var div6 = document.getElementById('showData61819');
-  //div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -614,7 +546,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -625,26 +556,12 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01718").innerHTML = year+'-' + month + '-'+dt;
-
-  //var div1 = document.getElementById('showData11718');
-  //div1.innerHTML = data_informacion_json[0][1] + " €";
-
-  //var div2 = document.getElementById('showData21718');
-  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31718');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  //var div4 = document.getElementById('showData41718');
-  //div4.innerHTML = data_informacion_json[0][4] + " %";
-
   var div5 = document.getElementById('showData51718');
   div5.innerHTML = data_informacion_json[0][5] + " %";
-
-  //var div6 = document.getElementById('showData61718');
- // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -653,7 +570,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -664,26 +580,12 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01617").innerHTML = year+'-' + month + '-'+dt;
-
- // var div1 = document.getElementById('showData11617');
- // div1.innerHTML = data_informacion_json[0][1] + " €";
-
- // var div2 = document.getElementById('showData21617');
-  //div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31617');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
-  //var div4 = document.getElementById('showData41617');
-  //div4.innerHTML = data_informacion_json[0][4] + " %";
-
   var div5 = document.getElementById('showData51617');
   div5.innerHTML = data_informacion_json[0][5] + " %";
-
-  //var div6 = document.getElementById('showData61617');
- // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -692,7 +594,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -703,26 +604,12 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
-
- // var div1 = document.getElementById('showData11516');
-  //div1.innerHTML = data_informacion_json[0][1] + " €";
-
- // var div2 = document.getElementById('showData21516');
- // div2.innerHTML = data_informacion_json[0][2] + " €";
 
   var div3 = document.getElementById('showData31516');
   div3.innerHTML = data_informacion_json[0][3]+ " €";
 
- // var div4 = document.getElementById('showData41516');
- // div4.innerHTML = data_informacion_json[0][4] + " %";
-
   var div5 = document.getElementById('showData51516');
   div5.innerHTML = data_informacion_json[0][5] + " %";
-
- // var div6 = document.getElementById('showData61516');
- // div6.innerHTML = data_informacion_json[0][3] + " €";
 
 </script>
 
@@ -731,7 +618,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -742,8 +628,6 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
 
   var div1 = document.getElementById('showData11415');
   div1.innerHTML = data_informacion_json[0][1] + " €";
@@ -770,7 +654,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -781,8 +664,6 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
 
   var div1 = document.getElementById('showData11314');
   div1.innerHTML = data_informacion_json[0][1] + " €";
@@ -810,7 +691,6 @@ chart.render();
 
   data_informacion_json = data_informacion_json.data
 
-  //var d = new Date(data_informacion_json[0][0]).toDateString();
   date = new Date(data_informacion_json[0][0]);
   year = date.getFullYear();
   month = date.getMonth()+1;
@@ -821,8 +701,6 @@ chart.render();
   if (month < 10) {
       month = '0' + month;
   }
-  //tabCell.innerHTML = ;
-  //document.getElementById("showData01516").innerHTML = year+'-' + month + '-'+dt;
 
   var div1 = document.getElementById('showData11213');
   div1.innerHTML = data_informacion_json[0][1] + " €";

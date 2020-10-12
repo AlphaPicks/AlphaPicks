@@ -4,7 +4,6 @@ from .forms import NameForm
 from .forms import Prediccion
 from django.templatetags.static import static
 from django.contrib.staticfiles.storage import staticfiles_storage
-
 import os
 import io
 import csv
@@ -16,7 +15,6 @@ from email.mime.text import MIMEText
 import smtplib
 import requests
 import pandas as pd
-#from tabulate import tabulate
 import numpy as np
 from urllib.request import urlopen
 from zipfile import ZipFile
@@ -25,54 +23,16 @@ from django.core import serializers
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
-#import datetime
-
-#from apscheduler.schedulers.background import BackgroundScheduler
-
-#from schedule import Scheduler
-
 from bets.models import Beneficios
 from bets.models import BeneficiosMes
 from bets.models import Predicciones
 from bets.models import Historico
 
 
-#VERSION_MODELO = "E0"
-#VERSION_MODELO = "D1"
-VERSION_MODELO = "D1_E0_16"
 CAPITAL_INICIAL_TOTAL_APUESTAS = 10
-
 CAPITAL_APORTADO = {"1213": 10, "1314": 10, "1415": 10, "1516": 10, "1617": 5, "1718": 2, "1819": 10, "1920": 14, "2021": 10}
-
 TEMPORADA_ACTUAL = 2021
-
 LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
-
-
-#from celery.schedules import crontab
-#from celery.task import periodic_task
-
-#@periodic_task(run_every=timedelta(seconds=2))
-#def every_monday_morning():
-#    print("This is run every Monday morning at 7:30")
-
-#@periodic_task(run_every=crontab(hour=7, minute=30, day_of_week="mon"))
-#def every_monday_morning():
-#    print("This is run every Monday morning at 7:30")
-
-#@periodic_task(run_every=timedelta(seconds=2))
-#def every_monday_morning():
-#    print("This is run every Monday morning at 7:30")
-
-
-
-mails = ["ibon.bengoa@opendeusto.es", "davitx17@gmail.com"]
-mails = ["ibongaraybengoabets@gmail.com"]
-mails_cc = ["ibon.bengoa@opendeusto.es"]
-
-user_email = "ibongaraybengoabets@gmail.com"
-pass_email = "IbonGaray7777777777"
-
 
 
 def send_email(user, pwd, recipient, bcc, subject, body):
@@ -80,10 +40,8 @@ def send_email(user, pwd, recipient, bcc, subject, body):
     TO = recipient if isinstance(recipient, list) else [recipient]
     SUBJECT = subject
     TEXT = body
-    # Prepare actual message
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
-    #print(message)
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
@@ -98,14 +56,13 @@ def send_email(user, pwd, recipient, bcc, subject, body):
 def home(request):
     return render(request, 'home.html')
 
-def admin(request):
-    return render(request, 'admin.html')
+def admin22(request):
+    return render(request, 'admin22.html')
 
 def dos(request):
     return HttpResponse("Hello, Django 2!")
 
 def ejecutar(request):
-     #return HttpResponse("Hello, Django 3!")
      return render(request, 'ejecutar.html')
 
 def metodologia(request):
@@ -118,486 +75,31 @@ def apuestas(request):
     return render(request, 'apuestas.html')
 
 def obtenerDatosTemporada():
-    df_test = pd.DataFrame()
-    resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
-    zipfile = ZipFile(BytesIO(resp.read()))
-    zipfile.namelist()
-    LIGAS_2 =  ['D1','D2', 'E0',       'F2', 'G1', 'I1',        "SP1", "SP2", "T1"]
-    #LIGAS_2 = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
-    for l in LIGAS_2:
-        df_new = pd.read_csv(zipfile.open(l+".csv"))
-        df_test = pd.concat([df_test, df_new], sort=True)
-    
-    return df_test
+     
+    return 1
 
 def historicoBeneficiosLanzarOtrasTemporadas():
-    Historico.objects.all().delete()
-    
-    temporadas = ["1920", "1819", "1718", "1617", "1516", "1415", "1314", "1213"]#, "1112", "1011"]
-    for t in temporadas:
-        df_test = pd.DataFrame()
-        data_path = staticfiles_storage.path("data/" + t + ".zip")
-        #with open(data_path, 'rb') as file:
-        #    data = pickle.load(file)
-        #resp = urlopen(data_path)
-        #zipfile = ZipFile(BytesIO(data_path.read()))
-        zipfile = ZipFile(data_path, "r")
-        #zipfile.ZipFile('images.zip', 'r')
-        #zipfile = ZipFile(BytesIO(data.read()))
-        zipfile.namelist()
-       
-        for l in LIGAS:
-            df_new = pd.read_csv(zipfile.open(l+'.csv'), encoding= 'unicode_escape')
-            df_test = pd.concat([df_test, df_new], sort=True)
-       
-
-        '''
-        
-
-        #df_new = pd.read_csv(zipfile.open('B1.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('D1.csv'), encoding= 'unicode_escape')
-        sdf_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('D2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('D3.csv'))
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('E0.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('E1.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('E2.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('E3.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('EC.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('F1.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('F2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('G1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('I1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('I2.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('N1.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-       # df_new = pd.read_csv(zipfile.open('P1.csv'), encoding= 'unicode_escape')
-       # df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('SC0.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SC1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('SC2.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        #df_new = pd.read_csv(zipfile.open('SC3.csv'), encoding= 'unicode_escape')
-        #df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SP1.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('SP2.csv'), encoding= 'unicode_escape')
-        df_test = pd.concat([df_test, df_new], sort=True)
-        df_new = pd.read_csv(zipfile.open('T1.csv'), encoding= 'unicode_escape')    
-        df_test = pd.concat([df_test, df_new], sort=True)
-        
-         '''
-        
-        df_test["temporada"] = t
-        
-        df_actual = df_test
-
-
-
-        #df_actual = df_actual[df_actual["B365D"]<4.1]
-        df_actual = df_actual[df_actual["B365D"]<3.3]
-
-        #print(df_actual)
-        ###
-        
-        now = datetime.now()
-        timestamp = datetime.timestamp(now)
-        t_object = datetime.fromtimestamp(timestamp)
-        
-        #Se guarda el dato de la prediccion
-        #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
-        clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', "temporada", 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
-        columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-        df_actual_rf = df_actual.filter(items=clumnas_trabajo)
-        df_actual_rf.dropna(inplace=True)
-        #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-        ligas = LIGAS
-        df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
-        df_actual_rf_empates.dropna(inplace=True)
-        df_prediccion_rf_empates = pd.DataFrame()
-        df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
-        df_prediccion_rf_empates["Div"] = df_actual_rf_empates["Div"]
-        df_prediccion_rf_empates["HomeTeam"] = df_actual_rf_empates["HomeTeam"]
-        df_prediccion_rf_empates["AwayTeam"] = df_actual_rf_empates["AwayTeam"]
-        df_prediccion_rf_empates["B365H"] = df_actual_rf_empates["B365H"]
-        df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
-        df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
-        df_prediccion_rf_empates["FTR"] = df_actual_rf_empates["FTR"]
-        df_prediccion_rf_empates["temporada"] = df_actual_rf_empates["temporada"]
-
-        y_pred_rf_resultado = []
-        y_pred_rf_stats = []
-        for x in ligas:
-            #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-            model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
-            with open(model_path, 'rb') as file:
-                rf = pickle.load(file) 
-            if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-                y_pred_rf2 = rf.predict(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-                for i in y_pred_rf2 : 
-                    y_pred_rf_resultado.append(i) 
-            if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-                y_pred_rf3 = rf.predict_proba(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-                for i in y_pred_rf3 : 
-                    y_pred_rf_stats.append(i) 
-        df_prediccion_rf_empates["Prediccion"] = [row for row in y_pred_rf_resultado]
-        df_prediccion_rf_empates["rf_empate"] = [row[1] for row in y_pred_rf_stats]
-        df_prediccion_rf_empates["rf_no_empate"] = [row[0] for row in y_pred_rf_stats]
-        df_prediccion_rf_empates["beneficio_total"] = (1/df_prediccion_rf_empates["B365H"]) + (1/df_prediccion_rf_empates["B365D"]) + (1/df_prediccion_rf_empates["B365A"])
-        df_prediccion_rf_empates["porcentaje_pagos"] = (1/df_prediccion_rf_empates["beneficio_total"])
-        df_prediccion_rf_empates["probabilidad_h"] = (1/df_prediccion_rf_empates["B365H"]*df_prediccion_rf_empates["porcentaje_pagos"])
-        df_prediccion_rf_empates["probabilidad_d"] = (1/df_prediccion_rf_empates["B365D"]*df_prediccion_rf_empates["porcentaje_pagos"])
-        df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
-        df_prediccion_rf_empates["entrar"] = "no"
-        df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
-        
-
-        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "H", 'FTR'] = "0"
-        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
-        df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
-
-        capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
-        ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
-        
-        #Beneficios.objects.all().delete()
-        #print(round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2))
-        #print("ganancias_totales", ganancias_totales)
-
-        capital_inicial_aux = round(capital_inicial_total2, 2)
-        ganancias_brutas_aux = round(ganancias_totales, 2)
-        ganancias_netas_aux = round(ganancias_totales - capital_inicial_total2 + CAPITAL_APORTADO.get(t), 2)
-        porcentaje_beneficio_aux = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
-        print(ganancias_brutas_aux)
-        print(capital_inicial_total2)
-        print(t, " - ", (ganancias_brutas_aux/capital_inicial_total2-1)*100)
-        #porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2)
-        #print("capital-->" , CAPITAL_APORTADO.get(t))
-        porcentaje_beneficio_frente_al_inicial_aux = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_APORTADO.get(t)),2)
-        b = Beneficios(dia = timezone.now(), capital_inicial = capital_inicial_aux, ganancias_brutas = ganancias_brutas_aux, ganancias_netas = ganancias_netas_aux, porcentaje_beneficio = porcentaje_beneficio_aux, porcentaje_beneficio_frente_al_inicial = porcentaje_beneficio_frente_al_inicial_aux, temporada = t) 
-        b.save()
-
-        #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
-        ejecucion_actual = 1
-        
-        resultado_actual = 0
-        away_team_actual = "" 
-        home_team_actual = ""
-        cuotaEmpate = 0
-        date_actual = timezone.now()
-        prediction_actual = 0
-        probabilidad = 0
-        temporada_ac = ""
-
-        df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
-        df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
-
-        #print(df_prediccion_rf_empates["temporada"])
-        df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
-        for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
-            resultado_actual= row["FTR"]
-            away_team_actual = row["AwayTeam"]
-            home_team_actual = row["HomeTeam"]
-            if(len(row["Date"]) <= 9):
-            #if(row["Date"].endswith("/13")):
-                date_actual = datetime.strptime(row["Date"], '%d/%m/%y')
-            else:
-                date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
-            prediction_actual = row["Prediccion"]
-            cuotaEmpate = row["B365D"]
-            probabilidad = row["rf_empate"]
-            temporada_ac = int(row["temporada"]) 
-            p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = temporada_ac, probabilidad = probabilidad)
-            p.save()
-
-    
+    #a  
+    a=1
 
 def historicoBeneficiosLanzar(request):
-    #historicoBeneficiosLanzarOtrasTemporadas()
-    Historico.objects.filter(temporada=TEMPORADA_ACTUAL).delete()
-
-    df_test = obtenerDatosTemporada()
-    df_actual = df_test
-
-    df_actual = df_actual[df_actual["B365D"]<3.3]
-
-    ### ************
-    #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
-    ### ************
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    t_object = datetime.fromtimestamp(timestamp)
-    #Se guarda el dato de la prediccion
-    #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
-    clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA', 'FTR']
-    columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-    df_actual_rf = df_actual.filter(items=clumnas_trabajo)
-    df_actual_rf.dropna(inplace=True)
-    #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-    ligas = LIGAS
-    df_actual_rf_empates = df_actual.filter(items=clumnas_trabajo)
-    df_actual_rf_empates.dropna(inplace=True)
-    df_prediccion_rf_empates = pd.DataFrame()
-    df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
-    df_prediccion_rf_empates["Div"] = df_actual_rf_empates["Div"]
-    df_prediccion_rf_empates["HomeTeam"] = df_actual_rf_empates["HomeTeam"]
-    df_prediccion_rf_empates["AwayTeam"] = df_actual_rf_empates["AwayTeam"]
-    df_prediccion_rf_empates["B365H"] = df_actual_rf_empates["B365H"]
-    df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
-    df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
-    df_prediccion_rf_empates["FTR"] = df_actual_rf_empates["FTR"]
-
-    y_pred_rf_resultado = []
-    y_pred_rf_stats = []
-    for x in ligas:
-        #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
-        with open(model_path, 'rb') as file:
-            rf = pickle.load(file) 
-        if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-            y_pred_rf2 = rf.predict(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-            for i in y_pred_rf2 : 
-                y_pred_rf_resultado.append(i) 
-        if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-            y_pred_rf3 = rf.predict_proba(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-            for i in y_pred_rf3 : 
-                y_pred_rf_stats.append(i) 
-    df_prediccion_rf_empates["Prediccion"] = [row for row in y_pred_rf_resultado]
-    df_prediccion_rf_empates["rf_empate"] = [row[1] for row in y_pred_rf_stats]
-    df_prediccion_rf_empates["rf_no_empate"] = [row[0] for row in y_pred_rf_stats]
-    df_prediccion_rf_empates["beneficio_total"] = (1/df_prediccion_rf_empates["B365H"]) + (1/df_prediccion_rf_empates["B365D"]) + (1/df_prediccion_rf_empates["B365A"])
-    df_prediccion_rf_empates["porcentaje_pagos"] = (1/df_prediccion_rf_empates["beneficio_total"])
-    df_prediccion_rf_empates["probabilidad_h"] = (1/df_prediccion_rf_empates["B365H"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["probabilidad_d"] = (1/df_prediccion_rf_empates["B365D"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["entrar"] = "no"
-    df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
-    
-    
-
-    df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "H", 'FTR'] = "0"
-    df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "A", 'FTR'] = "0"
-    df_prediccion_rf_empates.loc[df_prediccion_rf_empates.FTR == "D", 'FTR'] = "1"
-
-    df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
-
-    capital_inicial_total2 = len(df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].index)
-    ganancias_totales = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")]["B365D"].values.sum()
-    
-    #Beneficios.objects.all().delete()
-
-
-
-    b = Beneficios(dia = timezone.now(), capital_inicial = round(capital_inicial_total2, 2), ganancias_brutas = round(ganancias_totales, 2), ganancias_netas = round(ganancias_totales - capital_inicial_total2 + CAPITAL_INICIAL_TOTAL_APUESTAS, 2), porcentaje_beneficio = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2), porcentaje_beneficio_frente_al_inicial = round(((ganancias_totales - capital_inicial_total2)*100/CAPITAL_INICIAL_TOTAL_APUESTAS),2), temporada = TEMPORADA_ACTUAL) 
-    b.save()
-
-    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
-    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion
-    #ejecucion_actual = Historico.objects.latest('ejecucion').ejecucion + 1
-    ejecucion_actual = 1
-    #Historico.objects.all().delete()
-
-    #ejecucion_actual = 0
-    resultado_actual = 0
-    away_team_actual = "" 
-    home_team_actual = ""
-    cuotaEmpate = 0
-    date_actual = timezone.now()
-    prediction_actual = 0
-    probabilidad = 0
-
-    df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
-    df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=False)
-
-
-    #print("3")
-    #print(df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"]=="1") ])
-    #print("4")
-    df_prediccion_rf_empates = df_prediccion_rf_empates.drop_duplicates(subset=['AwayTeam', 'HomeTeam', 'Date'], keep='last')
-    for index, row in df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].iterrows():
-        resultado_actual= row["FTR"]
-        away_team_actual = row["AwayTeam"]
-        home_team_actual = row["HomeTeam"]
-        date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
-        prediction_actual = row["Prediccion"]
-        cuotaEmpate = row["B365D"]
-        probabilidad = row["rf_empate"]
-        p = Historico(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, cuotaEmpate = cuotaEmpate, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = probabilidad)
-        p.save()
-
-   
-    
-    df_prediccion_rf_empates["mes"] = df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year + x.month)
-    #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].map(lambda x: 100*x.year)) + str(df_prediccion_rf_empates['date_created'].map(lambda x: x.month))
-    
-    #print(df_prediccion_rf_empates)
-    #df_prediccion_rf_empates["mes"] = str(df_prediccion_rf_empates['date_created'].dt.year) + " - " + str(df_prediccion_rf_empates['date_created'].dt.month)
-    df_mensual = pd.DataFrame()
-    df_mensual["Ganancias"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["FTR"] == "1")].groupby(['mes'])['B365D'].sum()
-    df_mensual["Inversion"] = df_prediccion_rf_empates[(df_prediccion_rf_empates["Prediccion"] == "1")].groupby(['mes'])['B365D'].count()
-    df_mensual["Beneficio"] = df_mensual["Ganancias"] - df_mensual["Inversion"]
-    #df_mensual["mes_nombre"] = mes(df_mensual.index.item()) 
-    df_mensual["mes_nombre2"] = df_mensual.index
-    df_mensual["mes"] = df_mensual["mes_nombre2"].astype(int)
-    BeneficiosMes.objects.all().delete()
-
-    df_mensual.fillna(0)
-    
-    for index, row in df_mensual.iterrows():
-        var_ganancias = row["Ganancias"]
-        if(np.isnan(row["Ganancias"])):
-            var_ganancias = 10
-        var_beneficio = row["Beneficio"]
-        if(np.isnan(row["Beneficio"])):
-            var_beneficio = 10
-        bM = BeneficiosMes(capital_inicial = row["Inversion"], ganancias_brutas = var_ganancias, ganancias_netas = var_beneficio, mes = row["mes"], temporada = TEMPORADA_ACTUAL)
-        bM.save()
-
-    return render(request, 'home.html')
+    return 1
 
 def prediccionesLanzar(request):
-    ##############################################
-    url_actual = 'https://www.football-data.co.uk/fixtures.csv'
-    print("a")
-    s=requests.get(url_actual).content
-    print(s)
-    print("b")
-    print("c")
-  
-
-
-    r = requests.get(url_actual)  
-    df_actual = pd.read_csv(io.StringIO(r.text))
-
-
-    
-    #df_actual = pd.read_csv(io.StringIO(s.decode('utf-8')), encoding='cp1252')#, encoding ='unicode_escape')
-    print("d")
-    df_actual = df_actual[df_actual["B365D"]<3.3]
-    ### ************
-    #df_actual = pd.read_csv("data_prediccion/20191018data_prediccion.csv")
-    ### ************
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    t_object = datetime.fromtimestamp(timestamp)
-    #Se guarda el dato de la prediccion
-    #export_csv = df_actual.to_csv (r"data_prediccion/" + str(t_object.year) + str(t_object.month) + str(t_object.day) + "data_prediccion.csv", index = None, header=True)
-    clumnas_trabajo = ['Div', 'Date', 'HomeTeam', 'AwayTeam', 'B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-    columnas_prediccion = ['B365H', 'B365D', 'B365A', 'WHH', 'WHD', 'WHA', 'BWH', 'BWD', 'BWA', 'IWH', 'IWD', 'IWA', 'PSH', 'PSD', 'PSA', 'VCH', 'VCD', 'VCA']
-    df_actual_rf = df_actual.filter(items=clumnas_trabajo)
-    df_actual_rf.dropna(inplace=True)
-    #ligas =["B1", "D1", "D2", "E0", "E1", "E2", "E3", "EC", "F1", "F2", "G1", "I1", "I2", "N1", "P1", "SC0", "SC1", "SC2", "SC3", "SP1", "SP2", "T1"]
-    ligas = LIGAS
-    #rpt[rpt['STK_ID'].isin(stk_list)]
-    df_actual_rf_empates = df_actual[df_actual["Div"].isin(ligas)].filter(items=clumnas_trabajo)
-    df_actual_rf_empates.dropna(inplace=True)
-    df_prediccion_rf_empates = pd.DataFrame()
-    df_prediccion_rf_empates["Date"] = df_actual_rf_empates["Date"]
-    df_prediccion_rf_empates["Div"] = df_actual_rf_empates["Div"]
-    df_prediccion_rf_empates["HomeTeam"] = df_actual_rf_empates["HomeTeam"]
-    df_prediccion_rf_empates["AwayTeam"] = df_actual_rf_empates["AwayTeam"]
-    df_prediccion_rf_empates["B365H"] = df_actual_rf_empates["B365H"]
-    df_prediccion_rf_empates["B365D"] = df_actual_rf_empates["B365D"]
-    df_prediccion_rf_empates["B365A"] = df_actual_rf_empates["B365A"]
-
-    y_pred_rf_resultado = []
-    y_pred_rf_stats = []
-    for x in ligas:
-        #with open("modelos/randon_forest_empates_" + x + ".pkl", 'rb') as file:
-        model_path = staticfiles_storage.path("modelos/randon_forest_empates_" + VERSION_MODELO + ".pkl") #static("modelos/randon_forest_" + "E0" + ".pkl") #"modelos/randon_forest_" + "E0" + ".pkl" #os.path.join(os.path.dirname(os.path.realpath(__file__)), "/modelos/randon_forest_" + "E0" + ".pkl")
-        with open(model_path, 'rb') as file:
-            rf = pickle.load(file) 
-        if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-            y_pred_rf2 = rf.predict(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-            for i in y_pred_rf2 : 
-                y_pred_rf_resultado.append(i) 
-        if not df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x].empty:
-            y_pred_rf3 = rf.predict_proba(df_actual_rf_empates[columnas_prediccion][df_actual_rf_empates["Div"] == x])
-            for i in y_pred_rf3 : 
-                y_pred_rf_stats.append(i) 
-    df_prediccion_rf_empates["Prediccion"] = [row for row in y_pred_rf_resultado]
-    df_prediccion_rf_empates["rf_empate"] = [row[1] for row in y_pred_rf_stats]
-    df_prediccion_rf_empates["rf_no_empate"] = [row[0] for row in y_pred_rf_stats]
-    df_prediccion_rf_empates["beneficio_total"] = (1/df_prediccion_rf_empates["B365H"]) + (1/df_prediccion_rf_empates["B365D"]) + (1/df_prediccion_rf_empates["B365A"])
-    df_prediccion_rf_empates["porcentaje_pagos"] = (1/df_prediccion_rf_empates["beneficio_total"])
-    df_prediccion_rf_empates["probabilidad_h"] = (1/df_prediccion_rf_empates["B365H"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["probabilidad_d"] = (1/df_prediccion_rf_empates["B365D"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["probabilidad_a"] = (1/df_prediccion_rf_empates["B365A"]*df_prediccion_rf_empates["porcentaje_pagos"])
-    df_prediccion_rf_empates["entrar"] = "no"
-    df_prediccion_rf_empates.loc[(df_prediccion_rf_empates["Prediccion"] == "1") & (df_prediccion_rf_empates["rf_empate"] > df_prediccion_rf_empates["probabilidad_d"]), "entrar"] = "si"
-    
-    #print("1")
-    #print(df_prediccion_rf_empates)
-    #print("2")
-    df_prediccion_rf_empates['date_created'] = pd.to_datetime(df_prediccion_rf_empates['Date'], dayfirst=True)
-    df_prediccion_rf_empates = df_prediccion_rf_empates.sort_values(by='date_created', ascending=True)
-
-    ejecucion_actual = Predicciones.objects.latest('ejecucion').ejecucion + 1
-    print(ejecucion_actual)
-    #Predicciones.objects.all().delete()
-
-    #ejecucion_actual = 0
-    resultado_actual = 0
-    away_team_actual = "" 
-    home_team_actual = ""
-    date_actual = timezone.now()
-    prediction_actual = 0
-    probabilidad = 0
-    cuota = 0
-    p = Predicciones(prediction = 0, date = date_actual, home_team = "", away_team = "", resultado = 0, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = 0, cuota = 0)
-    p.save()
-    for index, row in df_prediccion_rf_empates.iterrows():
-        away_team_actual = row["AwayTeam"]
-        home_team_actual = row["HomeTeam"]
-        date_actual = datetime.strptime(row["Date"], '%d/%m/%Y')
-        prediction_actual = row["Prediccion"]
-        probabilidad =  row["rf_empate"]
-        cuota =  row["B365D"]
-        p = Predicciones(prediction = prediction_actual, date = date_actual, home_team = home_team_actual, away_team = away_team_actual, resultado = resultado_actual, ejecucion = ejecucion_actual, temporada = TEMPORADA_ACTUAL, probabilidad = probabilidad, cuota = cuota)
-        p.save()
-
-
-    #Envia correo de los empates
-    asunto_mensaje = "Prediccion Empates (" + str(t_object.year) + "/" + str(t_object.month) + "/" + str(t_object.day) + ")"
-    texto_mensaje = df_prediccion_rf_empates[(df_prediccion_rf_empates["entrar"] == "si")].filter(items=["Date", "HomeTeam", "AwayTeam", "B365D"]).to_string(col_space = 20, justify='start', index=False)
-    #& ((df_prediccion_rf_empates["Div"] == "B1") | (df_prediccion_rf_empates["Div"] == "D1") | (df_prediccion_rf_empates["Div"] == "E0") | (df_prediccion_rf_empates["Div"] == "EC") | (df_prediccion_rf_empates["Div"] == "F2") | (df_prediccion_rf_empates["Div"] == "G1") | (df_prediccion_rf_empates["Div"] == "I1") | (df_prediccion_rf_empates["Div"] == "N1") | (df_prediccion_rf_empates["Div"] == "P1") | (df_prediccion_rf_empates["Div"] == "SC0") | (df_prediccion_rf_empates["Div"] == "SC2") | (df_prediccion_rf_empates["Div"] == "SP1") | (df_prediccion_rf_empates["Div"] == "SP2") | (df_prediccion_rf_empates["Div"] == "T1"))
-    send_email(user_email, pass_email, mails, mails_cc, asunto_mensaje, texto_mensaje)
-
-    return render(request, 'home.html')
+    return 1
 
 def calcular_capital_inicial():
     historico_pd = pd.DataFrame(list(Historico.objects.all().values()))
-    #print(historico_pd.head())
-
     df_bd = historico_pd
-    
     df_bd['date'] = pd.to_datetime(df_bd['date']).apply(lambda x: x.date())
-
     df_bd = df_bd[df_bd['date']>date(2016,7,28)]
-
     for y in [2016, 2017, 2018, 2019]:
         df_bd_aux = df_bd[(df_bd['date']>date(y,7,25)) & (df_bd['date']<date(y+1,8, 2))]
         df_bd_aux = df_bd_aux.sort_values(by="date", ascending=True)
-        
         capital_inicial=0
         maxima_deuda = 0
         date_2=0
         dinero_necesario=0
-
         for x in range(5,30):
             capital_inicial=x
             maxima_deuda = 0
@@ -612,16 +114,10 @@ def calcular_capital_inicial():
                     capital_final = capital_final + fila["cuotaEmpate"]
             if ((maxima_deuda<0) & (maxima_deuda>-1)):
                 dinero_necesario=x+1
-        #print("Temporada: ", str(y))
-        #print("Dinero necesario:" , dinero_necesario)
-        #print("Dinero final:" , capital_final-capital_inicial+dinero_necesario)
-        #print("_______________")
-
         CAPITAL_APORTADO[str(y)[2:4]+str(y+1)[2:4]] = dinero_necesario+1
         CAPITAL_APORTADO["1819"] = 10
         CAPITAL_APORTADO["1718"] = 2
         CAPITAL_APORTADO["1617"] = 5
-        
         CAPITAL_APORTADO["2021"] = CAPITAL_INICIAL_TOTAL_APUESTAS
         print(CAPITAL_APORTADO)
 
@@ -638,7 +134,6 @@ def precision(request):
     last_beneficio = Beneficios.objects.filter(temporada = "1920").order_by('-id')[0]
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion_1920 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
-    
 
     #Temporada 1819
     last_beneficio = Beneficios.objects.filter(temporada = "1819").order_by('-id')[0]
@@ -675,35 +170,18 @@ def precision(request):
     data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
     df_data_informacion_1213 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
 
-    #Temporada 1112
-    #last_beneficio = Beneficios.objects.filter(temporada = "1112").order_by('-id')[0]
-    #data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
-    #df_data_informacion_1112 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
-    
-    #Temporada 1011
-    #last_beneficio = Beneficios.objects.filter(temporada = "1011").order_by('-id')[0]
-    #data_informacion = [[last_beneficio.dia, last_beneficio.capital_inicial, last_beneficio.ganancias_brutas, last_beneficio.ganancias_netas, last_beneficio.porcentaje_beneficio, last_beneficio.porcentaje_beneficio_frente_al_inicial, last_beneficio.temporada]] 
-    #df_data_informacion_1011 = pd.DataFrame(data_informacion, columns = ['Día',' Capital inicial', 'Ganancia brutas', 'Ganancia netas', 'Beneficio', 'Beneficio frente inicial', "Temporada"]) 
-    
     frames = [df_data_informacion, df_data_informacion_1920, df_data_informacion_1819, df_data_informacion_1718, df_data_informacion_1617, df_data_informacion_1516, df_data_informacion_1415, df_data_informacion_1314, df_data_informacion_1213]
     df_data_evolucion = pd.concat(frames)
-
-    #print(df_data_evolucion)
     historico = Historico.objects.latest('ejecucion')
     all_entries = Historico.objects.filter(ejecucion = historico.ejecucion, prediction = 1)
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', "probabilidad", "cuotaEmpates", 'ejecucion', "temporada"])
-
     tiempoJornadaInicio = jornadaInicio(datetime.today().weekday()) + "day"
     tiempoJornadaFin = jornadaFin(datetime.today().weekday()) + "day"
-
     df_last_jornada = df[(df.date > (datetime.now().date() - pd.to_timedelta(tiempoJornadaInicio))) & (df.date < (datetime.now().date() - pd.to_timedelta(tiempoJornadaFin)))]
-
     capital_inicial_total2 = round(len(df_last_jornada[df_last_jornada["prediccion"] == 1].index), 2)
-  
     ganancias_totales = round(df_last_jornada[(df_last_jornada["prediccion"] == 1) & (df_last_jornada["resultado"] == 1)]["cuotaEmpates"].values.sum(), 2)
     beneficios = round(ganancias_totales - capital_inicial_total2, 2)
-
     if(ganancias_totales!=0):
         if(capital_inicial_total2>0):
             rentabilidad = round(ganancias_totales * 100 / capital_inicial_total2 - 100, 2)
@@ -712,15 +190,10 @@ def precision(request):
     else:
         rentabilidad = 0
     beneficio_mes = BeneficiosMes.objects.latest('temporada')
-
     all_entries_mes = BeneficiosMes.objects.filter(temporada = beneficio_mes.temporada)  
     first_mes = all_entries_mes.values_list()    
-    
     df_mes = pd.DataFrame(data=first_mes, columns=['id', 'capital_inicial', 'ganancias_brutas', 'ganancias_netas', "temporada", 'mes'])
-
-
     pd_capital_aportado = pd.DataFrame(CAPITAL_APORTADO.items(), columns=["temporada", "capital"])
-
     return render(request, 'precision.html', {"df_data_evolucion": df_data_evolucion.to_json(orient='split'), "data_mes": df_mes.to_json(orient='split'), 'data_informacion_actual': df_data_informacion.to_json(orient='split'), 'data_informacion_1920': df_data_informacion_1920.to_json(orient='split'), 'data_informacion_1819': df_data_informacion_1819.to_json(orient='split'), 'data_informacion_1718': df_data_informacion_1718.to_json(orient='split'), 'data_informacion_1617': df_data_informacion_1617.to_json(orient='split'), 'data_informacion_1516': df_data_informacion_1516.to_json(orient='split'), 'data_informacion_1415': df_data_informacion_1415.to_json(orient='split'), 'data_informacion_1314': df_data_informacion_1314.to_json(orient='split'), 'data_informacion_1213': df_data_informacion_1213.to_json(orient='split'), "pd_capital_aportado": pd_capital_aportado.to_json(orient='split'), "capital_inicial_total2": capital_inicial_total2, "ganancias_totales": ganancias_totales, "beneficios": beneficios, "rentabilidad": rentabilidad})   
 
 def jornadaInicio(i):
@@ -833,14 +306,8 @@ def prediccion(request):
     all_entries = Predicciones.objects.filter(ejecucion = ultima_ejecucion.ejecucion, prediction = 1)
     first = all_entries.values_list()    
     df = pd.DataFrame(data=first, columns=['id', 'prediccion', 'date', 'home_team', 'away_team', 'resultado', 'ejecucion', "temporada", "probabilidad", "cuota"])
-    #print(df)
-
-
-    #print(df)
-    #return render(request, 'home.html')
-    #return render(request, 'prediccion.html', {'data': df_prediccion_rf_empates[df_prediccion_rf_empates["Prediccion"] == "1"].filter(items=["Prediccion", "Date", "HomeTeam", "AwayTeam"]).to_json(orient='split')})   
     return render(request, 'prediccion.html', {'data': df.to_json(orient='split')})   
-    #return render(request, 'prediccion.html', {'data': data})   
+
 
         
 
