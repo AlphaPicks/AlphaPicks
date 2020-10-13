@@ -1,104 +1,25 @@
-
-sudo apt-get remove git
-sudo apt install git-all
-
-
-
 git config --global user.name "AlphaPicks"
 git config --global user.email tablas.pronosticador@gmail.com
-
-
-git config credential.username 'AlphaPicks'
 
 git init
 git status
 git add .
 git commit -m "Initial commit"
 
-git remote add origin https://github.com/AlphaPicks/AlphaPicks.git
-
-
-
-git remote set-url origin https://github.com/AlphaPicks/AlphaPicks.git
-
-git push -u origin master
-
-
-
-git remote set-url origin git@github.com:username/repo.git
-
-
-git remote set-url  origin git@github.com:AlphaPicks/AlphaPicks.git
+git remote add origin https://github.com/AlphaPicks/-AlphaPicks.git
 
 git push origin master
-
-
-git clone https://github.com/AlphaPicks/AlphaPicks.git
-
 
 git pull
 
 ___________________________________________________________________________________________________________________
 
-Git copiar repositorio:
-cd C:\Users\igaraybeng001\Desktop\Bets
-git config --global user.name "IbonGaray"
-git config --global user.email "igaraybengoa@gmail.com"
-git clone https://github.com/IbonGaray/CazaEmpates.git
 
-Carpeta: C:\Users\igaraybeng001\Desktop\Bets
-Tamaño del proyecto: 378 MB
-
-Dependencias: 
-pip install render
-
-Comando para ejecutar el servidor: 
-python manage.py runserver
-
-Crear base de datos: 
-python manage.py makemigrations bets
-python manage.py migrate bets
-python manage.py sqlmigrate bets  0001_initial
-python manage.py sqlmigrate bets  0002_auto_20200122_1840
-python manage.py sqlmigrate bets 0003_auto_20200122_185
-python manage.py sqlmigrate bets 0004_predicciones_ejecucion2
-python manage.py sqlmigrate bets 0005_remove_predicciones_ejecucion2
-python manage.py sqlmigrate bets 0006_beneficios_porcentaje_beneficio_frente_al_inicial
-python manage.py sqlmigrate bets 0007_historico
-python manage.py sqlmigrate bets 0008_auto_20200210_1142
-python manage.py sqlmigrate bets 0009_beneficiosmes
-python manage.py sqlmigrate bets 0010_predicciones_probabilidad
-python manage.py sqlmigrate bets 0011_predicciones_cuota
-python manage.py migrate bets 0012_historico_probabilidad
-python manage.py migrate bets 0013_auto_20200217_1754
-
-Para hacer un commit del trabajo realizado:
-git add .
-git commit -m "Add textos"
-git push origin master
-
-
-
-___________________________________________________________________________________________________________________
-Deploy in pythonanywhere
-
-git clone https://github.com/IbonGaray/CazaEmpates.git
-
-mkvirtualenv --python=/usr/bin/python3.5 cazaempates-virtualenv
-pip install django
-pip install -r requirements.txt
-
-
-
-_____________________________________________________________-
-Desplegar en Python Anywhere
-
-
-git clone https://github.com/IbonGaray/CazaEmpates.git
+git clone https://github.com/AlphaPicks/AlphaPicks.git
 
 python -virtualenv
 
-virtualenv --python=python3.5 myvenv
+virtualenv --python=python3.7 myvenv
 
 source myvenv/bin/activate
 
@@ -114,65 +35,19 @@ python manage.py createsuperuser
 
 
 
-/home/ibongaray/proyectoDos/myvenv/
+/home/lAphaPicks/proyectoDos/myvenv/
 
 WSGI
 
 
-_____________________________________________________________
-
-nuevo despliege CazaEmpates
-
-
-git clone https://github.com/IbonGaray/CazaEmpates.git
-
-cd CazaEmpates
-
-
-mkvirtualenv --python=/usr/bin/python3.5 mysite-virtualenv
-
-pip install django
 
 
 
 
-/home/IbongarayBets/CazaEmpates/web_project/static
 
 
 
 
-git pull
-
-
-git clone https://github.com/IbonGaray/CazaEmpates.git
-
-python3.5 manage.py collectstatic
-
-yes
-
-python3.5 manage.py migrate
-
-
-Deploy in pythonanywhere
-_____________________________________________________________
-
-git clone https://github.com/IbonGaray/CazaEmpates.git
-cd CazaEmpates
-
-mkvirtualenv --python=/usr/bin/python3.7 CazaEmpates
-
-pip3 install django
-
-python3.7 manage.py migrate
-python3.7 manage.py collectstatic
-
-
-git pull
-python3.7 manage.py migrate
-python3.7 manage.py collectstatic
-
-git reset HEAD --hard
-git pull origin master -r
 
 
 

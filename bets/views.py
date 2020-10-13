@@ -35,6 +35,7 @@ TEMPORADA_ACTUAL = 2021
 LIGAS = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
 
 
+
 def send_email(user, pwd, recipient, bcc, subject, body):
     FROM = user
     TO = recipient if isinstance(recipient, list) else [recipient]
@@ -75,17 +76,26 @@ def apuestas(request):
     return render(request, 'apuestas.html')
 
 def obtenerDatosTemporada():
-     
-    return 1
+    df_test = pd.DataFrame()
+    resp = urlopen('https://www.football-data.co.uk/mmz4281/2021/data.zip')
+    zipfile = ZipFile(BytesIO(resp.read()))
+    zipfile.namelist()
+    LIGAS_2 =  ['D1','D2', 'E0',       'F2', 'G1', 'I1',        "SP1", "SP2", "T1"]
+    #LIGAS_2 = ['D1','D2', 'E0', 'EC', 'F2', 'G1', 'I1', "SC1", "SP1", "SP2", "T1"]
+    for l in LIGAS_2:
+        df_new = pd.read_csv(zipfile.open(l+".csv"))
+        df_test = pd.concat([df_test, df_new], sort=True) 
+    return df_test
 
 def historicoBeneficiosLanzarOtrasTemporadas():
-    #a  
-    a=1
+    x=1 
 
 def historicoBeneficiosLanzar(request):
+    
     return 1
 
 def prediccionesLanzar(request):
+    
     return 1
 
 def calcular_capital_inicial():

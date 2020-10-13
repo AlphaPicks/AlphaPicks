@@ -44,7 +44,7 @@ SECRET_KEY = 'o+8o2wz1bx+=$wu*k9eew(_^nb2)t_=rfur0*=mv_*9uds4r_v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1', "alphapicks.es"]
+ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1', "ibongaraybets.pythonanywhere.com"]
 
 # Application definition
 
